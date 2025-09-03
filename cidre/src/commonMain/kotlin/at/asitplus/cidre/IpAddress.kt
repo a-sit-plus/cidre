@@ -1,0 +1,548 @@
+package at.asitplus.cidre
+
+import at.asitplus.cidre.byteops.compareUnsignedBE
+import at.asitplus.cidre.byteops.toShortArray
+import kotlin.jvm.JvmName
+
+/**
+ * An IP address consisting of [Version.numberOfOctets] many octets, as defined by [Specification.numberOfOctets]
+ * * [N] indicates the type of [segments]. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
+ * * [octets] contains the byte-representation of this IP address in network order (BE)
+ */
+sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N, *>) : Comparable<IpAddress<N>> {
+
+    init {
+        require(octets.size == spec.numberOfOctets) { "Illegal number of octets specified for ${this::class.simpleName}: ${octets.size}. Expected: ${spec.numberOfOctets}." }
+    }
+
+    /**
+     * The address's segments. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
+     * The string representation seprates segments by [Specification.segmentSeparator]
+     */
+    abstract val segments: List<N>
+
+    /**
+     * Compares the IP addresses' octets interpreted as unsigned BE (network order) integer
+     */
+    override fun compareTo(other: IpAddress<N>): Int = octets.compareUnsignedBE(other.octets)
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is IpAddress<*>) return false
+
+        if (!octets.contentEquals(other.octets)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return octets.contentHashCode()
+    }
+
+    //cannot get() because spec is not a member
+    val version = spec.version
+
+    /**
+     * unspecified addresses are:
+     * * `0.0.0.0` (IPv4)
+     * * `::` (IPv6)
+     */
+    val isSpecified: Boolean get() = !octets.all { it == 0.toByte() }
+
+    /**
+     * IP version, either [Version.V4] or [Version.V6]
+     */
+    enum class Version(val numberOfOctets: Int) {
+        V4(4), V6(16)
+    }
+
+    /**
+     * Internet Protocol (IpV4), originally defined by [RFC 791](https://www.rfc-editor.org/rfc/rfc791.html)
+     */
+    class V4
+
+    /**
+     * Creates an IPv4 address from octets containing an address in byte representation (BE/network oder)
+     *
+     * @throws IllegalArgumentException if invalid [octets] are provided
+     */
+    @Throws(IllegalArgumentException::class)
+    constructor(octets: ByteArray) : IpAddress<Byte>(octets, Companion) {
+
+        override val segments: List<Byte> by lazy { octets.toList() }
+
+        /**
+         * String representation as per [RFC 1123, Section 2](https://www.rfc-editor.org/rfc/rfc1123.html#section-2):
+         * `#.#.#.#`, where `#` is the unsigned byte representation of an octet, without leading zeros.
+         */
+        override fun toString(): String =
+            octets.joinToString(separator = segmentSeparator.toString()) {
+                it.toUByte().toString()
+            }
+
+
+        /**
+         * Historical IPv4 address classes as per [RFC 791, Section 3.2](https://www.rfc-editor.org/rfc/rfc791.html#section-3.2),
+         * designating [Class.E] to the address range then defined as "reserved":
+         *
+         * | Class | First bits | First octet range | Purpose     |
+         * |-------|:----------:|-------------------|-------------|
+         * | A     | `0xxx`     | 0–127             | Large nets  |
+         * | B     | `10xx`     | 128–191           | Medium nets |
+         * | C     | `110x`     | 192–223           | Small nets  |
+         * | D     | `1110`     | 224–239           | Multicast   |
+         * | E     | `1111`     | 240–255           | Reserved    |
+         */
+        @get:JvmName("getAddressClass")
+        @Deprecated("CIDR is the way to go!")
+        val `class`: Class?
+            get() = when (octets[0].toUByte().toInt()) {
+                in 0..127 -> Class.A
+                in 128..191 -> Class.B
+                in 192..223 -> Class.C
+                in 224..239 -> Class.D
+                else -> Class.E
+            }
+
+        /**
+         * Historical IPv4 address classes as per [RFC 791, Section 3.2](https://www.rfc-editor.org/rfc/rfc791.html#section-3.2),
+         * designating [Class.E] to the address range then defined as "reserved":
+         *
+         * | Class | First bits | First octet range | Purpose     |
+         * |-------|:----------:|-------------------|-------------|
+         * | A     | `0xxx`     | 0–127             | Large nets  |
+         * | B     | `10xx`     | 128–191           | Medium nets |
+         * | C     | `110x`     | 192–223           | Small nets  |
+         * | D     | `1110`     | 224–239           | Multicast   |
+         * | E     | `1111`     | 240–255           | Reserved    |
+         */
+        @Deprecated("CIDR is the way to go!")
+        enum class Class(/*TODO later: properties like prefix length*/) {
+            A,
+            B,
+            C,
+            D,
+            E
+        }
+
+        companion object : Specification<Byte, V4> {
+            override val segmentSeparator: Char = '.'
+            override val version: Version = Version.V4
+            override val numberOfOctets: Int = version.numberOfOctets
+
+            override val regex = object : Specification.RegexSpec() {
+                //don't believe the IDE, the pattern has to be like that
+                override val segment = Regex("(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)")
+                override val address = Regex("${segment.pattern}(?:\\.${segment.pattern}){3}")
+            }
+
+            /**
+             * Creates an IP address from its [stringRepresentation].
+             *
+             * @throws IllegalArgumentException if an invalid string is provided
+             */
+            @Throws(IllegalArgumentException::class)
+            operator fun invoke(stringRepresentation: String): V4 {
+                require(stringRepresentation.matches(Regex("^[0-9$segmentSeparator]+$"))) { "Invalid IPv4 address '$stringRepresentation': contains invalid characters" }
+                val parts = stringRepresentation.split(segmentSeparator)
+                require(parts.size == 4) { "Invalid number of IPv4 segments: ${parts.size} in address: $stringRepresentation" }
+
+
+                return V4(ByteArray(4) { index ->
+                    require(parts[index].matches(regex.segment)) { "Invalid IPv4 address '$stringRepresentation'" }
+                    val value = parts[index].toIntOrNull()
+                    require(value != null && value in 0..255) { "Invalid IPv4 byte '${parts[index]}' in address $stringRepresentation" }
+                    value.toUByte().toByte()
+                })
+            }
+        }
+    }
+
+    /**
+     * Internet Protocol, Version 6 (IPv6), originally defined by [RFC 8200](https://www.rfc-editor.org/rfc/rfc8200.html)
+     */
+    class V6
+
+    /**
+     * Creates an IPv6 address from octets containing an address in byte representation (BE/network oder)
+     *
+     * @throws IllegalArgumentException if invalid [octets] are provided
+     */
+    @Throws(IllegalArgumentException::class)
+    constructor(octets: ByteArray) : IpAddress<Short>(octets, Companion) {
+
+        override val segments: List<Short> by lazy { octets.toShortArray().asList() }
+
+
+        /**
+         * *Has an impact on the string representation of this address!*
+         *
+         * Indicates whether this IPv6 address contains a mapped IPv4 address in accordance with
+         * [RFC 4291, Section 2.5.5.2](https://www.rfc-editor.org/rfc/rfc4291.html#section-2.5.5.2):
+         *
+         *| 80 bits                             | 16  | 32 bits         |
+         * |:-----------------------------------:|:---:|:----------------:|
+         * | `0000..............................0000` | `FFFF` | IPv4 address |
+         */
+        val isIpv4Mapped: Boolean by lazy {
+            PREFIX_IPV4_MAPPED.indices.firstOrNull { PREFIX_IPV4_MAPPED[it] != octets[it] } == null
+        }
+
+        /**
+         * Returns the IPv4 address embedded in this IPv6 address, in case one is contained (either [isIpv4Compatible] or [isIpv4Mapped] being `true`)
+         */
+        val embeddedIpV4Address: V4?
+            get() =
+                if (isIpv4Mapped || isIpv4Compatible) V4(segments.takeLast(2).map {
+                    listOf(((it.toInt() and 0xFFFF) shr 8 and 0xFF).toByte(), it.toByte())
+                }.flatten().toByteArray())
+                else null
+
+        /**
+         * Deprecated by [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) and must not be used anymore. Has no impact on String representation.
+         *
+         * Indicates whether this IPv6 address is IPv4-*compatible* and contains  IPv4 address in accordance with
+         * [RFC 4291, Section 2.5.5.1](https://www.rfc-editor.org/rfc/rfc4291.html#section-2.5.5.1):
+         *
+         *| 80 bits                             | 16  | 32 bits         |
+         * |:-----------------------------------:|:---:|:----------------:|
+         * | `0000..............................0000` | `0000` | IPv4 address |
+         */
+
+        @Deprecated("Deprecated by RFC 4291")
+        val isIpv4Compatible: Boolean by lazy {
+            PREFIX_IPV4_COMPAT.indices.firstOrNull { PREFIX_IPV4_COMPAT[it] != octets[it] } == null
+        }
+
+
+        /**
+         * Returns a string representation of this IP address in [RFC 5952](https://www.rfc-editor.org/rfc/rfc5952.html) canonical form:
+         * - lowercase hex
+         * - omit leading zeros
+         * - use '::' once for the longest run of zero hextets (length >= 2), leftmost on tie
+         * - for IPv4-mapped, render last 32 bits in dotted-quad, and apply '::' to the hex part only
+         */
+        override fun toString() = toString(expanded = false)
+
+
+        /**
+         * Returns a string representation of this IP address
+         * if [expanded] is set to `true` all hextets are printed in full length.  <br>
+         * otherwise, the resulting string conforms to [RFC 5952](https://www.rfc-editor.org/rfc/rfc5952.html) canonical form:
+         * - lowercase hex
+         * - omit leading zeros
+         * - use '::' once for the longest run of zero hextets (length >= 2), leftmost on tie
+         * - for IPv4-mapped, render last 32 bits in dotted-quad, and apply '::' to the hex part only
+         */
+        fun toString(expanded: Boolean): String {
+            if (expanded) {
+                return if (isIpv4Mapped) {
+                    (segments.take(segments.size - 2)
+                        .joinToString(separator = segmentSeparator.toString()) {
+                            it.toUShort().toString(16).lowercase()
+                        }) +
+                            segmentSeparator + embeddedIpV4Address!!.toString()
+                } else segments.joinToString(separator = segmentSeparator.toString()) {
+                    it.toUShort().toString(16).lowercase()
+                }
+
+            } else {
+                if (!isSpecified) return "::"
+
+                // Use existing hextet view
+                val hextets = segments.map { it.toInt() and 0xFFFF }
+
+                val ipv4Tail = isIpv4Mapped
+                val hexLen = if (ipv4Tail) 6 else 8
+
+                // Find the longest run of zeros within the hex portion
+                var bestStart = -1
+                var bestLen = 0
+                var i = 0
+                while (i < hexLen) {
+                    if (hextets[i] == 0) {
+                        var j = i
+                        while (j < hexLen && hextets[j] == 0) j++
+                        val len = j - i
+                        if (len >= 2 && len > bestLen) {
+                            bestStart = i
+                            bestLen = len
+                        }
+                        i = j
+                    } else {
+                        i++
+                    }
+                }
+
+                val sb = StringBuilder()
+                var idx = 0
+                var compressedUsed = false
+                while (idx < hexLen) {
+                    if (!compressedUsed && bestLen >= 2 && idx == bestStart) {
+                        // '::' compression
+                        if (sb.isEmpty()) sb.append("::") else sb.append("::")
+                        idx += bestLen
+                        compressedUsed = true
+                        continue
+                    }
+                    if (sb.isNotEmpty() && sb.last() != ':') sb.append(':')
+                    sb.append(hextets[idx].toString(16))
+                    idx++
+                }
+
+                if (ipv4Tail) {
+                    // Append IPv4 dotted-quad for last 32 bits
+                    if (sb.isNotEmpty() && sb.last() != ':') sb.append(':')
+                    val s6 = hextets[6]
+                    val s7 = hextets[7]
+                    val a = (s6 ushr 8) and 0xFF
+                    val b = s6 and 0xFF
+                    val c = (s7 ushr 8) and 0xFF
+                    val d = s7 and 0xFF
+                    sb.append("$a.$b.$c.$d")
+                }
+
+                return sb.toString().lowercase()
+            }
+        }
+
+        companion object : Specification<Short, V6> {
+            override val segmentSeparator: Char = ':'
+            override val version: Version = Version.V6
+
+            override val numberOfOctets: Int = version.numberOfOctets
+
+            /**
+             * Deprecated by [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) and must not be used anymore.
+             *
+             * Represents the prefix an IPv6 address must match to be designated IPv4-*compatible* in accordance with
+             * [RFC 4291, Section 2.5.5.1](https://www.rfc-editor.org/rfc/rfc4291.html#section-2.5.5.1):
+             *
+             *| 80 bits                             | 16  | 32 bits         |
+             * |:-----------------------------------:|:---:|:----------------:|
+             * | `0000..............................0000` | `0000` | IPv4 address |
+             */
+            val PREFIX_IPV4_COMPAT = ByteArray(12)
+
+
+            /**
+             * Deprecated by [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) and must not be used anymore.
+             *
+             * Represents the prefix an IPv6 address must match to be designated IPv4-*mapped* address in accordance with
+             * [RFC 4291, Section 2.5.5.2](https://www.rfc-editor.org/rfc/rfc4291.html#section-2.5.5.2):
+             *
+             *| 80 bits                             | 16  | 32 bits         |
+             * |:-----------------------------------:|:---:|:----------------:|
+             * | `0000..............................0000` | `FFFF` | IPv4 address |
+             */
+            val PREFIX_IPV4_MAPPED = ByteArray(10) + ByteArray(2) { -1 }
+
+
+            private val V6_UNSPEC = Regex("^::$")
+            override val regex = object : Specification.RegexSpec() {
+
+                override val segment = Regex("[0-9A-Fa-f]{1,4}")
+                private val H = segment.pattern
+                private val V4 = IpAddress.V4.regex.address.pattern
+
+                private fun exactHextets(n: Int): String = when {
+                    n <= 0 -> ""
+                    n == 1 -> H
+                    else -> "(?:$H:){${n - 1}}$H"
+                }
+
+                private fun hextetsWithTrailingColon(n: Int): String =
+                    if (n <= 0) "" else "(?:$H:){$n}"
+
+                // 1) Full 8-hextet IPv6 (no compression)
+                private val V6_FULL_8 = "^${exactHextets(8)}$"
+
+                // 2) Hex-only IPv6 with a single '::' (all legal splits):
+                //    before + after ≤ 7  (so '::' replaces at least one zero group)
+                private val V6_COMP_HEX_VARIANTS: List<String> = buildList {
+                    for (before in 0..8) {
+                        val maxAfter = 7 - before
+                        if (maxAfter < 0) continue
+                        for (after in 0..maxAfter) {
+                            val lhs = exactHextets(before)      // may be ""
+                            val rhs = exactHextets(after)       // may be ""
+                            add("^$lhs::$rhs$")
+                        }
+                    }
+                }
+
+                // 3) IPv6 that ends with IPv4 (no compression): exactly 6 hextets + IPv4
+                private val V6_V4_TAIL_NO_COMP = "^(?:$H:){6}$V4$"
+
+                // 4) IPv6 that ends with IPv4 (with '::' compression in the hex part):
+                //    before + after ≤ 5 (since IPv4 tail uses 2 hextets); again at least one zero elided
+                private val V6_V4_TAIL_COMP_VARIANTS: List<Regex> = buildList {
+                    for (before in 0..5) {
+                        val maxAfter = 5 - before
+                        for (after in 0..maxAfter) {
+                            val lhs = exactHextets(before)            // <-- no trailing colon (FIX)
+                            val rhs = hextetsWithTrailingColon(after) // <-- has trailing colon (kept)
+                            add(Regex("^$lhs::$rhs$V4$", RegexOption.IGNORE_CASE))
+                        }
+                    }
+                }
+
+                override val address = Regex(
+                    (listOf(V6_FULL_8, V6_V4_TAIL_NO_COMP, V6_UNSPEC.pattern) +
+                            V6_COMP_HEX_VARIANTS + V6_V4_TAIL_COMP_VARIANTS).joinToString("|"),
+                    RegexOption.IGNORE_CASE
+                )
+            }
+
+            private val v4EmbeddedRegex = Regex("^[0-9A-Fa-f:]+:${V4.regex.address.pattern}$$", RegexOption.IGNORE_CASE)
+            private val segmentIpv4Regex = Regex(".*${V4.regex.address.pattern}$", RegexOption.IGNORE_CASE)
+
+
+            /**
+             * Creates an IP address from its [stringRepresentation].
+             *
+             * @throws IllegalArgumentException if an invalid string is provided
+             */
+            @Throws(IllegalArgumentException::class)
+            operator fun invoke(stringRepresentation: String): V6 {
+                //shortcut
+                if (stringRepresentation.matches(V6_UNSPEC)) return V6(ByteArray(numberOfOctets))
+
+                require(stringRepresentation.matches(regex.address)) { "Invalid IPv6 address '$stringRepresentation': contains invalid characters" }
+                val parts = stringRepresentation.split("$segmentSeparator$segmentSeparator")
+                require(parts.size <= 2) { "Invalid IPv6 address: too many '::'" }
+
+                val containsIpv4 = stringRepresentation.matches(v4EmbeddedRegex)
+
+                //@formatter:off
+                val delimiters = if (containsIpv4) charArrayOf(segmentSeparator, V4.segmentSeparator)
+                               else charArrayOf(segmentSeparator)
+
+                val headSegments = if (parts[0].isNotEmpty()) parts[0].split(*delimiters) else emptyList()
+                val headIpv4     = parts.first().matches(segmentIpv4Regex)
+
+                val tailSegments = if (parts.size == 2 && parts[1].isNotEmpty()) parts[1].split(*delimiters) else emptyList()
+                val tailIpv4     = parts.last().matches(segmentIpv4Regex)
+                //@formatter:on
+
+                val totalSegments = headSegments.size + tailSegments.size
+
+                val compressed = stringRepresentation.contains("$segmentSeparator$segmentSeparator")
+
+                if (containsIpv4) require(if (compressed) totalSegments <= 9 else totalSegments == 10) { "Invalid IPv6 address: too many segments: $totalSegments" }
+                else require(if (compressed) totalSegments <= 7 else totalSegments == 8) { "Invalid IPv6 address: too many segments: $totalSegments" }
+
+                val result = ByteArray(16)
+                var byteIndex = 0
+
+                // Process head
+                var index = 0
+                for (segment in headSegments) {
+                    index++
+                    if (headIpv4 && headSegments.size - index < 4) {
+                        result[byteIndex++] = segment.toUByte().toByte()
+                    } else {
+                        val value = segment.toUShort(16)
+                        result[byteIndex++] = (value.toInt() shr 8).toByte()
+                        result[byteIndex++] = value.toByte()
+                    }
+                }
+                if (compressed) {
+                    val zerosToInsert = (if (containsIpv4) 10 else 8) - totalSegments
+                    byteIndex += zerosToInsert * 2
+                }
+
+                // Process tail
+                index = 0
+
+                for (segment in tailSegments) {
+                    index++
+                    if (tailIpv4 && tailSegments.size - index < 4) {
+                        result[byteIndex++] = segment.toUByte().toByte()
+                    } else {
+                        val value = segment.toUShort(16)
+                        result[byteIndex++] = (value.toInt() shr 8).toUByte().toByte()
+                        result[byteIndex++] = value.toUByte().toByte()
+                    }
+                }
+
+                return V6(result)
+            }
+        }
+    }
+
+    /**
+     * Class specifying basic properties of an [at.asitplus.cidre.IpAddress]:
+     *
+     * * [numberOfOctets]
+     * * [segmentSeparator] used to separate segments in an address's string representation:
+     *     * For IPv4, this is a dot (`.`).
+     *     * For IPv6, this refers to the hextet separator `:`, so beware of IPv6 IPv4-mapped addresses, as these cannot be split merely by the IPb6 separator char.
+     * * [version]
+     * * [regex] containing [RegexSpec] to match conforming addresses and address segments
+     */
+    sealed interface Specification<T : Number, I : IpAddress<T>> {
+
+        val numberOfOctets: Int
+
+        /**
+         * used to separate segments in an address's string representation:
+         *  * For IPv4, this is a dot (`.`).
+         *  * For IPv6, this refers to the hextet separator `:`, so beware of IPv6 IPv4-mapped addresses, as these cannot be split merely by the IPb6 separator char.
+         */
+        val segmentSeparator: Char
+        val version: Version
+
+        /**
+         * Points to a [RegexSpec] to match conforming addresses and address segments
+         */
+        val regex: RegexSpec
+
+        /**
+         * Holds regular expressions for address [segment]s and the whole [address]es
+         * Note that for [at.asitplus.IpAddress.V6], the segment refers to an actual IPv6 hextet, but this is a superset
+         * of the IPv4 segment notation, so it matches both.
+         */
+        abstract class RegexSpec {
+            /**
+             * Regex matching a single address segment in its string representation. It is case-insensitive for IPv6.
+             */
+            abstract val segment: Regex
+
+            /**
+             * Regex matching only valid address representations.
+             * It is defined leniently:
+             * * it ignores leading zeros (as long as they don't exceed the maximum number of characters inside a [segment])
+             * * it is case-insensitive for IPv6
+             */
+            abstract val address: Regex
+        }
+    }
+
+    companion object {
+
+        /**
+         * Creates an IP address from its [stringRepresentation].
+         *
+         * @throws IllegalArgumentException if an invalid string is provided
+         */
+        @Throws(IllegalArgumentException::class)
+        operator fun invoke(stringRepresentation: String): IpAddress<*> = when {
+            V6.segmentSeparator in stringRepresentation -> V6(stringRepresentation)
+            V4.segmentSeparator in stringRepresentation -> V4(stringRepresentation)
+            else -> throw IllegalArgumentException("Invalid address '$stringRepresentation'")
+        }
+
+        /**
+         * Creates an IP address from octets containing an address in byte representation (BE/network oder)
+         *
+         * @throws IllegalArgumentException if invalid [octets] are provided
+         */
+        @Throws(IllegalArgumentException::class)
+        operator fun invoke(octets: ByteArray): IpAddress<*> = when (octets.size) {
+            V6.numberOfOctets -> V6(octets)
+            V4.numberOfOctets -> V4(octets)
+            else -> throw IllegalArgumentException("Invalid number of octets: ${octets.size}")
+        }
+    }
+
+}

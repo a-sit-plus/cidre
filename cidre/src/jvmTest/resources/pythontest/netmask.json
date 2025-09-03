@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "tool": "gen_netmasks_netaddr.py",
+    "generated": "2025-09-07T09:00:41.649565Z",
+    "source": "netaddr"
+  },
+  "cases": [
+    {
+      "version": "V4",
+      "prefix": 0,
+      "octet_count": 4,
+      "netmask_hex": "00000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 1,
+      "octet_count": 4,
+      "netmask_hex": "80000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 2,
+      "octet_count": 4,
+      "netmask_hex": "c0000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 3,
+      "octet_count": 4,
+      "netmask_hex": "e0000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 4,
+      "octet_count": 4,
+      "netmask_hex": "f0000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 5,
+      "octet_count": 4,
+      "netmask_hex": "f8000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 6,
+      "octet_count": 4,
+      "netmask_hex": "fc000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 7,
+      "octet_count": 4,
+      "netmask_hex": "fe000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 8,
+      "octet_count": 4,
+      "netmask_hex": "ff000000"
+    },
+    {
+      "version": "V4",
+      "prefix": 9,
+      "octet_count": 4,
+      "netmask_hex": "ff800000"
+    },
+    {
+      "version": "V4",
+      "prefix": 10,
+      "octet_count": 4,
+      "netmask_hex": "ffc00000"
+    },
+    {
+      "version": "V4",
+      "prefix": 11,
+      "octet_count": 4,
+      "netmask_hex": "ffe00000"
+    },
+    {
+      "version": "V4",
+      "prefix": 12,
+      "octet_count": 4,
+      "netmask_hex": "fff00000"
+    },
+    {
+      "version": "V4",
+      "prefix": 13,
+      "octet_count": 4,
+      "netmask_hex": "fff80000"
+    },
+    {
+      "version": "V4",
+      "prefix": 14,
+      "octet_count": 4,
+      "netmask_hex": "fffc0000"
+    },
+    {
+      "version": "V4",
+      "prefix": 15,
+      "octet_count": 4,
+      "netmask_hex": "fffe0000"
+    },
+    {
+      "version": "V4",
+      "prefix": 16,
+      "octet_count": 4,
+      "netmask_hex": "ffff0000"
+    },
+    {
+      "version": "V4",
+      "prefix": 17,
+      "octet_count": 4,
+      "netmask_hex": "ffff8000"
+    },
+    {
+      "version": "V4",
+      "prefix": 18,
+      "octet_count": 4,
+      "netmask_hex": "ffffc000"
+    },
+    {
+      "version": "V4",
+      "prefix": 19,
+      "octet_count": 4,
+      "netmask_hex": "ffffe000"
+    },
+    {
+      "version": "V4",
+      "prefix": 20,
+      "octet_count": 4,
+      "netmask_hex": "fffff000"
+    },
+    {
+      "version": "V4",
+      "prefix": 21,
+      "octet_count": 4,
+      "netmask_hex": "fffff800"
+    },
+    {
+      "version": "V4",
+      "prefix": 22,
+      "octet_count": 4,
+      "netmask_hex": "fffffc00"
+    },
+    {
+      "version": "V4",
+      "prefix": 23,
+      "octet_count": 4,
+      "netmask_hex": "fffffe00"
+    },
+    {
+      "version": "V4",
+      "prefix": 24,
+      "octet_count": 4,
+      "netmask_hex": "ffffff00"
+    },
+    {
+      "version": "V4",
+      "prefix": 25,
+      "octet_count": 4,
+      "netmask_hex": "ffffff80"
+    },
+    {
+      "version": "V4",
+      "prefix": 26,
+      "octet_count": 4,
+      "netmask_hex": "ffffffc0"
+    },
+    {
+      "version": "V4",
+      "prefix": 27,
+      "octet_count": 4,
+      "netmask_hex": "ffffffe0"
+    },
+    {
+      "version": "V4",
+      "prefix": 28,
+      "octet_count": 4,
+      "netmask_hex": "fffffff0"
+    },
+    {
+      "version": "V4",
+      "prefix": 29,
+      "octet_count": 4,
+      "netmask_hex": "fffffff8"
+    },
+    {
+      "version": "V4",
+      "prefix": 30,
+      "octet_count": 4,
+      "netmask_hex": "fffffffc"
+    },
+    {
+      "version": "V4",
+      "prefix": 31,
+      "octet_count": 4,
+      "netmask_hex": "fffffffe"
+    },
+    {
+      "version": "V4",
+      "prefix": 32,
+      "octet_count": 4,
+      "netmask_hex": "ffffffff"
+    },
+    {
+      "version": "V6",
+      "prefix": 0,
+      "octet_count": 16,
+      "netmask_hex": "00000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 1,
+      "octet_count": 16,
+      "netmask_hex": "80000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 2,
+      "octet_count": 16,
+      "netmask_hex": "c0000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 3,
+      "octet_count": 16,
+      "netmask_hex": "e0000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 4,
+      "octet_count": 16,
+      "netmask_hex": "f0000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 5,
+      "octet_count": 16,
+      "netmask_hex": "f8000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 6,
+      "octet_count": 16,
+      "netmask_hex": "fc000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 7,
+      "octet_count": 16,
+      "netmask_hex": "fe000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 8,
+      "octet_count": 16,
+      "netmask_hex": "ff000000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 9,
+      "octet_count": 16,
+      "netmask_hex": "ff800000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 10,
+      "octet_count": 16,
+      "netmask_hex": "ffc00000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 11,
+      "octet_count": 16,
+      "netmask_hex": "ffe00000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 12,
+      "octet_count": 16,
+      "netmask_hex": "fff00000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 13,
+      "octet_count": 16,
+      "netmask_hex": "fff80000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 14,
+      "octet_count": 16,
+      "netmask_hex": "fffc0000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 15,
+      "octet_count": 16,
+      "netmask_hex": "fffe0000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 16,
+      "octet_count": 16,
+      "netmask_hex": "ffff0000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 17,
+      "octet_count": 16,
+      "netmask_hex": "ffff8000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 18,
+      "octet_count": 16,
+      "netmask_hex": "ffffc000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 19,
+      "octet_count": 16,
+      "netmask_hex": "ffffe000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 20,
+      "octet_count": 16,
+      "netmask_hex": "fffff000000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 21,
+      "octet_count": 16,
+      "netmask_hex": "fffff800000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 22,
+      "octet_count": 16,
+      "netmask_hex": "fffffc00000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 23,
+      "octet_count": 16,
+      "netmask_hex": "fffffe00000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 24,
+      "octet_count": 16,
+      "netmask_hex": "ffffff00000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 25,
+      "octet_count": 16,
+      "netmask_hex": "ffffff80000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 26,
+      "octet_count": 16,
+      "netmask_hex": "ffffffc0000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 27,
+      "octet_count": 16,
+      "netmask_hex": "ffffffe0000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 28,
+      "octet_count": 16,
+      "netmask_hex": "fffffff0000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 29,
+      "octet_count": 16,
+      "netmask_hex": "fffffff8000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 30,
+      "octet_count": 16,
+      "netmask_hex": "fffffffc000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 31,
+      "octet_count": 16,
+      "netmask_hex": "fffffffe000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 32,
+      "octet_count": 16,
+      "netmask_hex": "ffffffff000000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 33,
+      "octet_count": 16,
+      "netmask_hex": "ffffffff800000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 34,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffc00000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 35,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffe00000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 36,
+      "octet_count": 16,
+      "netmask_hex": "fffffffff00000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 37,
+      "octet_count": 16,
+      "netmask_hex": "fffffffff80000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 38,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffc0000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 39,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffe0000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 40,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffff0000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 41,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffff8000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 42,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffc000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 43,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffe000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 44,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffff000000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 45,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffff800000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 46,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffc00000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 47,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffe00000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 48,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffff00000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 49,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffff80000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 50,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffc0000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 51,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffe0000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 52,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffff0000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 53,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffff8000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 54,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffc000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 55,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffe000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 56,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffff000000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 57,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffff800000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 58,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffc00000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 59,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffe00000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 60,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffff00000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 61,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffff80000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 62,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffc0000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 63,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffe0000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 64,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffff0000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 65,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffff8000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 66,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffc000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 67,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffe000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 68,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffff000000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 69,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffff800000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 70,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffc00000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 71,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffe00000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 72,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffff00000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 73,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffff80000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 74,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffc0000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 75,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffe0000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 76,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffff0000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 77,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffff8000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 78,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffc000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 79,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffe000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 80,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffff000000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 81,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffff800000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 82,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffc00000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 83,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffe00000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 84,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffff00000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 85,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffff80000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 86,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffc0000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 87,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffe0000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 88,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffff0000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 89,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffff8000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 90,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffc000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 91,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffe000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 92,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffff000000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 93,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffff800000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 94,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffc00000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 95,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffe00000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 96,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffff00000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 97,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffff80000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 98,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffc0000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 99,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffe0000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 100,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffff0000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 101,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffff8000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 102,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffc000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 103,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffe000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 104,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffff000000"
+    },
+    {
+      "version": "V6",
+      "prefix": 105,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffff800000"
+    },
+    {
+      "version": "V6",
+      "prefix": 106,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffc00000"
+    },
+    {
+      "version": "V6",
+      "prefix": 107,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffe00000"
+    },
+    {
+      "version": "V6",
+      "prefix": 108,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffff00000"
+    },
+    {
+      "version": "V6",
+      "prefix": 109,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffff80000"
+    },
+    {
+      "version": "V6",
+      "prefix": 110,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffc0000"
+    },
+    {
+      "version": "V6",
+      "prefix": 111,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffe0000"
+    },
+    {
+      "version": "V6",
+      "prefix": 112,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffff0000"
+    },
+    {
+      "version": "V6",
+      "prefix": 113,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffff8000"
+    },
+    {
+      "version": "V6",
+      "prefix": 114,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffffc000"
+    },
+    {
+      "version": "V6",
+      "prefix": 115,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffffe000"
+    },
+    {
+      "version": "V6",
+      "prefix": 116,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffff000"
+    },
+    {
+      "version": "V6",
+      "prefix": 117,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffff800"
+    },
+    {
+      "version": "V6",
+      "prefix": 118,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffffc00"
+    },
+    {
+      "version": "V6",
+      "prefix": 119,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffffe00"
+    },
+    {
+      "version": "V6",
+      "prefix": 120,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffffff00"
+    },
+    {
+      "version": "V6",
+      "prefix": 121,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffffff80"
+    },
+    {
+      "version": "V6",
+      "prefix": 122,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffffffc0"
+    },
+    {
+      "version": "V6",
+      "prefix": 123,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffffffe0"
+    },
+    {
+      "version": "V6",
+      "prefix": 124,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffffff0"
+    },
+    {
+      "version": "V6",
+      "prefix": 125,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffffff8"
+    },
+    {
+      "version": "V6",
+      "prefix": 126,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffffffc"
+    },
+    {
+      "version": "V6",
+      "prefix": 127,
+      "octet_count": 16,
+      "netmask_hex": "fffffffffffffffffffffffffffffffe"
+    },
+    {
+      "version": "V6",
+      "prefix": 128,
+      "octet_count": 16,
+      "netmask_hex": "ffffffffffffffffffffffffffffffff"
+    }
+  ]
+}

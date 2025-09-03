@@ -1,0 +1,8 @@
+/.gradle/
+/.idea/
+/.kotlin/
+/build/
+/docs/
+/kotlin-js-store/
+/dokka-tmp.md
+/cidre/build/

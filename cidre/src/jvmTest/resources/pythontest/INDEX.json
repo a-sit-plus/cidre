@@ -1,0 +1,16 @@
+{
+  "files": [
+    "parsing.json",
+    "normalization.json",
+    "subnetting.json",
+    "supernetting.json",
+    "overlaps_containment.json",
+    "set_operations.json"
+  ],
+  "meta": {
+    "generated": "2025-09-04T13:40:41.120512Z",
+    "source_file": "/var/folders/n3/dn1hq8m97cbbr37wdq9ggyk80000gq/T/test_ipaddress_0asvi4c5.py",
+    "source_ref": "github:main",
+    "tool": "cidr_fixture_extractor_plain.py"
+  }
+}

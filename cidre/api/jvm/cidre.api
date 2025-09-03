@@ -1,0 +1,256 @@
+public abstract class at/asitplus/cidre/IpAddress : java/lang/Comparable {
+	public static final field Companion Lat/asitplus/cidre/IpAddress$Companion;
+	public synthetic fun <init> ([BLat/asitplus/cidre/IpAddress$Specification;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun compareTo (Lat/asitplus/cidre/IpAddress;)I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOctets ()[B
+	public abstract fun getSegments ()Ljava/util/List;
+	public final fun getVersion ()Lat/asitplus/cidre/IpAddress$Version;
+	public fun hashCode ()I
+	public final fun isSpecified ()Z
+}
+
+public final class at/asitplus/cidre/IpAddress$Companion {
+	public final fun invoke (Ljava/lang/String;)Lat/asitplus/cidre/IpAddress;
+	public final fun invoke ([B)Lat/asitplus/cidre/IpAddress;
+}
+
+public abstract interface class at/asitplus/cidre/IpAddress$Specification {
+	public abstract fun getNumberOfOctets ()I
+	public abstract fun getRegex ()Lat/asitplus/cidre/IpAddress$Specification$RegexSpec;
+	public abstract fun getSegmentSeparator ()C
+	public abstract fun getVersion ()Lat/asitplus/cidre/IpAddress$Version;
+}
+
+public abstract class at/asitplus/cidre/IpAddress$Specification$RegexSpec {
+	public fun <init> ()V
+	public abstract fun getAddress ()Lkotlin/text/Regex;
+	public abstract fun getSegment ()Lkotlin/text/Regex;
+}
+
+public final class at/asitplus/cidre/IpAddress$V4 : at/asitplus/cidre/IpAddress {
+	public static final field Companion Lat/asitplus/cidre/IpAddress$V4$Companion;
+	public fun <init> ([B)V
+	public final fun getAddressClass ()Lat/asitplus/cidre/IpAddress$V4$Class;
+	public fun getSegments ()Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class at/asitplus/cidre/IpAddress$V4$Class : java/lang/Enum {
+	public static final field A Lat/asitplus/cidre/IpAddress$V4$Class;
+	public static final field B Lat/asitplus/cidre/IpAddress$V4$Class;
+	public static final field C Lat/asitplus/cidre/IpAddress$V4$Class;
+	public static final field D Lat/asitplus/cidre/IpAddress$V4$Class;
+	public static final field E Lat/asitplus/cidre/IpAddress$V4$Class;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lat/asitplus/cidre/IpAddress$V4$Class;
+	public static fun values ()[Lat/asitplus/cidre/IpAddress$V4$Class;
+}
+
+public final class at/asitplus/cidre/IpAddress$V4$Companion : at/asitplus/cidre/IpAddress$Specification {
+	public fun getNumberOfOctets ()I
+	public fun getRegex ()Lat/asitplus/cidre/IpAddress$Specification$RegexSpec;
+	public fun getSegmentSeparator ()C
+	public fun getVersion ()Lat/asitplus/cidre/IpAddress$Version;
+	public final fun invoke (Ljava/lang/String;)Lat/asitplus/cidre/IpAddress$V4;
+}
+
+public final class at/asitplus/cidre/IpAddress$V6 : at/asitplus/cidre/IpAddress {
+	public static final field Companion Lat/asitplus/cidre/IpAddress$V6$Companion;
+	public fun <init> ([B)V
+	public final fun getEmbeddedIpV4Address ()Lat/asitplus/cidre/IpAddress$V4;
+	public fun getSegments ()Ljava/util/List;
+	public final fun isIpv4Compatible ()Z
+	public final fun isIpv4Mapped ()Z
+	public fun toString ()Ljava/lang/String;
+	public final fun toString (Z)Ljava/lang/String;
+}
+
+public final class at/asitplus/cidre/IpAddress$V6$Companion : at/asitplus/cidre/IpAddress$Specification {
+	public fun getNumberOfOctets ()I
+	public final fun getPREFIX_IPV4_COMPAT ()[B
+	public final fun getPREFIX_IPV4_MAPPED ()[B
+	public fun getRegex ()Lat/asitplus/cidre/IpAddress$Specification$RegexSpec;
+	public fun getSegmentSeparator ()C
+	public fun getVersion ()Lat/asitplus/cidre/IpAddress$Version;
+	public final fun invoke (Ljava/lang/String;)Lat/asitplus/cidre/IpAddress$V6;
+}
+
+public final class at/asitplus/cidre/IpAddress$Version : java/lang/Enum {
+	public static final field V4 Lat/asitplus/cidre/IpAddress$Version;
+	public static final field V6 Lat/asitplus/cidre/IpAddress$Version;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getNumberOfOctets ()I
+	public static fun valueOf (Ljava/lang/String;)Lat/asitplus/cidre/IpAddress$Version;
+	public static fun values ()[Lat/asitplus/cidre/IpAddress$Version;
+}
+
+public abstract class at/asitplus/cidre/IpInterface {
+	public static final field Companion Lat/asitplus/cidre/IpInterface$Companion;
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress;ILat/asitplus/cidre/IpNetwork;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAddress ()Lat/asitplus/cidre/IpAddress;
+	public final fun getNetwork ()Lat/asitplus/cidre/IpNetwork;
+	public final fun getPrefix-pVg5ArA ()I
+	public final fun isLinkLocal ()Z
+	public final fun isLoopback ()Z
+	public final fun isMulticast ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class at/asitplus/cidre/IpInterface$Companion {
+	public final fun invoke (Ljava/lang/String;)Lat/asitplus/cidre/IpInterface;
+	public final fun invoke-Qn1smSk (Lat/asitplus/cidre/IpAddress;I)Lat/asitplus/cidre/IpInterface;
+}
+
+public final class at/asitplus/cidre/IpInterface$V4 : at/asitplus/cidre/IpInterface {
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress$V4;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun isPrivate ()Z
+	public final fun isPublic ()Z
+}
+
+public final class at/asitplus/cidre/IpInterface$V6 : at/asitplus/cidre/IpInterface {
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress$V6;ILat/asitplus/cidre/IpNetwork;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress$V6;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun isDiscardOnly ()Z
+	public final fun isDocumentation ()Z
+	public final fun isGlobalUnicast ()Z
+	public final fun isIpV4Compatible ()Z
+	public final fun isIpV4Mapped ()Z
+	public final fun isReserved ()Z
+	public final fun isUniqueLocal ()Z
+	public final fun isUniqueLocalLocallyAssigned ()Z
+}
+
+public abstract class at/asitplus/cidre/IpNetwork : java/lang/Comparable {
+	public static final field Companion Lat/asitplus/cidre/IpNetwork$Companion;
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress;IZZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun compareTo (Lat/asitplus/cidre/IpNetwork;)I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public final fun contains (Lat/asitplus/cidre/IpAddress;)Z
+	public final fun contains (Lat/asitplus/cidre/IpInterface;)Z
+	public final fun contains (Lat/asitplus/cidre/IpNetwork;)Z
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun first ()Lat/asitplus/cidre/IpInterface;
+	public final fun getAddress ()Lat/asitplus/cidre/IpAddress;
+	public abstract fun getAddressSpace ()Lkotlin/sequences/Sequence;
+	public final fun getHostPart ()[B
+	public final fun getHostRange ()Lkotlin/sequences/Sequence;
+	public final fun getNetMask ()[B
+	public final fun getNetworkPart ()[B
+	public final fun getPrefix-pVg5ArA ()I
+	public final fun getSize ()J
+	public final fun getSpecialRanges ()Lat/asitplus/cidre/IpNetwork$SpecialRanges;
+	public fun hashCode ()I
+	public final fun interfaceFor (Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpInterface;
+	public final fun isAdjacentTo (Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun isSubnetOf (Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun last ()Lat/asitplus/cidre/IpInterface;
+	public final fun overlapsWith (Lat/asitplus/cidre/IpNetwork;)Z
+	public abstract fun plus (Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpAddress;
+	public final fun subnet-WZ4Q5Ns (I)Lkotlin/sequences/Sequence;
+	public final fun subnetRelative-WZ4Q5Ns (I)Lkotlin/sequences/Sequence;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class at/asitplus/cidre/IpNetwork$Companion {
+	public final fun forAddress-Qn1smSk (Lat/asitplus/cidre/IpAddress;I)Lat/asitplus/cidre/IpNetwork;
+	public final fun invoke (Ljava/lang/String;Z)Lat/asitplus/cidre/IpNetwork;
+	public static synthetic fun invoke$default (Lat/asitplus/cidre/IpNetwork$Companion;Ljava/lang/String;ZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork;
+	public final fun invoke-OsBMiQA (Lat/asitplus/cidre/IpAddress;IZ)Lat/asitplus/cidre/IpNetwork;
+	public static synthetic fun invoke-OsBMiQA$default (Lat/asitplus/cidre/IpNetwork$Companion;Lat/asitplus/cidre/IpAddress;IZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork;
+}
+
+public abstract interface class at/asitplus/cidre/IpNetwork$SpecialRanges {
+	public abstract fun getLinkLocal ()Lat/asitplus/cidre/IpNetwork;
+	public abstract fun getLoopback ()Lat/asitplus/cidre/IpNetwork;
+	public abstract fun getMulticast ()Lat/asitplus/cidre/IpNetwork;
+}
+
+public abstract interface class at/asitplus/cidre/IpNetwork$Specification {
+	public abstract fun getSpecialRanges ()Lat/asitplus/cidre/IpNetwork$SpecialRanges;
+}
+
+public final class at/asitplus/cidre/IpNetwork$V4 : at/asitplus/cidre/IpNetwork {
+	public static final field Companion Lat/asitplus/cidre/IpNetwork$V4$Companion;
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress$V4;IZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress$V4;IZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getAddressSpace ()Lkotlin/sequences/Sequence;
+	public final fun getBroadcastAddress ()Lat/asitplus/cidre/IpInterface;
+	public fun plus (Lat/asitplus/cidre/IpAddress$V4;)Lat/asitplus/cidre/IpAddress$V4;
+	public synthetic fun plus (Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpAddress;
+}
+
+public final class at/asitplus/cidre/IpNetwork$V4$Companion : at/asitplus/cidre/IpNetwork$Specification {
+	public final fun forAddress-Qn1smSk (Lat/asitplus/cidre/IpAddress$V4;I)Lat/asitplus/cidre/IpNetwork$V4;
+	public fun getSpecialRanges ()Lat/asitplus/cidre/IpNetwork$SpecialRanges;
+	public final fun invoke (Ljava/lang/String;Z)Lat/asitplus/cidre/IpNetwork$V4;
+	public static synthetic fun invoke$default (Lat/asitplus/cidre/IpNetwork$V4$Companion;Ljava/lang/String;ZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork$V4;
+}
+
+public final class at/asitplus/cidre/IpNetwork$V4$SpecialRanges : at/asitplus/cidre/IpNetwork$SpecialRanges {
+	public static final field INSTANCE Lat/asitplus/cidre/IpNetwork$V4$SpecialRanges;
+	public fun getLinkLocal ()Lat/asitplus/cidre/IpNetwork$V4;
+	public synthetic fun getLinkLocal ()Lat/asitplus/cidre/IpNetwork;
+	public fun getLoopback ()Lat/asitplus/cidre/IpNetwork$V4;
+	public synthetic fun getLoopback ()Lat/asitplus/cidre/IpNetwork;
+	public fun getMulticast ()Lat/asitplus/cidre/IpNetwork$V4;
+	public synthetic fun getMulticast ()Lat/asitplus/cidre/IpNetwork;
+	public final fun getPrivate ()Ljava/util/List;
+}
+
+public final class at/asitplus/cidre/IpNetwork$V6 : at/asitplus/cidre/IpNetwork {
+	public static final field Companion Lat/asitplus/cidre/IpNetwork$V6$Companion;
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress$V6;IZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lat/asitplus/cidre/IpAddress$V6;IZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getAddressSpace ()Lkotlin/sequences/Sequence;
+	public final fun isGlobalUnicast ()Z
+	public fun plus (Lat/asitplus/cidre/IpAddress$V6;)Lat/asitplus/cidre/IpAddress$V6;
+	public synthetic fun plus (Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpAddress;
+}
+
+public final class at/asitplus/cidre/IpNetwork$V6$Companion : at/asitplus/cidre/IpNetwork$Specification {
+	public final fun forAddress-Qn1smSk (Lat/asitplus/cidre/IpAddress$V6;I)Lat/asitplus/cidre/IpNetwork$V6;
+	public fun getSpecialRanges ()Lat/asitplus/cidre/IpNetwork$SpecialRanges;
+	public final fun invoke (Ljava/lang/String;Z)Lat/asitplus/cidre/IpNetwork$V6;
+	public static synthetic fun invoke$default (Lat/asitplus/cidre/IpNetwork$V6$Companion;Ljava/lang/String;ZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork$V6;
+}
+
+public final class at/asitplus/cidre/IpNetwork$V6$SpecialRanges : at/asitplus/cidre/IpNetwork$SpecialRanges {
+	public static final field INSTANCE Lat/asitplus/cidre/IpNetwork$V6$SpecialRanges;
+	public final fun getDiscardOnly ()Lat/asitplus/cidre/IpNetwork$V6;
+	public final fun getDocumentation ()Lat/asitplus/cidre/IpNetwork$V6;
+	public final fun getGlobalUnicast ()Lat/asitplus/cidre/IpNetwork$V6;
+	public final fun getIpV4Compatible ()Lat/asitplus/cidre/IpNetwork$V6;
+	public final fun getIpV4Mapped ()Lat/asitplus/cidre/IpNetwork$V6;
+	public fun getLinkLocal ()Lat/asitplus/cidre/IpNetwork$V6;
+	public synthetic fun getLinkLocal ()Lat/asitplus/cidre/IpNetwork;
+	public fun getLoopback ()Lat/asitplus/cidre/IpNetwork$V6;
+	public synthetic fun getLoopback ()Lat/asitplus/cidre/IpNetwork;
+	public fun getMulticast ()Lat/asitplus/cidre/IpNetwork$V6;
+	public synthetic fun getMulticast ()Lat/asitplus/cidre/IpNetwork;
+	public final fun getReserved ()Ljava/util/List;
+	public final fun getUniqueLocal ()Lat/asitplus/cidre/IpNetwork$V6;
+	public final fun getUniqueLocalLocallyAssigned ()Lat/asitplus/cidre/IpNetwork$V6;
+}
+
+public final class at/asitplus/cidre/JvmInteropKt {
+	public static final fun invoke (Lat/asitplus/cidre/IpAddress$Companion;Ljava/net/InetAddress;)Lat/asitplus/cidre/IpAddress;
+	public static final fun invoke (Lat/asitplus/cidre/IpAddress$V4$Companion;Ljava/net/Inet4Address;)Lat/asitplus/cidre/IpAddress$V4;
+	public static final fun invoke (Lat/asitplus/cidre/IpAddress$V6$Companion;Ljava/net/Inet6Address;)Lat/asitplus/cidre/IpAddress$V6;
+	public static final fun toInetAddress (Lat/asitplus/cidre/IpAddress$V4;)Ljava/net/InetAddress;
+	public static final fun toInetAddress (Lat/asitplus/cidre/IpAddress$V6;)Ljava/net/InetAddress;
+	public static final fun toInetAddress (Lat/asitplus/cidre/IpAddress;)Ljava/net/InetAddress;
+}
+
+public final class at/asitplus/cidre/byteops/ByteOpsKt {
+	public static final fun and ([B[B)[B
+	public static final fun andInplace ([B[B)I
+	public static final fun compareUnsignedBE ([B[B)I
+	public static final fun toNetmask-qim9Vi0 (II)[B
+	public static final fun toNetmask-qim9Vi0 (ILat/asitplus/cidre/IpAddress$Version;)[B
+	public static final fun toPrefix ([B)I
+	public static final fun toShortArray ([BZ)[S
+	public static synthetic fun toShortArray$default ([BZILjava/lang/Object;)[S
+}
+

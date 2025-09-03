@@ -1,0 +1,6859 @@
+{
+  "cases": [
+    {
+      "expect": true,
+      "inner": "203.0.113.0/25",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.128/25",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.0/26",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.64/26",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.128/26",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.192/26",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.0/27",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.32/27",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.64/27",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.96/27",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.128/27",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.160/27",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.192/27",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.224/27",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "203.0.113.0/24",
+      "outer": "203.0.113.0/24"
+    },
+    {
+      "expect": false,
+      "inner": "203.0.113.0/25",
+      "outer": "203.0.113.128/25"
+    },
+    {
+      "expect": false,
+      "inner": "203.0.113.64/26",
+      "outer": "203.0.113.128/26"
+    },
+    {
+      "expect": false,
+      "inner": "203.0.113.0/27",
+      "outer": "203.0.113.96/27"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.0/25",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.128/25",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.0/26",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.64/26",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.128/26",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.192/26",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.0/27",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.32/27",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.64/27",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.96/27",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.128/27",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.160/27",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.192/27",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.224/27",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.0/24",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": false,
+      "inner": "198.51.100.0/25",
+      "outer": "198.51.100.128/25"
+    },
+    {
+      "expect": false,
+      "inner": "198.51.100.64/26",
+      "outer": "198.51.100.128/26"
+    },
+    {
+      "expect": false,
+      "inner": "198.51.100.0/27",
+      "outer": "198.51.100.96/27"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.0/25",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.128/25",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.0/26",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.64/26",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.128/26",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.192/26",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.0/27",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.32/27",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.64/27",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.96/27",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.128/27",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.160/27",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.192/27",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.224/27",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": true,
+      "inner": "192.0.2.0/24",
+      "outer": "192.0.2.0/24"
+    },
+    {
+      "expect": false,
+      "inner": "192.0.2.0/25",
+      "outer": "192.0.2.128/25"
+    },
+    {
+      "expect": false,
+      "inner": "192.0.2.64/26",
+      "outer": "192.0.2.128/26"
+    },
+    {
+      "expect": false,
+      "inner": "192.0.2.0/27",
+      "outer": "192.0.2.96/27"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.0/31",
+      "outer": "198.51.100.0/30"
+    },
+    {
+      "expect": false,
+      "inner": "198.51.100.0/31",
+      "outer": "198.51.100.2/31"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.42/32",
+      "outer": "198.51.100.42/32"
+    },
+    {
+      "expect": true,
+      "inner": "198.51.100.42/32",
+      "outer": "198.51.100.0/24"
+    },
+    {
+      "expect": false,
+      "inner": "198.51.100.43/32",
+      "outer": "198.51.100.0/30"
+    },
+    {
+      "expect": true,
+      "inner": "192.168.1.0/24",
+      "outer": "192.168.0.0/16"
+    },
+    {
+      "expect": true,
+      "inner": "172.20.0.0/16",
+      "outer": "172.16.0.0/12"
+    },
+    {
+      "expect": true,
+      "inner": "10.0.0.0/9",
+      "outer": "10.0.0.0/8"
+    },
+    {
+      "expect": true,
+      "inner": "10.128.0.0/9",
+      "outer": "10.0.0.0/8"
+    },
+    {
+      "expect": true,
+      "inner": "10.64.0.0/10",
+      "outer": "10.0.0.0/8"
+    },
+    {
+      "expect": false,
+      "inner": "192.168.0.0/16",
+      "outer": "172.16.0.0/12"
+    },
+    {
+      "expect": false,
+      "inner": "192.168.0.0/16",
+      "outer": "10.0.0.0/8"
+    },
+    {
+      "expect": true,
+      "inner": "224.0.0.0/24",
+      "outer": "224.0.0.0/4"
+    },
+    {
+      "expect": true,
+      "inner": "224.0.1.0/24",
+      "outer": "224.0.0.0/4"
+    },
+    {
+      "expect": false,
+      "inner": "192.0.2.0/24",
+      "outer": "224.0.0.0/4"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:10::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:11::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:12::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:13::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:14::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:15::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:16::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:17::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:18::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:19::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:20::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:21::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:22::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:23::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:24::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:25::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:26::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:27::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:28::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:29::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:30::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:31::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:32::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:33::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:34::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:35::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:36::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:37::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:38::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:39::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:40::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:41::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:42::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:43::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:44::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:45::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:46::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:47::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:48::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:49::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:4a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:4b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:4c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:4d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:4e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:4f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:50::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:51::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:52::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:53::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:54::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:55::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:56::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:57::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:58::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:59::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:5a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:5b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:5c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:5d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:5e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:5f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:60::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:61::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:62::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:63::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:64::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:65::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:66::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:67::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:68::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:69::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:6a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:6b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:6c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:6d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:6e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:6f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:70::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:71::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:72::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:73::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:74::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:75::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:76::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:77::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:78::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:79::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:7a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:7b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:7c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:7d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:7e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:7f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:80::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:81::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:82::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:83::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:84::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:85::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:86::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:87::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:88::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:89::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:8a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:8b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:8c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:8d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:8e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:8f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:90::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:91::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:92::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:93::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:94::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:95::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:96::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:97::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:98::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:99::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:9a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:9b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:9c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:9d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:9e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:9f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:a9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:aa::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ab::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ac::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ad::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ae::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:af::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:b9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ba::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:bb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:bc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:bd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:be::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:bf::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:c9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ca::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:cb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:cc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:cd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ce::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:cf::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:d9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:da::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:db::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:dc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:dd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:de::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:df::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:e9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ea::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:eb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ec::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ed::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ee::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ef::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:f9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:fa::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:fb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:fc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:fd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:fe::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:ff::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:100::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:101::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:102::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:103::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:104::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:105::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:106::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:107::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:108::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:109::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:10a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:10b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:10c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:10d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:10e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:10f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:110::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:111::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:112::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:113::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:114::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:115::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:116::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:117::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:118::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:119::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:11a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:11b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:11c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:11d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:11e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:11f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:120::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:121::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:122::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:123::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:124::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:125::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:126::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:127::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:128::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:129::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:12a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:12b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:12c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:12d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:12e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:12f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:130::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:131::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:132::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:133::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:134::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:135::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:136::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:137::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:138::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:139::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:13a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:13b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:13c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:13d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:13e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:13f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:140::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:141::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:142::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:143::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:144::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:145::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:146::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:147::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:148::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:149::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:14a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:14b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:14c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:14d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:14e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:14f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:150::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:151::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:152::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:153::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:154::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:155::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:156::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:157::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:158::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:159::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:15a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:15b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:15c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:15d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:15e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:15f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:160::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:161::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:162::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:163::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:164::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:165::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:166::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:167::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:168::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:169::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:16a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:16b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:16c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:16d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:16e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:16f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:170::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:171::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:172::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:173::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:174::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:175::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:176::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:177::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:178::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:179::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:17a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:17b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:17c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:17d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:17e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:17f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:180::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:181::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:182::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:183::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:184::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:185::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:186::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:187::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:188::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:189::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:18a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:18b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:18c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:18d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:18e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:18f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:190::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:191::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:192::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:193::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:194::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:195::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:196::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:197::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:198::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:199::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:19a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:19b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:19c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:19d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:19e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:19f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1a9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1aa::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ab::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ac::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ad::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ae::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1af::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1b9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ba::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1bb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1bc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1bd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1be::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1bf::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1c9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ca::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1cb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1cc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1cd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ce::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1cf::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1d9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1da::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1db::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1dc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1dd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1de::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1df::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1e9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ea::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1eb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ec::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ed::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ee::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ef::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1f9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1fa::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1fb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1fc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1fd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1fe::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:1ff::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:200::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:201::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:202::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:203::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:204::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:205::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:206::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:207::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:208::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:209::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:20a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:20b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:20c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:20d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:20e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:20f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:210::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:211::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:212::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:213::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:214::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:215::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:216::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:217::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:218::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:219::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:21a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:21b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:21c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:21d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:21e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:21f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:220::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:221::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:222::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:223::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:224::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:225::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:226::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:227::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:228::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:229::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:22a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:22b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:22c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:22d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:22e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:22f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:230::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:231::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:232::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:233::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:234::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:235::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:236::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:237::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:238::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:239::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:23a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:23b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:23c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:23d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:23e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:23f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:240::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:241::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:242::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:243::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:244::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:245::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:246::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:247::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:248::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:249::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:24a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:24b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:24c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:24d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:24e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:24f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:250::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:251::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:252::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:253::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:254::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:255::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:256::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:257::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:258::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:259::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:25a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:25b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:25c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:25d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:25e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:25f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:260::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:261::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:262::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:263::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:264::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:265::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:266::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:267::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:268::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:269::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:26a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:26b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:26c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:26d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:26e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:26f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:270::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:271::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:272::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:273::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:274::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:275::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:276::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:277::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:278::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:279::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:27a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:27b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:27c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:27d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:27e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:27f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:280::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:281::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:282::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:283::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:284::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:285::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:286::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:287::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:288::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:289::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:28a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:28b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:28c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:28d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:28e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:28f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:290::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:291::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:292::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:293::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:294::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:295::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:296::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:297::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:298::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:299::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:29a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:29b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:29c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:29d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:29e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:29f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2a9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2aa::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ab::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ac::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ad::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ae::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2af::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2b9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ba::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2bb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2bc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2bd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2be::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2bf::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2c9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ca::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2cb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2cc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2cd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ce::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2cf::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2d9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2da::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2db::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2dc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2dd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2de::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2df::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2e9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ea::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2eb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ec::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ed::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ee::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ef::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2f9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2fa::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2fb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2fc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2fd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2fe::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:2ff::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:300::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:301::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:302::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:303::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:304::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:305::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:306::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:307::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:308::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:309::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:30a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:30b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:30c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:30d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:30e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:30f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:310::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:311::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:312::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:313::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:314::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:315::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:316::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:317::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:318::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:319::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:31a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:31b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:31c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:31d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:31e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:31f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:320::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:321::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:322::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:323::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:324::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:325::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:326::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:327::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:328::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:329::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:32a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:32b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:32c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:32d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:32e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:32f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:330::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:331::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:332::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:333::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:334::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:335::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:336::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:337::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:338::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:339::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:33a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:33b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:33c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:33d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:33e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:33f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:340::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:341::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:342::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:343::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:344::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:345::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:346::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:347::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:348::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:349::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:34a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:34b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:34c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:34d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:34e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:34f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:350::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:351::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:352::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:353::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:354::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:355::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:356::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:357::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:358::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:359::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:35a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:35b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:35c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:35d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:35e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:35f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:360::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:361::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:362::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:363::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:364::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:365::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:366::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:367::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:368::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:369::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:36a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:36b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:36c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:36d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:36e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:36f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:370::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:371::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:372::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:373::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:374::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:375::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:376::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:377::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:378::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:379::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:37a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:37b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:37c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:37d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:37e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:37f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:380::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:381::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:382::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:383::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:384::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:385::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:386::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:387::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:388::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:389::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:38a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:38b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:38c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:38d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:38e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:38f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:390::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:391::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:392::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:393::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:394::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:395::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:396::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:397::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:398::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:399::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:39a::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:39b::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:39c::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:39d::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:39e::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:39f::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3a9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3aa::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ab::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ac::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ad::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ae::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3af::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3b9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ba::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3bb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3bc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3bd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3be::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3bf::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3c9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ca::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3cb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3cc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3cd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ce::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3cf::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3d9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3da::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3db::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3dc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3dd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3de::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3df::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3e9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ea::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3eb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ec::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ed::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ee::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ef::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f0::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f1::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f2::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f3::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f4::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f5::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f6::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f7::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f8::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3f9::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3fa::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3fb::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3fc::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3fd::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3fe::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:3ff::/48",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": false,
+      "inner": "2001:db8::/48",
+      "outer": "2001:db8:1::/48"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:1::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:2::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:3::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:4::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:5::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:6::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:7::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:8::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:9::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:10::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:11::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:12::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:13::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:14::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:15::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:16::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:17::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:18::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:19::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:1a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:1b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:1c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:1d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:1e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:1f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:20::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:21::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:22::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:23::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:24::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:25::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:26::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:27::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:28::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:29::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:2a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:2b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:2c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:2d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:2e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:2f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:30::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:31::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:32::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:33::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:34::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:35::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:36::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:37::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:38::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:39::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:3a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:3b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:3c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:3d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:3e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:3f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:40::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:41::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:42::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:43::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:44::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:45::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:46::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:47::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:48::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:49::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:4a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:4b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:4c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:4d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:4e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:4f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:50::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:51::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:52::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:53::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:54::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:55::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:56::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:57::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:58::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:59::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:5a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:5b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:5c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:5d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:5e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:5f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:60::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:61::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:62::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:63::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:64::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:65::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:66::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:67::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:68::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:69::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:6a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:6b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:6c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:6d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:6e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:6f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:70::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:71::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:72::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:73::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:74::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:75::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:76::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:77::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:78::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:79::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:7a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:7b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:7c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:7d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:7e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:7f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:80::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:81::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:82::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:83::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:84::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:85::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:86::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:87::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:88::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:89::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:8a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:8b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:8c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:8d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:8e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:8f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:90::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:91::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:92::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:93::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:94::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:95::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:96::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:97::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:98::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:99::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:9a::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:9b::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:9c::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:9d::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:9e::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:9f::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a0::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a1::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a2::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a3::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a4::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a5::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a6::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a7::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a8::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:a9::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:aa::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ab::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ac::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ad::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ae::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:af::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b0::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b1::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b2::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b3::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b4::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b5::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b6::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b7::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b8::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:b9::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ba::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:bb::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:bc::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:bd::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:be::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:bf::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c0::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c1::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c2::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c3::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c4::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c5::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c6::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c7::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c8::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:c9::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ca::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:cb::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:cc::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:cd::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ce::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:cf::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d0::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d1::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d2::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d3::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d4::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d5::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d6::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d7::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d8::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:d9::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:da::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:db::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:dc::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:dd::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:de::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:df::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e0::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e1::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e2::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e3::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e4::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e5::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e6::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e7::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e8::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:e9::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ea::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:eb::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ec::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ed::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ee::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ef::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f0::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f1::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f2::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f3::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f4::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f5::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f6::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f7::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f8::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:f9::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:fa::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:fb::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:fc::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:fd::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:fe::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:ff::/64",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": false,
+      "inner": "2001:db8:0:5::/64",
+      "outer": "2001:db8:0:6::/64"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8::/32",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8:0:1::/64",
+      "outer": "2001:db8:0:1::/64"
+    },
+    {
+      "expect": true,
+      "inner": "fd12:3456:789a::/64",
+      "outer": "fd12:3456:789a::/48"
+    },
+    {
+      "expect": true,
+      "inner": "fd12:3456:789a::/48",
+      "outer": "fc00::/7"
+    },
+    {
+      "expect": true,
+      "inner": "fd00::/8",
+      "outer": "fc00::/7"
+    },
+    {
+      "expect": false,
+      "inner": "fe80::/64",
+      "outer": "fc00::/7"
+    },
+    {
+      "expect": true,
+      "inner": "::ffff:192.0.2.128/128",
+      "outer": "::ffff:0:0/96"
+    },
+    {
+      "expect": false,
+      "inner": "::ffff:0:0/96",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "::ffff:0:0/96",
+      "outer": "::ffff:0:0/96"
+    },
+    {
+      "expect": true,
+      "inner": "2002:c000:0201::/48",
+      "outer": "2002::/16"
+    },
+    {
+      "expect": true,
+      "inner": "2001:0:53aa:64c::/64",
+      "outer": "2001::/32"
+    },
+    {
+      "expect": false,
+      "inner": "2002::/16",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": false,
+      "inner": "64:ff9b::/96",
+      "outer": "2001:db8::/32"
+    },
+    {
+      "expect": true,
+      "inner": "64:ff9b::192.0.2.33/128",
+      "outer": "64:ff9b::/96"
+    },
+    {
+      "expect": true,
+      "inner": "fe80::1/128",
+      "outer": "fe80::/10"
+    },
+    {
+      "expect": true,
+      "inner": "fe80:1234::/64",
+      "outer": "fe80::/10"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8::/127",
+      "outer": "2001:db8::/64"
+    },
+    {
+      "expect": true,
+      "inner": "2001:db8::/128",
+      "outer": "2001:db8::/64"
+    },
+    {
+      "expect": false,
+      "inner": "2001:db8::/64",
+      "outer": "2001:db8::/127"
+    }
+  ],
+  "meta": {
+    "generated": "2025-09-04T15:00:52.554436Z",
+    "notes": "Network containment suite; scale=huge; caps={'addr_steps': 512, 'cross_per_net': 64, 'v4_child25': 128, 'v4_child26': 256, 'v4_child27': 512, 'v6_child48': 1024, 'v6_child64': 2048}",
+    "version": "1.2.0-huge"
+  }
+}
