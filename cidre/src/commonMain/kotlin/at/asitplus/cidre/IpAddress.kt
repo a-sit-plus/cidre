@@ -1,11 +1,13 @@
 package at.asitplus.cidre
 
+import at.asitplus.cidre.byteops.andInplace
 import at.asitplus.cidre.byteops.compareUnsignedBE
+import at.asitplus.cidre.byteops.toNetmask
 import at.asitplus.cidre.byteops.toShortArray
 import kotlin.jvm.JvmName
 
 /**
- * An IP address consisting of [Version.numberOfOctets] many octets, as defined by [Specification.numberOfOctets]
+ * An IP address consisting of [Family.numberOfOctets] many octets, as defined by [Specification.numberOfOctets]
  * * [N] indicates the type of [segments]. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
  * * [octets] contains the byte-representation of this IP address in network order (BE)
  */
@@ -38,8 +40,27 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
         return octets.contentHashCode()
     }
 
-    //cannot get() because spec is not a member
-    val version = spec.version
+    /** IP address family ([Family.V4], [Family.V6]*/
+    val family = spec.family
+
+
+    /**
+     * Masks this IP address in-place (i.e. without copying) according to [prefix].
+     *
+     * @return the number of bits modified
+     */
+    fun mask(prefix: Prefix): Int = octets.andInplace(prefix.toNetmask(octets.size))
+
+    /**
+     * Masks this IP address in-place (i.e. without copying) according to [netmask].
+     *
+     * @return the number of bits modified
+     */
+    fun mask(netmask: Netmask): Int = octets.andInplace(netmask)
+
+    /**Deep-copies an IP address*/
+    @Suppress("UNCHECKED_CAST")
+    fun copy(): IpAddress<N> = IpAddress(octets.copyOf()) as IpAddress<N>
 
     /**
      * unspecified addresses are:
@@ -49,9 +70,9 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
     val isSpecified: Boolean get() = !octets.all { it == 0.toByte() }
 
     /**
-     * IP version, either [Version.V4] or [Version.V6]
+     * IP family, either [Family.V4] or [Family.V6]
      */
-    enum class Version(val numberOfOctets: Int) {
+    enum class Family(val numberOfOctets: Int) {
         V4(4), V6(16)
     }
 
@@ -126,8 +147,8 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
 
         companion object : Specification<Byte, V4> {
             override val segmentSeparator: Char = '.'
-            override val version: Version = Version.V4
-            override val numberOfOctets: Int = version.numberOfOctets
+            override val family: Family = Family.V4
+            override val numberOfOctets: Int = family.numberOfOctets
 
             override val regex = object : Specification.RegexSpec() {
                 //don't believe the IDE, the pattern has to be like that
@@ -307,9 +328,9 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
 
         companion object : Specification<Short, V6> {
             override val segmentSeparator: Char = ':'
-            override val version: Version = Version.V6
+            override val family: Family = Family.V6
 
-            override val numberOfOctets: Int = version.numberOfOctets
+            override val numberOfOctets: Int = family.numberOfOctets
 
             /**
              * Deprecated by [RFC 4291](https://www.rfc-editor.org/rfc/rfc4291) and must not be used anymore.
@@ -477,7 +498,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
      * * [segmentSeparator] used to separate segments in an address's string representation:
      *     * For IPv4, this is a dot (`.`).
      *     * For IPv6, this refers to the hextet separator `:`, so beware of IPv6 IPv4-mapped addresses, as these cannot be split merely by the IPb6 separator char.
-     * * [version]
+     * * [family]
      * * [regex] containing [RegexSpec] to match conforming addresses and address segments
      */
     sealed interface Specification<T : Number, I : IpAddress<T>> {
@@ -490,7 +511,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
          *  * For IPv6, this refers to the hextet separator `:`, so beware of IPv6 IPv4-mapped addresses, as these cannot be split merely by the IPb6 separator char.
          */
         val segmentSeparator: Char
-        val version: Version
+        val family: Family
 
         /**
          * Points to a [RegexSpec] to match conforming addresses and address segments

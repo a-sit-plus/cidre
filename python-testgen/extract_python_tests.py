@@ -371,7 +371,7 @@ def main():
     src = ap.add_mutually_exclusive_group(required=True)
     src.add_argument("--from-url", metavar="REF", help="CPython ref to download from (e.g. 'main', '3.12')")
     src.add_argument("--from-file", metavar="PATH", help="Local path to test_ipaddress.py")
-    ap.add_argument("--out", default="./cidre/src/jvmTest/resources/pythontest", help="Output directory")
+    ap.add_argument("--out", default="../cidre/src/jvmTest/resources/pythontest", help="Output directory")
     args = ap.parse_args()
 
     if args.from_url:

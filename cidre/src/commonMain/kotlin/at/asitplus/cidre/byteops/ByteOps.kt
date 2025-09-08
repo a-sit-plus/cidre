@@ -103,26 +103,30 @@ fun UInt.toNetmask(octetCount: Int): Netmask {
     val prefix = this.toInt()
     require(prefix in 0..(octetCount * 8)) { "prefix out of range for $octetCount-octet address" }
 
-    val out = ByteArray(octetCount)
-    val full = prefix / 8
-    val rem = prefix % 8
+    val mask = ByteArray(octetCount) { 0 }
+    val fullBytes = prefix / 8
+    val remainingBits = prefix % 8
 
-    // Full 0xFF bytes
-    for (i in 0 until full) out[i] = 0xFF.toByte()
+    // Set full bytes to 0xFF
+    for (i in 0 until fullBytes) {
+        mask[i] = 0xFF.toByte()
+    }
 
-    // Partial byte with leading ones
-    if (rem > 0) out[full] = ((0xFF shl (8 - rem)) and 0xFF).toByte()
+    // Set the remaining bits in the last byte
+    if (remainingBits > 0) {
+        mask[fullBytes] = (0xFF shl (8 - remainingBits)).toByte()
+    }
 
-    return out
+    return mask
 }
 
 /**
- * Creates a netmask from this prefix. The resulting number of octets depends on the specified [version].
+ * Creates a netmask from this prefix. The resulting number of octets depends on the specified [family].
  *
  * @throws IllegalArgumentException in case the prefix is too long
  */
 @Throws(IllegalArgumentException::class)
-fun Prefix.toNetmask(version: IpAddress.Version): Netmask = toNetmask(version.numberOfOctets)
+fun Prefix.toNetmask(family: IpAddress.Family): Netmask = toNetmask(family.numberOfOctets)
 
 /**
  * Converts a netmask into its CIDR prefix length.
@@ -156,4 +160,3 @@ fun Netmask.toPrefix(): Prefix {
     }
     return prefix
 }
-

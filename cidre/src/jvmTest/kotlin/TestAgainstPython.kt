@@ -53,9 +53,7 @@ class TestAgainstPython {
     }
 
     @Test
-    fun normalization() {
-
-        normalization.cases.forEach { case ->
+    fun normalization() =   normalization.cases.forEach { case ->
             val (netAddr, prefix) = case.expectNetwork.split('/').let { IpAddress(it.first()) to it.last().toUInt() }
             val input = IpAddress(case.input.split('/').first())
 
@@ -123,11 +121,10 @@ class TestAgainstPython {
             assertSame(netAddr, IpNetwork.forAddress(netAddr, prefix).address)
 
         }
-    }
+
 
     @Test
-    fun ipSortingTest() {
-        ip_sort.cases.forEach { case ->
+    fun ipSortingTest()= ip_sort.cases.forEach { case ->
             val (a, b) = when (case.version) {
                 "V4" -> IpAddress.V4(case.a) to IpAddress.V4(case.b)
                 "V6" -> IpAddress.V6(case.a) to IpAddress.V6(case.b)
@@ -139,8 +136,24 @@ class TestAgainstPython {
             }
             assertEquals(case.cmp, cmp)
         }
-    }
 
+
+    @Test
+    fun netContainment() = net_containment.cases.forEach { case ->
+        val inner = IpNetwork(case.inner)
+        val outer = IpNetwork(case.outer)
+
+        when(inner) {
+            is IpNetwork.V4 -> {
+                assertIs<IpNetwork.V4>(outer)
+                assertEquals(case.expect, outer.contains(inner))
+            }
+            is IpNetwork.V6 -> {
+                assertIs<IpNetwork.V6>(outer)
+                assertEquals(case.expect, outer.contains(inner))
+            }
+        }
+    }
 
     private fun resourceText(path: String): String =
         this::class.java.classLoader.getResourceAsStream(path).reader(Charsets.UTF_8).readText()

@@ -23,15 +23,19 @@
 &mdash; _Sir Evander Marchbank_, self-proclaimed cider cartographer who insists that every orchard has its own “gravitational pull” affecting the bubbles.
 
 ---
+
 CIDRE focuses on parsing and representing IP addresses, IP networks and providing CIDR math. On the JVM and Android it maps from/to `InetAddress`/`Inet4Address`/`Inet6Address`. On native targets, it maps from/to `in_addr`/`in6_addr`.
 It is not a full IP networking implementation, but you can use it to implement IP routing.
 It has a total of zero external dependencies.  
-Currently, CIDRE can
-* parse and encode IPv4 and IPv6 addresses from/to String and ByteArray representations
-* iterate over, slice, split, and merge networks,
-* convert prefixes from/to netmasks
-* subnet and supernet
-* sorting of networks and addresses
+Currently, CIDRE provides the following functionality:
+* parsing and encoding IPv4 and IPv6 addresses from/to String and ByteArray representations
+* converting CIDR prefixes from/to netmasks
+* checking whether addresses or networks are are fully contained within a network
+* comparability of networks and addresses inside a family (IPv4/IPv6)
+
+Planned features are:
+* iterating over, slicing, splitting, and merging networks
+* subnetting and supernetting
 
 
 In general, CIDRE's data model has semantics influenced by [netaddr](https://github.com/netaddr/netaddr/?tab=readme-ov-file): An `IpNetwork` covers a range of `IpInterface`s, both of which consist of an `IpAddress` and a `prefix`.   
@@ -78,6 +82,10 @@ Simply `toString()` any IP address to get its string representation, or access `
 An `IpAddress`'s companion object also provides helpful properties such as segment separator, number of octets, and readily usable `Regex` instances to check whether a string is a valid representation of
 an IP address or a single address segment.
 
+#### Ordering
+
+IP addresses are `Comparable` inside a family (IPv4, IPv6) and are ordered by comparing their octets interpreted as a BE-encoded unsigned integer.
+
 #### Platform Interop
 
 CIDRE's `IpAddress` classes conveniently map from/to platform types.
@@ -108,19 +116,69 @@ Still, the flag `isIpv4Compatible` indicates whether an IPv6 address conforms to
 It is possible to extract the contained IPv4 address from an IPv4-mapped or IPv4-compatible address by accessing the
 `embeddedIpV4Address` property. It returns null if no IPv4 address is contained.
 
+### Working with Networks and IpInterfaces
 
-### Working with Networks IpInterfaces
+CIDRE models two closely related concepts:
+- `IpNetwork`: a contiguous address range, defined by a network address and prefix.  
+The network’s address itself is part of the network (and for IPv4, the broadcast address is also considered inside for membership checks).
+- `IpInterface`: a single address bound to a prefix and associated with a network, and therefore carry a reference to their associated `IpNetwork`.
+
+Both share the `IpAddressAndPrefix` interface and its respective IPv4 and IPv6 specializations and therefore expose:
+- `address` and prefix (CIDR prefix length)
+- `netmask` (network-order ByteArray)
+- common flags (e.g., `isLinkLocal`, `isLoopback`, `isMulticast`). IPv4- and IPv6-specific flags are available on their
+respective interfaces (IpAddressAndPrefix.V4 / V6).
+- consistent `toString()` behavior with address/prefix; IPv4 variants also support netmask printing helpers.
+
+
+#### Creating IpInterfaces from Networks
+
+Given an `IpAddress` and a prefix, it is possible to get the corresponding network in two ways:
+- `IpNetwork(address strict = false)` to create a new `IpNetwork` and deep-copy the ip address into the network's `address` property.
+    - If `strict = true` the passed address must already be the network address (i.e., correctly masked), according to the specified prefix
+    - If `strict = false` the passed address will be masked to the network address, according to the specified prefix
+- `IpNetwork.forAddress(address, prefix)` creates a new network, referencing and masking the passed `address`. This avoids copying, but modifies any not-correctly-masked address in-place, according to the given `prefix`.
 
 #### Netmasks and Prefixes
 
+CIDRE uses type aliases
+- Prefix is a UInt (`typealias Prefix = UInt`)
+- Netmask is a network-order byte array (`typealias Netmask = ByteArray`)
+
+Round-tripping between prefixes and netmasks is straightforward:
+- Create a netmask from a prefix:
+    - For a specific IP family: `prefix.toNetmask(IpAddress.Family.V4)` or `prefix.toNetmask(IpAddress.Family.V6)`
+    - For an arbitrary octet count: `prefix.toNetmask(octetCount)`
+- Convert a netmask back to a prefix and validate contiguity: `netmask.toPrefix()`
+
+IP addresses can be masked in-place by calling either `mask(prefix)` or `mask(netmask)`.
+To create a deep-copied masked version of an address, manually `copy()` it before masking.
+
+For IPv4, it is also possible to get a dotted-quad representation and choose a preferred textual form when working with `IpAddressAndPrefix`:
+- `netmaskToString()` yields a `#.#.#.#` string
+- `toString(preferNetmaskOverPrefix = true)` prints `A.A.A.A N.N.N.N`, where `A` is an IP address quad and `N` is a netmask quad.
+- `toString(preferNetmaskOverPrefix = false)` prints standard `#.#.#.#/prefix`
+
 #### Host Ranges and Address Spaces
 
-#### Containment, Overlap Checks, and Adjacency
+Conceptually:
+- An `IpNetwork` represents a contiguous range of addresses.
+- An `IpInterface` is a single address bound to a prefix.
+- The network address is part of the network; for IPv4, the broadcast address (when applicable) is also inside.
 
-To check whether an address, a network, or an `IpInterface` falls inside a target network, call `targetNetwork.contanins(addrNwOrIf)`.
+Coming soon:
+- Iteration over the full address space of a network
+- Convenience accessors for first/last interface and broadcast (where applicable)
+- Efficient network size computations
 
 
-#### Subnetting and Supernetting
+#### Containment
+
+Containment checks are explicit (and fast!):
+- Address in network: `network.contains(ipAddress)`
+- Interface in network: `network.contains(ipInterface)`
+- Network fully contained in another network: `anotherNetwork.contains(network)`
+
 
 
 ### Low-Level Utilities
@@ -129,9 +187,18 @@ The `at.asitplus.cidre.byteops` package provides low-level helper functions:
 * `infix fun ByteArray.and(other: ByteArray): ByteArray` performing a logical `AND` operation, returning a fresh ByteArray.
 * `fun ByteArray.andInplace(other: ByteArray): Int` performing an in-place logical `AND` operation, modifying the receiver ByteArray. Returns the number of modified bits.
 * `fun ByteArray.compareUnsignedBE(other: ByteArray): Int` comparing two same-sized byte arrays by interpreting their contents as unsigned BE integers
-* `fun Prefix.toNetmask(version: IpAddress.Version): Netmask` converting an `UInt` CIDR prefix to its byte representation
+* `fun Prefix.toNetmask(family: IpAddress.Family): Netmask` converting an `UInt` CIDR prefix to its byte representation
 * `fun Netmask.toPrefix(): Prefix` converting a netmask into its CIDR prefix length
 * `ByteArray.toShortArray(bigEndian: Boolean = true): ShortArray` grouping pairs of bytes into a short. Useful to get IPv6 hextets from octets.
+
+
+## Roadmap:
+- More comprehensive tests
+- Address range enumeration
+- Subnet enumeration (absolute and relative, e.g., `/24` or “+2 bits”)
+- Supernetting helpers (absolute and relative)
+- Overlap and adjacency checks
+- Safe aggregation of adjacent/overlapping ranges where possible and merging of networks
 
 ## Contributing
 External contributions are greatly appreciated!

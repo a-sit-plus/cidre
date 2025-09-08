@@ -1,7 +1,6 @@
 package at.asitplus.cidre
 
 import at.asitplus.cidre.byteops.and
-import at.asitplus.cidre.byteops.andInplace
 import at.asitplus.cidre.byteops.toNetmask
 
 
@@ -11,17 +10,17 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
     Comparable<IpNetwork<N, T>> {
 
     init {
-        require(prefix <= address.octets.size.toUInt() * 8u) { "Prefix $prefix too long for IP address ${address.version}. Max length: ${address.octets.size * 8}" }
+        require(prefix <= address.octets.size.toUInt() * 8u) { "Prefix $prefix too long for IP address ${address.family}. Max length: ${address.octets.size * 8}" }
     }
 
-    override val netmask: Netmask = prefix.toNetmask(address.version)
+    override val netmask: Netmask = prefix.toNetmask(address.family)
 
     @Suppress("UNCHECKED_CAST")
-    override val address: T = if (deepCopy) IpAddress(address.octets and netmask).also {
+    override val address: T = if (deepCopy) IpAddress(address.octets.copyOf()).apply { mask(netmask) }.also {
         if (strict) require(it == address) { "$address is not an actual network address. Should be: $it" }
     } as T
     else {
-        val changedBits = address.octets.andInplace(netmask)
+        val changedBits = address.mask(netmask)
         if (strict) require(changedBits == 0) { "Implementation error in address-into-network wrapping. Report this bug here: https://github.com/a-sit-plus/cidre/issues/new" }
         address
     }
@@ -32,8 +31,8 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
 
     override val isMulticast: Boolean get() = this == specialRanges.multicast
 
-    val networkPart: ByteArray by lazy { TODO("the network slice of the address octets") }
-    val hostPart: ByteArray by lazy { TODO("the host slice of the address octets") }
+    //val networkPart: ByteArray by lazy { TODO("the network slice of the address octets") }
+    //val hostPart: ByteArray by lazy { TODO("the host slice of the address octets") }
 
     override fun toString(): String = "$address/$prefix"
 
@@ -50,10 +49,10 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
      */
     fun interfaceFor(address: T): IpInterface<N, T> = IpInterface.unsafe(this, address, prefix)
 
-    fun subnet(newPrefix: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
-    fun subnetRelative(prefixDiff: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
+    //fun subnet(newPrefix: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
+    //fun subnetRelative(prefixDiff: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
 
-    fun isAdjacentTo(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
+    //fun isAdjacentTo(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
 
     /*
     TODO later
@@ -62,17 +61,17 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
     */
 
     //Aggregation; may fail if disjoint
-    abstract operator fun plus(other: T): T?
+    //abstract operator fun plus(other: T): T?
 
-    val hostRange: Sequence<IpInterface<N, T>> get() = addressSpace.map { IpInterface.unsafe(this, it, prefix) }
-    abstract val addressSpace: Sequence<T>
+    //val hostRange: Sequence<IpInterface<N, T>> get() = addressSpace.map { IpInterface.unsafe(this, it, prefix) }
+    //abstract val addressSpace: Sequence<T>
 
-    fun first(): IpInterface<N, T> = TODO()
-    fun last(): IpInterface<N, T> = TODO()
-    val size: Long get() = TODO()
+    //fun first(): IpInterface<N, T> = TODO()
+    //fun last(): IpInterface<N, T> = TODO()
+    //val size: Long get() = TODO()
 
-    fun isSubnetOf(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
-    fun overlapsWith(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
+    //fun isSubnetOf(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
+    //fun overlapsWith(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
 
     /** Tests if [address] is inside this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
     fun contains(address: T): Boolean = (address.octets and netmask) contentEquals this.address.octets
@@ -124,10 +123,10 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
             deepCopy = true
         )
 
-        val broadcastAddress: IpInterface<Byte, IpAddress.V4> get() = TODO()
+        //val broadcastAddress: IpInterface<Byte, IpAddress.V4> get() = TODO()
 
-        override fun plus(other: IpAddress.V4): IpAddress.V4? = TODO("Not yet implemented")
-        override val addressSpace: Sequence<IpAddress.V4> get() = TODO("Not yet implemented")
+        //override fun plus(other: IpAddress.V4): IpAddress.V4? = TODO("Not yet implemented")
+        //override val addressSpace: Sequence<IpAddress.V4> get() = TODO("Not yet implemented")
 
         companion object : Specification<Byte, IpAddress.V4> {
             @Throws(IllegalArgumentException::class)
@@ -195,8 +194,8 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
             deepCopy = true
         )
 
-        override fun plus(other: IpAddress.V6): IpAddress.V6? = TODO("Not yet implemented")
-        override val addressSpace: Sequence<IpAddress.V6> get() = TODO("Not yet implemented")
+        //override fun plus(other: IpAddress.V6): IpAddress.V6? = TODO("Not yet implemented")
+        //override val addressSpace: Sequence<IpAddress.V6> get() = TODO("Not yet implemented")
 
         companion object : Specification<Short, IpAddress.V6> {
             @Throws(IllegalArgumentException::class)

@@ -14,8 +14,11 @@ sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
 
     val address: T
 
+    val family: IpAddress.Family get() = address.family
+
     /** CIDR prefix length */
     val prefix: Prefix
+
     /** Network-order (BE) layout of a CIDR prefix */
     val netmask: Netmask
 
@@ -44,15 +47,17 @@ sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
          * */
         val isPublic: Boolean
 
-        /** String representation of this IPv4 netmask (`#.#.#.#`) */
+        /** Dotted-quad representation of this IPv4 netmask (`#.#.#.#`) */
         fun netmaskToString() = netmask.joinToString(".") { it.toUByte().toString() }
 
         /**
          * Useful for debugging. Allows toggling between
          * [preferNetmaskOverPrefix]` = true` for default CIDR notation (`#.#.#.#/prefix`)
-         * [preferNetmaskOverPrefix]` = false` legacy segmented notation (`A.A.A.A / N.N.N.N`, where `A` represents an address segment and `N` a netmask segment)
-         * */
-        fun toString(preferNetmaskOverPrefix: Boolean): String = if(preferNetmaskOverPrefix) {"$address ${netmaskToString()}"} else "$address/$prefix"
+         * [preferNetmaskOverPrefix]` = false` legacy segmented notation (`A.A.A.A / N.N.N.N`, where `A` represents an address quad and `N` a netmask quad)
+         */
+        fun toString(preferNetmaskOverPrefix: Boolean): String = if (preferNetmaskOverPrefix) {
+            "$address ${netmaskToString()}"
+        } else "$address/$prefix"
     }
 
     /**

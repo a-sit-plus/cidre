@@ -92,7 +92,7 @@ def to_case(version: str, a_str: str, b_str: str, cmp_val: int) -> Dict[str, Any
 
 def main():
     parser = argparse.ArgumentParser(description="Generate IP address comparison cases as JSON.")
-    parser.add_argument("-o", "--output", help="Output JSON file (default: ./cidre/src/jvmTest/resources/pythontest/ip_sort.json)", default="./cidre/src/jvmTest/resources/pythontest/ip_sort.json")
+    parser.add_argument("-o", "--output", help="Output JSON file (default: ../cidre/src/jvmTest/resources/pythontest/ip_sort.json)", default="../cidre/src/jvmTest/resources/pythontest/ip_sort.json")
     args = parser.parse_args()
 
     cases: List[Dict[str, Any]] = []
