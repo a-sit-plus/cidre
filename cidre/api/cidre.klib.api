@@ -148,6 +148,16 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre/IpAddress<#A>> at.asitplu
 }
 
 sealed class <#A: kotlin/Number, #B: at.asitplus.cidre/IpAddress<#A>> at.asitplus.cidre/IpNetwork : at.asitplus.cidre/IpAddressAndPrefix<#A, #B>, kotlin/Comparable<at.asitplus.cidre/IpNetwork<#A, #B>> { // at.asitplus.cidre/IpNetwork|null[0]
+    abstract val addressSpace // at.asitplus.cidre/IpNetwork.addressSpace|{}addressSpace[0]
+        abstract fun <get-addressSpace>(): kotlin.sequences/Sequence<#B> // at.asitplus.cidre/IpNetwork.addressSpace.<get-addressSpace>|<get-addressSpace>(){}[0]
+    final val hostPart // at.asitplus.cidre/IpNetwork.hostPart|{}hostPart[0]
+        final fun <get-hostPart>(): kotlin/ByteArray // at.asitplus.cidre/IpNetwork.hostPart.<get-hostPart>|<get-hostPart>(){}[0]
+    final val hostRange // at.asitplus.cidre/IpNetwork.hostRange|{}hostRange[0]
+        final fun <get-hostRange>(): kotlin.sequences/Sequence<at.asitplus.cidre/IpInterface<#A, #B>> // at.asitplus.cidre/IpNetwork.hostRange.<get-hostRange>|<get-hostRange>(){}[0]
+    final val networkPart // at.asitplus.cidre/IpNetwork.networkPart|{}networkPart[0]
+        final fun <get-networkPart>(): kotlin/ByteArray // at.asitplus.cidre/IpNetwork.networkPart.<get-networkPart>|<get-networkPart>(){}[0]
+    final val size // at.asitplus.cidre/IpNetwork.size|{}size[0]
+        final fun <get-size>(): kotlin/Long // at.asitplus.cidre/IpNetwork.size.<get-size>|<get-size>(){}[0]
     final val specialRanges // at.asitplus.cidre/IpNetwork.specialRanges|{}specialRanges[0]
         final fun <get-specialRanges>(): at.asitplus.cidre/IpNetwork.SpecialRanges<#A, #B> // at.asitplus.cidre/IpNetwork.specialRanges.<get-specialRanges>|<get-specialRanges>(){}[0]
     open val address // at.asitplus.cidre/IpNetwork.address|{}address[0]
@@ -163,10 +173,18 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre/IpAddress<#A>> at.asitplu
     open val prefix // at.asitplus.cidre/IpNetwork.prefix|{}prefix[0]
         open fun <get-prefix>(): kotlin/UInt // at.asitplus.cidre/IpNetwork.prefix.<get-prefix>|<get-prefix>(){}[0]
 
+    abstract fun plus(#B): #B? // at.asitplus.cidre/IpNetwork.plus|plus(1:1){}[0]
     final fun contains(#B): kotlin/Boolean // at.asitplus.cidre/IpNetwork.contains|contains(1:1){}[0]
     final fun contains(at.asitplus.cidre/IpInterface<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.contains|contains(at.asitplus.cidre.IpInterface<1:0,1:1>){}[0]
     final fun contains(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.contains|contains(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
+    final fun first(): at.asitplus.cidre/IpInterface<#A, #B> // at.asitplus.cidre/IpNetwork.first|first(){}[0]
     final fun interfaceFor(#B): at.asitplus.cidre/IpInterface<#A, #B> // at.asitplus.cidre/IpNetwork.interfaceFor|interfaceFor(1:1){}[0]
+    final fun isAdjacentTo(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.isAdjacentTo|isAdjacentTo(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
+    final fun isSubnetOf(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.isSubnetOf|isSubnetOf(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
+    final fun last(): at.asitplus.cidre/IpInterface<#A, #B> // at.asitplus.cidre/IpNetwork.last|last(){}[0]
+    final fun overlapsWith(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.overlapsWith|overlapsWith(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
+    final fun subnet(kotlin/UInt): kotlin.sequences/Sequence<at.asitplus.cidre/IpNetwork<#A, #B>> // at.asitplus.cidre/IpNetwork.subnet|subnet(kotlin.UInt){}[0]
+    final fun subnetRelative(kotlin/UInt): kotlin.sequences/Sequence<at.asitplus.cidre/IpNetwork<#A, #B>> // at.asitplus.cidre/IpNetwork.subnetRelative|subnetRelative(kotlin.UInt){}[0]
     open fun compareTo(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Int // at.asitplus.cidre/IpNetwork.compareTo|compareTo(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
     open fun equals(kotlin/Any?): kotlin/Boolean // at.asitplus.cidre/IpNetwork.equals|equals(kotlin.Any?){}[0]
     open fun hashCode(): kotlin/Int // at.asitplus.cidre/IpNetwork.hashCode|hashCode(){}[0]
@@ -189,10 +207,16 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre/IpAddress<#A>> at.asitplu
     final class V4 : at.asitplus.cidre/IpAddressAndPrefix.V4, at.asitplus.cidre/IpNetwork<kotlin/Byte, at.asitplus.cidre/IpAddress.V4> { // at.asitplus.cidre/IpNetwork.V4|null[0]
         constructor <init>(at.asitplus.cidre/IpAddress.V4, kotlin/UInt, kotlin/Boolean = ...) // at.asitplus.cidre/IpNetwork.V4.<init>|<init>(at.asitplus.cidre.IpAddress.V4;kotlin.UInt;kotlin.Boolean){}[0]
 
+        final val addressSpace // at.asitplus.cidre/IpNetwork.V4.addressSpace|{}addressSpace[0]
+            final fun <get-addressSpace>(): kotlin.sequences/Sequence<at.asitplus.cidre/IpAddress.V4> // at.asitplus.cidre/IpNetwork.V4.addressSpace.<get-addressSpace>|<get-addressSpace>(){}[0]
+        final val broadcastAddress // at.asitplus.cidre/IpNetwork.V4.broadcastAddress|{}broadcastAddress[0]
+            final fun <get-broadcastAddress>(): at.asitplus.cidre/IpInterface<kotlin/Byte, at.asitplus.cidre/IpAddress.V4> // at.asitplus.cidre/IpNetwork.V4.broadcastAddress.<get-broadcastAddress>|<get-broadcastAddress>(){}[0]
         final val isPrivate // at.asitplus.cidre/IpNetwork.V4.isPrivate|{}isPrivate[0]
             final fun <get-isPrivate>(): kotlin/Boolean // at.asitplus.cidre/IpNetwork.V4.isPrivate.<get-isPrivate>|<get-isPrivate>(){}[0]
         final val isPublic // at.asitplus.cidre/IpNetwork.V4.isPublic|{}isPublic[0]
             final fun <get-isPublic>(): kotlin/Boolean // at.asitplus.cidre/IpNetwork.V4.isPublic.<get-isPublic>|<get-isPublic>(){}[0]
+
+        final fun plus(at.asitplus.cidre/IpAddress.V4): at.asitplus.cidre/IpAddress.V4? // at.asitplus.cidre/IpNetwork.V4.plus|plus(at.asitplus.cidre.IpAddress.V4){}[0]
 
         final object Companion : at.asitplus.cidre/IpNetwork.Specification<kotlin/Byte, at.asitplus.cidre/IpAddress.V4> { // at.asitplus.cidre/IpNetwork.V4.Companion|null[0]
             final val specialRanges // at.asitplus.cidre/IpNetwork.V4.Companion.specialRanges|{}specialRanges[0]
@@ -217,6 +241,8 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre/IpAddress<#A>> at.asitplu
     final class V6 : at.asitplus.cidre/IpAddressAndPrefix.V6, at.asitplus.cidre/IpNetwork<kotlin/Short, at.asitplus.cidre/IpAddress.V6> { // at.asitplus.cidre/IpNetwork.V6|null[0]
         constructor <init>(at.asitplus.cidre/IpAddress.V6, kotlin/UInt, kotlin/Boolean = ...) // at.asitplus.cidre/IpNetwork.V6.<init>|<init>(at.asitplus.cidre.IpAddress.V6;kotlin.UInt;kotlin.Boolean){}[0]
 
+        final val addressSpace // at.asitplus.cidre/IpNetwork.V6.addressSpace|{}addressSpace[0]
+            final fun <get-addressSpace>(): kotlin.sequences/Sequence<at.asitplus.cidre/IpAddress.V6> // at.asitplus.cidre/IpNetwork.V6.addressSpace.<get-addressSpace>|<get-addressSpace>(){}[0]
         final val isDiscardOnly // at.asitplus.cidre/IpNetwork.V6.isDiscardOnly|{}isDiscardOnly[0]
             final fun <get-isDiscardOnly>(): kotlin/Boolean // at.asitplus.cidre/IpNetwork.V6.isDiscardOnly.<get-isDiscardOnly>|<get-isDiscardOnly>(){}[0]
         final val isDocumentation // at.asitplus.cidre/IpNetwork.V6.isDocumentation|{}isDocumentation[0]
@@ -233,6 +259,8 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre/IpAddress<#A>> at.asitplu
             final fun <get-isUniqueLocal>(): kotlin/Boolean // at.asitplus.cidre/IpNetwork.V6.isUniqueLocal.<get-isUniqueLocal>|<get-isUniqueLocal>(){}[0]
         final val isUniqueLocalLocallyAssigned // at.asitplus.cidre/IpNetwork.V6.isUniqueLocalLocallyAssigned|{}isUniqueLocalLocallyAssigned[0]
             final fun <get-isUniqueLocalLocallyAssigned>(): kotlin/Boolean // at.asitplus.cidre/IpNetwork.V6.isUniqueLocalLocallyAssigned.<get-isUniqueLocalLocallyAssigned>|<get-isUniqueLocalLocallyAssigned>(){}[0]
+
+        final fun plus(at.asitplus.cidre/IpAddress.V6): at.asitplus.cidre/IpAddress.V6? // at.asitplus.cidre/IpNetwork.V6.plus|plus(at.asitplus.cidre.IpAddress.V6){}[0]
 
         final object Companion : at.asitplus.cidre/IpNetwork.Specification<kotlin/Short, at.asitplus.cidre/IpAddress.V6> { // at.asitplus.cidre/IpNetwork.V6.Companion|null[0]
             final val specialRanges // at.asitplus.cidre/IpNetwork.V6.Companion.specialRanges|{}specialRanges[0]

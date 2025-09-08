@@ -31,8 +31,8 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
 
     override val isMulticast: Boolean get() = this == specialRanges.multicast
 
-    //val networkPart: ByteArray by lazy { TODO("the network slice of the address octets") }
-    //val hostPart: ByteArray by lazy { TODO("the host slice of the address octets") }
+    val networkPart: ByteArray by lazy { TODO("the network slice of the address octets") }
+    val hostPart: ByteArray by lazy { TODO("the host slice of the address octets") }
 
     override fun toString(): String = "$address/$prefix"
 
@@ -49,10 +49,10 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
      */
     fun interfaceFor(address: T): IpInterface<N, T> = IpInterface.unsafe(this, address, prefix)
 
-    //fun subnet(newPrefix: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
-    //fun subnetRelative(prefixDiff: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
+    fun subnet(newPrefix: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
+    fun subnetRelative(prefixDiff: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
 
-    //fun isAdjacentTo(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
+    fun isAdjacentTo(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
 
     /*
     TODO later
@@ -61,17 +61,17 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
     */
 
     //Aggregation; may fail if disjoint
-    //abstract operator fun plus(other: T): T?
+    abstract operator fun plus(other: T): T?
 
-    //val hostRange: Sequence<IpInterface<N, T>> get() = addressSpace.map { IpInterface.unsafe(this, it, prefix) }
-    //abstract val addressSpace: Sequence<T>
+    val hostRange: Sequence<IpInterface<N, T>> get() = addressSpace.map { IpInterface.unsafe(this, it, prefix) }
+    abstract val addressSpace: Sequence<T>
 
-    //fun first(): IpInterface<N, T> = TODO()
-    //fun last(): IpInterface<N, T> = TODO()
-    //val size: Long get() = TODO()
+    fun first(): IpInterface<N, T> = TODO()
+    fun last(): IpInterface<N, T> = TODO()
+    val size: Long get() = TODO()
 
-    //fun isSubnetOf(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
-    //fun overlapsWith(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
+    fun isSubnetOf(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
+    fun overlapsWith(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
 
     /** Tests if [address] is inside this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
     fun contains(address: T): Boolean = (address.octets and netmask) contentEquals this.address.octets
@@ -123,10 +123,10 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
             deepCopy = true
         )
 
-        //val broadcastAddress: IpInterface<Byte, IpAddress.V4> get() = TODO()
+        val broadcastAddress: IpInterface<Byte, IpAddress.V4> get() = TODO()
 
-        //override fun plus(other: IpAddress.V4): IpAddress.V4? = TODO("Not yet implemented")
-        //override val addressSpace: Sequence<IpAddress.V4> get() = TODO("Not yet implemented")
+        override fun plus(other: IpAddress.V4): IpAddress.V4? = TODO("Not yet implemented")
+        override val addressSpace: Sequence<IpAddress.V4> get() = TODO("Not yet implemented")
 
         companion object : Specification<Byte, IpAddress.V4> {
             @Throws(IllegalArgumentException::class)
@@ -194,8 +194,8 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
             deepCopy = true
         )
 
-        //override fun plus(other: IpAddress.V6): IpAddress.V6? = TODO("Not yet implemented")
-        //override val addressSpace: Sequence<IpAddress.V6> get() = TODO("Not yet implemented")
+        override fun plus(other: IpAddress.V6): IpAddress.V6? = TODO("Not yet implemented")
+        override val addressSpace: Sequence<IpAddress.V6> get() = TODO("Not yet implemented")
 
         companion object : Specification<Short, IpAddress.V6> {
             @Throws(IllegalArgumentException::class)
