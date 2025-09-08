@@ -125,7 +125,7 @@ fun UInt.toNetmask(octetCount: Int): Netmask {
 fun Prefix.toNetmask(version: IpAddress.Version): Netmask = toNetmask(version.numberOfOctets)
 
 /**
- * Converts a network-order netmask into its CIDR prefix length.
+ * Converts a netmask into its CIDR prefix length.
  * Validates that the mask's length and that it is contiguous (all 1-bits followed by 0-bits).
  *
  * @throws IllegalArgumentException if the netmask is not contiguous

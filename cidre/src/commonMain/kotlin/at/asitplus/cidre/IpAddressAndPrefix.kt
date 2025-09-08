@@ -1,5 +1,12 @@
 package at.asitplus.cidre
 
+
+/**CIDR prefix length*/
+typealias Prefix = UInt
+
+/**Network-order (BE) layout of a CIDR prefix*/
+typealias Netmask = ByteArray
+
 /**
  * Sealed base interface of [IpAddress] and [IpInterface], attaching common semantics and functionality to the combination of an [address] and [prefix].
  */

@@ -4,11 +4,6 @@ import at.asitplus.cidre.byteops.and
 import at.asitplus.cidre.byteops.andInplace
 import at.asitplus.cidre.byteops.toNetmask
 
-/**CIDR prefix length*/
-typealias Prefix = UInt
-
-/**Network-order (BE) layout of a CIDR prefix*/
-typealias Netmask = ByteArray
 
 sealed class IpNetwork<N : Number, T : IpAddress<N>>
 @Throws(IllegalArgumentException::class)

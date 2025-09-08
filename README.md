@@ -35,7 +35,7 @@ Currently, CIDRE can
 
 
 In general, CIDRE's data model has semantics influenced by [netaddr](https://github.com/netaddr/netaddr/?tab=readme-ov-file): An `IpNetwork` covers a range of `IpInterface`s, both of which consist of an `IpAddress` and a `prefix`.   
-In contrast to a network, an `IpInterface` has only a single `IpAddress` (although no validation is performed whether it is distinct from the associated network's address).  
+Semantically, an `IpInterface` has only a single `IpAddress` (although no validation is performed whether it is distinct from the associated network's address), while a network spans a range.  
 In more technical terms, CIDRE introduces three main classes:
 - `IpAddress` - a sealed class, specialised as
   - `IpAddress.V4` representing IPv4 addresses
@@ -48,7 +48,10 @@ In more technical terms, CIDRE introduces three main classes:
   - `IpInterface.V6` consisting of an `IpAddress.V6` network address and a prefix/netmask
 
 `IpNetwork`, `IpAddress` and their IPv4 and IPv6 specializations share the `IpAddressAndPrefix` interface hierarchy, which groups common semantics and functionality.
-However, addresses and networks are not comparable, so this is mainly an application of DRY.
+However, addresses and networks are not comparable, so this is mainly an application of DRY.  
+In addition, two typealiases are used:
+* `typealias Prefix = UInt`
+* `typealias Netmask = ByteArray`.
 
 ## Using in your Projects
 
@@ -106,7 +109,7 @@ It is possible to extract the contained IPv4 address from an IPv4-mapped or IPv4
 `embeddedIpV4Address` property. It returns null if no IPv4 address is contained.
 
 
-### Working with Networks
+### Working with Networks IpInterfaces
 
 #### Netmasks and Prefixes
 
@@ -117,12 +120,18 @@ It is possible to extract the contained IPv4 address from an IPv4-mapped or IPv4
 To check whether an address, a network, or an `IpInterface` falls inside a target network, call `targetNetwork.contanins(addrNwOrIf)`.
 
 
-
 #### Subnetting and Supernetting
 
 
 ### Low-Level Utilities
-The `at.asitplus.cidre.byteops` package provides low-level helper functions
+The `at.asitplus.cidre.byteops` package provides low-level helper functions:
+
+* `infix fun ByteArray.and(other: ByteArray): ByteArray` performing a logical `AND` operation, returning a fresh ByteArray.
+* `fun ByteArray.andInplace(other: ByteArray): Int` performing an in-place logical `AND` operation, modifying the receiver ByteArray. Returns the number of modified bits.
+* `fun ByteArray.compareUnsignedBE(other: ByteArray): Int` comparing two same-sized byte arrays by interpreting their contents as unsigned BE integers
+* `fun Prefix.toNetmask(version: IpAddress.Version): Netmask` converting an `UInt` CIDR prefix to its byte representation
+* `fun Netmask.toPrefix(): Prefix` converting a netmask into its CIDR prefix length
+* `ByteArray.toShortArray(bigEndian: Boolean = true): ShortArray` grouping pairs of bytes into a short. Useful to get IPv6 hextets from octets.
 
 ## Contributing
 External contributions are greatly appreciated!
