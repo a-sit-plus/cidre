@@ -12,27 +12,33 @@ typealias Netmask = ByteArray
 
 sealed class IpNetwork<N : Number, T : IpAddress<N>>
 @Throws(IllegalArgumentException::class)
-constructor(address: T, val prefix: Prefix, strict: Boolean, deepCopy: Boolean) : Comparable<IpNetwork<N, T>> {
+constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: Boolean) : IpAddressAndPrefix<N, T>,
+    Comparable<IpNetwork<N, T>> {
 
     init {
         require(prefix <= address.octets.size.toUInt() * 8u) { "Prefix $prefix too long for IP address ${address.version}. Max length: ${address.octets.size * 8}" }
     }
 
-    val netMask: Netmask = prefix.toNetmask(address.version)
+    override val netmask: Netmask = prefix.toNetmask(address.version)
 
     @Suppress("UNCHECKED_CAST")
-    val address: T = if (deepCopy) IpAddress(address.octets and netMask).also {
+    override val address: T = if (deepCopy) IpAddress(address.octets and netmask).also {
         if (strict) require(it == address) { "$address is not an actual network address. Should be: $it" }
     } as T
     else {
-        val changedBits = address.octets.andInplace(netMask)
+        val changedBits = address.octets.andInplace(netmask)
         if (strict) require(changedBits == 0) { "Implementation error in address-into-network wrapping. Report this bug here: https://github.com/a-sit-plus/cidre/issues/new" }
         address
     }
 
+    override val isLinkLocal: Boolean get() = this == specialRanges.linkLocal
+
+    override val isLoopback: Boolean get() = this == specialRanges.loopback
+
+    override val isMulticast: Boolean get() = this == specialRanges.multicast
+
     val networkPart: ByteArray by lazy { TODO("the network slice of the address octets") }
     val hostPart: ByteArray by lazy { TODO("the host slice of the address octets") }
-
 
     override fun toString(): String = "$address/$prefix"
 
@@ -74,7 +80,7 @@ constructor(address: T, val prefix: Prefix, strict: Boolean, deepCopy: Boolean) 
     fun overlapsWith(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
 
     /** Tests if [address] is inside this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    fun contains(address: T): Boolean = (address.octets and netMask) contentEquals this.address.octets
+    fun contains(address: T): Boolean = (address.octets and netmask) contentEquals this.address.octets
 
     /** Tests if [ipInterface] belongs this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
     fun contains(ipInterface: IpInterface<N, T>): Boolean = ipInterface.network == this
@@ -82,7 +88,7 @@ constructor(address: T, val prefix: Prefix, strict: Boolean, deepCopy: Boolean) 
     /**Tests if [network] is fully contained inside this network.*/
     fun contains(network: IpNetwork<N, T>): Boolean {
         if (prefix > network.prefix) return false
-        return address.octets contentEquals (network.address.octets and netMask)
+        return address.octets contentEquals (network.address.octets and netmask)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -112,7 +118,7 @@ constructor(address: T, val prefix: Prefix, strict: Boolean, deepCopy: Boolean) 
 
     class V4 internal constructor(address: IpAddress.V4, prefix: Prefix, strict: Boolean, deepCopy: Boolean) :
 
-        IpNetwork<Byte, IpAddress.V4>(address, prefix, strict, deepCopy) {
+        IpNetwork<Byte, IpAddress.V4>(address, prefix, strict, deepCopy), IpAddressAndPrefix.V4 {
         /**
          * Note that [address] will be deep-copied into [at.asitplus.cidre.IpNetwork.address], so the passed reference won't be touched
          */
@@ -153,6 +159,10 @@ constructor(address: T, val prefix: Prefix, strict: Boolean, deepCopy: Boolean) 
             override val specialRanges: IpNetwork.SpecialRanges<Byte, IpAddress.V4> by lazy { IpNetwork.V4.SpecialRanges }
         }
 
+        override val isPrivate: Boolean get() = IpNetwork.V4.SpecialRanges.private.contains(this)
+
+        override val isPublic: Boolean get() = !(isPrivate || isLinkLocal || isMulticast || isLoopback)
+
         object SpecialRanges : IpNetwork.SpecialRanges<Byte, IpAddress.V4> {
             /**`127.0.0.0/8`*/
             override val loopback = V4("127.0.0.0/8")
@@ -178,7 +188,7 @@ constructor(address: T, val prefix: Prefix, strict: Boolean, deepCopy: Boolean) 
     }
 
     class V6 internal constructor(address: IpAddress.V6, prefix: Prefix, strict: Boolean, deepCopy: Boolean) :
-        IpNetwork<Short, IpAddress.V6>(address, prefix, strict, deepCopy) {
+        IpNetwork<Short, IpAddress.V6>(address, prefix, strict, deepCopy), IpAddressAndPrefix.V6 {
 
         /**
          * Note that [address] will be deep-copied into [at.asitplus.cidre.IpNetwork.address], so the passed reference won't be touched
@@ -188,13 +198,6 @@ constructor(address: T, val prefix: Prefix, strict: Boolean, deepCopy: Boolean) 
             prefix,
             strict,
             deepCopy = true
-        )
-
-        val isGlobalUnicast: Boolean get() = TODO()
-
-        @Deprecated(
-            "This is Ipv4 terminology and present here for convenience. If you know, you ware working with IPv6, prefer isUniqueLocal.",
-            ReplaceWith("isUniqueLocal")
         )
 
         override fun plus(other: IpAddress.V6): IpAddress.V6? = TODO("Not yet implemented")
@@ -224,6 +227,24 @@ constructor(address: T, val prefix: Prefix, strict: Boolean, deepCopy: Boolean) 
             //lazy prevents initializationexception when constructor throws
             override val specialRanges: IpNetwork.SpecialRanges<Short, IpAddress.V6> by lazy { IpNetwork.V6.SpecialRanges }
         }
+
+
+        override val isGlobalUnicast: Boolean get() = this == IpNetwork.V6.SpecialRanges.globalUnicast
+
+        override val isUniqueLocal: Boolean get() = this == IpNetwork.V6.SpecialRanges.uniqueLocal
+
+        override val isUniqueLocalLocallyAssigned: Boolean get() = this == IpNetwork.V6.SpecialRanges.uniqueLocalLocallyAssigned
+
+        override val isIpV4Mapped: Boolean get() = this == IpNetwork.V6.SpecialRanges.ipV4Mapped
+
+        @Deprecated("Originally meant to embed IPv4, now obsolete")
+        override val isIpV4Compatible: Boolean get() = this == IpNetwork.V6.SpecialRanges.ipV4Compatible
+
+        override val isDocumentation: Boolean get() = this == IpNetwork.V6.SpecialRanges.documentation
+
+        override val isDiscardOnly: Boolean get() = this == IpNetwork.V6.SpecialRanges.discardOnly
+
+        override val isReserved: Boolean get() = this == IpNetwork.V6.SpecialRanges.reserved
 
         object SpecialRanges : IpNetwork.SpecialRanges<Short, IpAddress.V6> {
 

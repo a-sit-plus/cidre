@@ -43,9 +43,12 @@ In more technical terms, CIDRE introduces three main classes:
 - `IpNetwork` - a sealed class, following the same hierarchy:
   - `IpNetwork.V4` representing an IPv4 network consisting of an `IpAddress.V4` network address and a prefix/netmask
   - `IpNetwork.V6` representing an IPv4 network consisting of an `IpAddress.V6` network address and a prefix/netmask
-- `IpInterface` a concrete IP address belonging to a network. This is also a combination of IP address and a prefix/netmask but with distinctly different semantics.  
+- `IpInterface` a concrete IP address belonging to a network. Like a network, this is also a combination of IP address and prefix/netmask but with distinctly different semantics.  
   - `IpInterface.V4` consisting of an `IpAddress.V4` network address and a prefix/netmask
   - `IpInterface.V6` consisting of an `IpAddress.V6` network address and a prefix/netmask
+
+`IpNetwork`, `IpAddress` and their IPv4 and IPv6 specializations share the `IpAddressAndPrefix` interface hierarchy, which groups common semantics and functionality.
+However, addresses and networks are not comparable, so this is mainly an application of DRY.
 
 ## Using in your Projects
 

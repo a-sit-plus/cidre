@@ -227,7 +227,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
         /**
          * Returns a string representation of this IP address
          * if [expanded] is set to `true` all hextets are printed in full length.  <br>
-         * otherwise, the resulting string conforms to [RFC 5952](https://www.rfc-editor.org/rfc/rfc5952.html) canonical form:
+         * Otherwise, the resulting string conforms to [RFC 5952](https://www.rfc-editor.org/rfc/rfc5952.html) canonical form:
          * - lowercase hex
          * - omit leading zeros
          * - use '::' once for the longest run of zero hextets (length >= 2), leftmost on tie
