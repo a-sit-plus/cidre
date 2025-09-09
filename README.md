@@ -30,7 +30,7 @@ It has a total of zero external dependencies.
 Currently, CIDRE provides the following functionality:
 * parsing and encoding IPv4 and IPv6 addresses from/to String and ByteArray representations
 * converting CIDR prefixes from/to netmasks
-* checking whether addresses or networks are are fully contained within a network
+* checking whether addresses or networks are fully contained within a network
 * comparability of networks and addresses inside a family (IPv4/IPv6)
 
 Planned features are:
@@ -59,7 +59,7 @@ In addition, two typealiases are used:
 
 ## Using in your Projects
 
-This library is available at maven central.
+This library is available at Maven Central.
 
 ### Gradle
 
@@ -78,7 +78,7 @@ val ip6          = IpAddress("2002:ac1d:2d64::1") //returns an IpAddress.V6
 val ip4mappedIp6 = IpAddress("0000:0000:0000:0000:0000:FFFF:192.168.255.255") // returns an IPv4-mapped IpAddress.V6
 ```
 
-Simply `toString()` any IP address to get its string representation, or access `octets` to get its network-oder byte representation.
+Simply `toString()` any IP address to get its string representation, or access `octets` to get its network-order byte representation.
 An `IpAddress`'s companion object also provides helpful properties such as segment separator, number of octets, and readily usable `Regex` instances to check whether a string is a valid representation of
 an IP address or a single address segment.
 
@@ -121,14 +121,14 @@ It is possible to extract the contained IPv4 address from an IPv4-mapped or IPv4
 CIDRE models two closely related concepts:
 - `IpNetwork`: a contiguous address range, defined by a network address and prefix.  
 The network’s address itself is part of the network (and for IPv4, the broadcast address is also considered inside for membership checks).
-- `IpInterface`: a single address bound to a prefix and associated with a network, and therefore carry a reference to their associated `IpNetwork`.
+- `IpInterface`: a single address bound to a prefix and associated with a network, and therefore carries a reference to their associated `IpNetwork`.
 
 Both share the `IpAddressAndPrefix` interface and its respective IPv4 and IPv6 specializations and therefore expose:
 - `address` and prefix (CIDR prefix length)
 - `netmask` (network-order ByteArray)
 - common flags (e.g., `isLinkLocal`, `isLoopback`, `isMulticast`). IPv4- and IPv6-specific flags are available on their
 respective interfaces (IpAddressAndPrefix.V4 / V6).
-- consistent `toString()` behavior with address/prefix; IPv4 variants also support netmask printing helpers.
+- consistent `toString()` behavior ("address/prefix"); IPv4 variants also support netmask printing helpers.
 
 
 #### Creating IpInterfaces from Networks
@@ -140,10 +140,6 @@ Given an `IpAddress` and a prefix, it is possible to get the corresponding netwo
 - `IpNetwork.forAddress(address, prefix)` creates a new network, referencing and masking the passed `address`. This avoids copying, but modifies any not-correctly-masked address in-place, according to the given `prefix`.
 
 #### Netmasks and Prefixes
-
-CIDRE uses type aliases
-- Prefix is a UInt (`typealias Prefix = UInt`)
-- Netmask is a network-order byte array (`typealias Netmask = ByteArray`)
 
 Round-tripping between prefixes and netmasks is straightforward:
 - Create a netmask from a prefix:
@@ -165,12 +161,6 @@ Conceptually:
 - An `IpNetwork` represents a contiguous range of addresses.
 - An `IpInterface` is a single address bound to a prefix.
 - The network address is part of the network; for IPv4, the broadcast address (when applicable) is also inside.
-
-Coming soon:
-- Iteration over the full address space of a network
-- Convenience accessors for first/last interface and broadcast (where applicable)
-- Efficient network size computations
-
 
 #### Containment
 
