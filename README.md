@@ -12,7 +12,7 @@
 [![Kotlin](https://img.shields.io/badge/kotlin-2.2.10-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Java](https://img.shields.io/badge/java-17-blue.svg?logo=OPENJDK)](https://www.oracle.com/java/technologies/downloads/#java17)
 [![Android](https://img.shields.io/badge/Android-SDK--21-37AA55?logo=android)](https://developer.android.com/tools/releases/platforms#5.0)
-[![Maven Central](https://img.shields.io/maven-central/v/at.asitplus/cidre)](https://mvnrepository.com/artifact/at.asitplus.maven/coordinates)
+[![Maven Central](https://img.shields.io/maven-central/v/at.asitplus/cidre)](https://mvnrepository.com/artifact/at.asitplus/cidre)
 
 </div>
 
