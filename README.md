@@ -16,7 +16,7 @@
 </div>
 
 
-> From orchard to endpoint: _CIDRE_ delivers a smooth, dry balance of IP handling and subnet math, served consistently  
+> From orchard to endpoint: _CIDRE_ delivers a smooth, dry balance of IP handling and subnet math, served consistently
 > sparkling across **all** KMP targets. Unchaptalized&hairsp;&mdash;&hairsp;zero added dependencies; just natural, refreshing clarity.
 
 &mdash; _Sir Evander Marchbank_, self-proclaimed cider cartographer, who insists that every orchard has its own “gravitational pull” affecting the bubbles.
