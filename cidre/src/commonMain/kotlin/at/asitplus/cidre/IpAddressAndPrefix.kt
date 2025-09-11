@@ -1,5 +1,8 @@
 package at.asitplus.cidre
 
+import at.asitplus.cidre.byteops.Overlong
+import at.asitplus.cidre.byteops.invInPlace
+
 
 /**CIDR prefix length*/
 typealias Prefix = UInt
@@ -10,9 +13,10 @@ typealias Netmask = ByteArray
 /**
  * Sealed base interface of [IpAddress] and [IpInterface], attaching common semantics and functionality to the combination of an [address] and [prefix].
  */
-sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
+sealed interface IpAddressAndPrefix<N : Number, Size> {
 
-    val address: T
+    /** Computed once. Do not mess with its octets!*/
+    val address: IpAddress<N, Size>
 
     val family: IpAddress.Family get() = address.family
 
@@ -21,6 +25,17 @@ sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
 
     /** Network-order (BE) layout of a CIDR prefix */
     val netmask: Netmask
+
+    /**
+     * The inverse of [netmask]
+     */
+    val hostMask: ByteArray get() = netmask.copyOf().apply { invInPlace() }
+
+    val numberOfHostBits get():UInt = family.numberOfOctets.toUInt() * 8u - prefix
+
+    val networkPart: ByteArray get() = TODO("the network slice of the address octets")
+    val hostPart: ByteArray get() = TODO("the host slice of the address octets")
+
 
     /**`true` if this is (part of) the [IpNetwork.SpecialRanges.linkLocal] network */
     val isLinkLocal: Boolean
@@ -36,7 +51,9 @@ sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
      *
      * @see IpAddressAndPrefix
      */
-    sealed interface V4 : IpAddressAndPrefix<Byte, IpAddress.V4> {
+    sealed interface V4 : IpAddressAndPrefix<Byte, ULong> {
+
+        override val address: IpAddress.V4
 
         /**`true` if this is private, i.e. (part of) any [IpNetwork.V4.SpecialRanges.private] network */
         val isPrivate: Boolean
@@ -65,11 +82,13 @@ sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
      *
      * @see IpAddressAndPrefix
      */
-    sealed interface V6 : IpAddressAndPrefix<Short, IpAddress.V6> {
+    sealed interface V6 : IpAddressAndPrefix<Short, Overlong> {
 
         /**`true` if this is (part of) part of the [IpNetwork.V6.SpecialRanges.globalUnicast] address range. This is the equivalent of an IPv4 public address.
          * This is the IPv6 equivalent of [IpInterface.V4.isPublic] */
         val isGlobalUnicast: Boolean
+
+        override val address: IpAddress.V6
 
         /**
          * `true` if this is (part of)  the [IpNetwork.V6.SpecialRanges.uniqueLocal] address range.

@@ -1,5 +1,6 @@
 package at.asitplus.cidre
 
+import at.asitplus.cidre.byteops.Overlong
 import at.asitplus.cidre.byteops.andInplace
 import at.asitplus.cidre.byteops.compareUnsignedBE
 import at.asitplus.cidre.byteops.toNetmask
@@ -11,7 +12,7 @@ import kotlin.jvm.JvmName
  * * [N] indicates the type of [segments]. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
  * * [octets] contains the byte-representation of this IP address in network order (BE)
  */
-sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N, *>) : Comparable<IpAddress<N>> {
+sealed class IpAddress<N : Number, Size>(val octets: ByteArray, spec: Specification<N, Size>) : Comparable<IpAddress<N, Size>> {
 
     init {
         require(octets.size == spec.numberOfOctets) { "Illegal number of octets specified for ${this::class.simpleName}: ${octets.size}. Expected: ${spec.numberOfOctets}." }
@@ -26,10 +27,10 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
     /**
      * Compares the IP addresses' octets interpreted as unsigned BE (network order) integer
      */
-    override fun compareTo(other: IpAddress<N>): Int = octets.compareUnsignedBE(other.octets)
+    override fun compareTo(other: IpAddress<N, Size>): Int = octets.compareUnsignedBE(other.octets)
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is IpAddress<*>) return false
+        if (other !is IpAddress<*,*>) return false
 
         if (!octets.contentEquals(other.octets)) return false
 
@@ -42,7 +43,6 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
 
     /** IP address family ([Family.V4], [Family.V6]*/
     val family = spec.family
-
 
     /**
      * Masks this IP address in-place (i.e. without copying) according to [prefix].
@@ -60,7 +60,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
 
     /**Deep-copies an IP address*/
     @Suppress("UNCHECKED_CAST")
-    fun copy(): IpAddress<N> = IpAddress(octets.copyOf()) as IpAddress<N>
+    fun copy(): IpAddress<N, Size> = IpAddress(octets.copyOf()) as IpAddress<N, Size>
 
     /**
      * unspecified addresses are:
@@ -73,7 +73,9 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
      * IP family, either [Family.V4] or [Family.V6]
      */
     enum class Family(val numberOfOctets: Int) {
-        V4(4), V6(16)
+        V4(4), V6(16);
+
+        val numberOfBits = numberOfOctets*8
     }
 
     /**
@@ -87,7 +89,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
      * @throws IllegalArgumentException if invalid [octets] are provided
      */
     @Throws(IllegalArgumentException::class)
-    constructor(octets: ByteArray) : IpAddress<Byte>(octets, Companion) {
+    constructor(octets: ByteArray) : IpAddress<Byte, ULong>(octets, Companion) {
 
         override val segments: List<Byte> by lazy { octets.toList() }
 
@@ -145,7 +147,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
             E
         }
 
-        companion object : Specification<Byte, V4> {
+        companion object : Specification<Byte, ULong> {
             override val segmentSeparator: Char = '.'
             override val family: Family = Family.V4
             override val numberOfOctets: Int = family.numberOfOctets
@@ -189,7 +191,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
      * @throws IllegalArgumentException if invalid [octets] are provided
      */
     @Throws(IllegalArgumentException::class)
-    constructor(octets: ByteArray) : IpAddress<Short>(octets, Companion) {
+    constructor(octets: ByteArray) : IpAddress<Short, Overlong>(octets, Companion) {
 
         override val segments: List<Short> by lazy { octets.toShortArray().asList() }
 
@@ -326,7 +328,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
             }
         }
 
-        companion object : Specification<Short, V6> {
+        companion object : Specification<Short, Overlong> {
             override val segmentSeparator: Char = ':'
             override val family: Family = Family.V6
 
@@ -501,7 +503,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
      * * [family]
      * * [regex] containing [RegexSpec] to match conforming addresses and address segments
      */
-    sealed interface Specification<T : Number, I : IpAddress<T>> {
+    sealed interface Specification<T : Number, Size> {
 
         val numberOfOctets: Int
 
@@ -547,7 +549,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
          * @throws IllegalArgumentException if an invalid string is provided
          */
         @Throws(IllegalArgumentException::class)
-        operator fun invoke(stringRepresentation: String): IpAddress<*> = when {
+        operator fun invoke(stringRepresentation: String): IpAddress<*,*> = when {
             V6.segmentSeparator in stringRepresentation -> V6(stringRepresentation)
             V4.segmentSeparator in stringRepresentation -> V4(stringRepresentation)
             else -> throw IllegalArgumentException("Invalid address '$stringRepresentation'")
@@ -559,7 +561,7 @@ sealed class IpAddress<N : Number>(val octets: ByteArray, spec: Specification<N,
          * @throws IllegalArgumentException if invalid [octets] are provided
          */
         @Throws(IllegalArgumentException::class)
-        operator fun invoke(octets: ByteArray): IpAddress<*> = when (octets.size) {
+        operator fun invoke(octets: ByteArray): IpAddress<*,*> = when (octets.size) {
             V6.numberOfOctets -> V6(octets)
             V4.numberOfOctets -> V4(octets)
             else -> throw IllegalArgumentException("Invalid number of octets: ${octets.size}")

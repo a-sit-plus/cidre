@@ -26,11 +26,10 @@ fun IpAddress.V6.toInAddr(): CValue<in6_addr> =
 
 /**@return `CValue<in6_addr>` for IPv6 and `CValue<in_addr>` for IPv4 */
 @OptIn(ExperimentalForeignApi::class)
-fun IpAddress<*>.toInAddr(): CValue<out CStructVar> = when (this) {
+fun IpAddress<*, *>.toInAddr(): CValue<out CStructVar> = when (this) {
     is IpAddress.V4 -> toInAddr()
     is IpAddress.V6 -> toInAddr()
 }
-
 
 
 @OptIn(ExperimentalForeignApi::class)
@@ -81,7 +80,7 @@ operator fun IpAddress.V6.Companion.invoke(addr: CValue<in6_addr>): IpAddress.V6
 
 // Optional convenience overload (pointer)
 @OptIn(UnsafeNumber::class, ExperimentalForeignApi::class)
-operator fun IpAddress.V6.Companion.invoke(addr: CPointer<in6_addr>): IpAddress.V6  = memScoped {
+operator fun IpAddress.V6.Companion.invoke(addr: CPointer<in6_addr>): IpAddress.V6 = memScoped {
     val out = ByteArray(16)
     out.usePinned { dst ->
         memcpy(dst.addressOf(0), addr, 16.convert())
