@@ -1,6 +1,7 @@
 package at.asitplus.cidre.byteops
 
 import at.asitplus.cidre.IpAddress
+import at.asitplus.cidre.IpFamily
 import at.asitplus.cidre.Netmask
 import at.asitplus.cidre.Prefix
 import kotlin.experimental.inv
@@ -146,7 +147,7 @@ operator fun ByteArray.inv() = copyOf().apply { invInPlace() }
  * @throws IllegalArgumentException in case the prefix is too long
  */
 @Throws(IllegalArgumentException::class)
-fun Prefix.toNetmask(family: IpAddress.Family): Netmask = toNetmask(family.numberOfOctets)
+fun Prefix.toNetmask(family: IpFamily): Netmask = toNetmask(family.numberOfOctets)
 
 /**
  * Converts a netmask into its CIDR prefix length.

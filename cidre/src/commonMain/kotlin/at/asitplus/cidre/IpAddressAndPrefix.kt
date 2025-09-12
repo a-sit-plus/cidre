@@ -20,20 +20,20 @@ sealed interface IpAddressAndPrefix<N : Number, Size> {
     /** Computed once. Do not mess with its octets!*/
     val address: IpAddress<N, Size>
 
-    val family: IpAddress.Family get() = address.family
+    val family: IpFamily get() = address.family
 
     /** CIDR prefix length */
     val prefix: Prefix
 
     /** Network-order (BE) layout of a CIDR prefix */
     val netmask: Netmask
-    
+
     /**
      * The inverse of [netmask]
      */
     val hostMask: ByteArray get() = netmask.copyOf().apply { invInPlace() }
 
-    val numberOfHostBits get():UInt = family.numberOfOctets.toUInt() * 8u - prefix
+    val numberOfHostBits get(): UInt = family.numberOfBits.toUInt() - prefix
 
     val networkPart: ByteArray get() = TODO("the network slice of the address octets")
     val hostPart: ByteArray get() = TODO("the host slice of the address octets")
@@ -162,14 +162,15 @@ fun IpAddressAndPrefix<*, *>.isV6(): Boolean {
 }
 
 @OptIn(ExperimentalContracts::class)
-fun IpAddressAndPrefix.V4.isSameFamily(other: IpAddressAndPrefix<*,*>): Boolean {
+fun IpAddressAndPrefix.V4.isSameFamily(other: IpAddressAndPrefix<*, *>): Boolean {
     contract {
         returns(true) implies (other is IpAddressAndPrefix.V4)
     }
     return other is IpAddressAndPrefix.V4
 }
+
 @OptIn(ExperimentalContracts::class)
-fun IpAddressAndPrefix.V6.isSameFamily(other: IpAddressAndPrefix<*,*>): Boolean {
+fun IpAddressAndPrefix.V6.isSameFamily(other: IpAddressAndPrefix<*, *>): Boolean {
     contract {
         returns(true) implies (other is IpAddressAndPrefix.V6)
     }

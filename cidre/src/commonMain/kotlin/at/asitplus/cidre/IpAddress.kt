@@ -1,21 +1,20 @@
 package at.asitplus.cidre
 
-import at.asitplus.cidre.IpAddress.Family.RegexSpec
 import at.asitplus.cidre.byteops.*
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlin.jvm.JvmName
 
 /**
- * An IP address consisting of [Family.numberOfOctets] many octets, as defined by [Specification.numberOfOctets]
+ * An IP address consisting of [IpFamily.numberOfOctets] many octets, as defined by [Specification.numberOfOctets]
  * * [N] indicates the type of [segments]. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
  * * [octets] contains the byte-representation of this IP address in network order (BE)
  */
 sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: Unit) :
     Comparable<IpAddress<N, Size>> {
 
-    /** IP address family ([Family.V4], [Family.V6]*/
-    abstract val family: Family
+    /** IP address family ([IpFamily.V4], [IpFamily.V6]*/
+    abstract val family: IpFamily
 
     init {
         require(octets.size == family.numberOfOctets) { "Illegal number of octets specified for ${this::class.simpleName}: ${octets.size}. Expected: ${family.numberOfOctets}." }
@@ -23,7 +22,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
 
     /**
      * The address's segments. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
-     * The string representation separates segments by [Family.segmentSeparator]
+     * The string representation separates segments by [IpFamily.segmentSeparator]
      */
     abstract val segments: List<N>
 
@@ -71,26 +70,6 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
     val isSpecified: Boolean get() = !octets.all { it == 0.toByte() }
 
     /**
-     * IP family, either [Family.V4] or [Family.V6]
-     */
-    sealed interface Family {
-        val numberOfOctets: Int
-        val numberOfBits: Int get() = numberOfOctets * 8
-        val segmentSeparator: Char
-        val regex: RegexSpec
-
-        abstract class RegexSpec {
-            abstract val segment: Regex
-            abstract val address: Regex
-        }
-
-        companion object {
-            val V4: V4.Companion get() = IpAddress.V4.Companion
-            val V6: V6.Companion get() = IpAddress.V6.Companion
-        }
-    }
-
-    /**
      * Internet Protocol (IpV4), originally defined by [RFC 791](https://www.rfc-editor.org/rfc/rfc791.html)
      */
     class V4
@@ -103,7 +82,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
     @Throws(IllegalArgumentException::class)
     constructor(octets: ByteArray) : IpAddress<Byte, ULong>(octets, Unit) {
 
-        override val family: Companion get() = IpAddress.Family.V4
+        override val family: Companion get() = IpFamily.V4
 
         override val segments: List<Byte> by lazy { octets.toList() }
 
@@ -161,10 +140,10 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
             E
         }
 
-        companion object : IpAddress.Family {
+        companion object : IpFamily {
             override val numberOfOctets: Int = 4
             override val segmentSeparator: Char = '.'
-            override val regex: RegexSpec = object : RegexSpec() {
+            override val regex: IpFamily.RegexSpec = object : IpFamily.RegexSpec() {
                 override val segment = Regex("(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)")
                 override val address = Regex("${segment.pattern}(?:\\.${segment.pattern}){3}")
             }
@@ -205,7 +184,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
 
         override val segments: List<Short> by lazy { octets.toShortArray().asList() }
 
-        override val family: Companion get() = IpAddress.Family.V6
+        override val family: Companion get() = IpFamily.V6
 
         /**
          * *Has an impact on the string representation of this address!*
@@ -338,7 +317,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
             }
         }
 
-        companion object : IpAddress.Family {
+        companion object : IpFamily {
 
 
             override val numberOfOctets: Int = 16
@@ -347,10 +326,10 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
             val PREFIX_IPV4_COMPAT = ByteArray(12)
             val PREFIX_IPV4_MAPPED = ByteArray(10) + ByteArray(2) { -1 }
 
-            override val regex: RegexSpec = object : RegexSpec() {
+            override val regex: IpFamily.RegexSpec = object : IpFamily.RegexSpec() {
                 override val segment = Regex("[0-9A-Fa-f]{1,4}")
                 private val H = segment.pattern
-                private val V4 = IpAddress.Family.V4.regex.address.pattern
+                private val V4 = IpFamily.V4.regex.address.pattern
                 private fun exactHextets(n: Int): String = when {
                     n <= 0 -> ""
                     n == 1 -> H

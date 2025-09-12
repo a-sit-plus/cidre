@@ -291,7 +291,8 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
             }
 
             //lazy prevents initializationexception when constructor throws
-            override val specialRanges: IpNetwork.SpecialRanges<Byte, ULong> by lazy { IpNetwork.V4.SpecialRanges }
+            override val specialRanges: IpNetwork.SpecialRanges<Byte, ULong> get() = IpNetwork.V4.SpecialRanges
+            override val family: IpFamily get() = IpFamily.V4
         }
 
         override val isPrivate: Boolean get() = IpNetwork.V4.SpecialRanges.private.contains(this)
@@ -372,7 +373,9 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
             }
 
             //lazy prevents initializationexception when constructor throws
-            override val specialRanges: IpNetwork.SpecialRanges<Short, Overlong> by lazy { IpNetwork.V6.SpecialRanges }
+            override val specialRanges: IpNetwork.V6.SpecialRanges get() = IpNetwork.V6.SpecialRanges
+
+            override val family: IpFamily get() = IpFamily.V6
         }
 
 
@@ -445,6 +448,7 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
 
     interface Specification<N : Number, Size> {
         val specialRanges: SpecialRanges<N, Size>
+        val family: IpFamily
     }
 
     companion object {
