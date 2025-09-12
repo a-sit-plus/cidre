@@ -23,6 +23,7 @@ class TestAgainstPython {
     val netmask = json.decodeFromString<NetmaskFixture>(resourceText("pythontest/netmask.json"))
     val net_props = json.decodeFromString<NetworkPropsFixture>(resourceText("pythontest/net_props.json"))
     val overlogs = json.decodeFromString<OverlongFixture>(resourceText("pythontest/overlongs.json"))
+    val merge_cases = json.decodeFromString<List<MergeCase>>(resourceText("pythontest/merge_cases.json"))
 
     @Test
     fun overlogs() = overlogs.tests.forEach { case ->
@@ -256,7 +257,7 @@ class TestAgainstPython {
         })
         if (net is IpNetwork.V4) {
             if (net.size < 100000000u) {
-                println(net.size )
+                println(net.size)
                 val sp = net.addressSpace
                 assertEquals(net.address, sp.first())
                 assertEquals(net.lastAddress, sp.last())
@@ -267,6 +268,19 @@ class TestAgainstPython {
             is IpNetwork.V4 -> assertEquals(size, Overlong(net.size))
             is IpNetwork.V6 -> assertEquals(size, net.size)
         }
+    }
+
+
+    @Test
+    fun merge_cases() = merge_cases.forEach { case ->
+        val a = IpNetwork(case.aCidr) as IpNetwork<Number, Any>
+        val b = IpNetwork(case.bCidr) as IpNetwork<Number, Any>
+
+        val canMerge = case.canMerge
+        assertEquals(canMerge, a.canMergeWith(b))
+        if (canMerge) assertEquals(IpNetwork(case.expect!!) as IpNetwork<Number, Any>, a + b)
+        else assertNull(a + b)
+
     }
 
     private fun resourceText(path: String): String =

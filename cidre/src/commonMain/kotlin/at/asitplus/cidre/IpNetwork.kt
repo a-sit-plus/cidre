@@ -15,7 +15,6 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
 
     override val netmask: Netmask = prefix.toNetmask(address.family)
 
-
     override val isLinkLocal: Boolean get() = this == specialRanges.linkLocal
 
     override val isLoopback: Boolean get() = this == specialRanges.loopback
@@ -99,8 +98,38 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
     fun supernetRelative(prefixDiff: UInt): IpNetwork<N, T>? = TODO("maybe implement separately for V4 and V6?")
     */
 
-    //Aggregation; may fail if disjoint
-    abstract operator fun plus(other: IpAddress<N, Size>): IpAddress<N, Size>?
+    /**
+     * Tries to merge this network with an[other]. This will fail and return `null` unless the following conditions are met:
+     * * Same [prefix]
+     * * The [other] network is adjacent to this network
+     * * Masking the lower network’s [address] with the [prefix] of what would be the merged supernet must yield itself
+     *
+     * @return the resulting supernet with [prefix]` - 1` if merging is possible, or `null` otherwise.
+     */
+    operator fun plus(other: IpNetwork<N, Size>): IpNetwork<N, Size>? {
+        if (!canMergeWith(other)) return null
+        val lowerNetwork = if (this < other) this else other
+        val newPrefix = this.prefix - 1u
+        @Suppress("UNCHECKED_CAST")
+        return IpNetwork(lowerNetwork.address.copy(), newPrefix)
+    }
+
+    /**
+     * Checks if this network can be merged with an[other]. Merging is possible, iff the following conditions are met:
+     * * Same [prefix]
+     * * The [other] network is adjacent to this network
+     * * Masking the lower network’s [address] with the [prefix] of what would be the merged supernet must yield itself
+     */
+    fun canMergeWith(other: IpNetwork<N, Size>): Boolean {
+        if (prefix == 0u) return false
+        if (this.prefix != other.prefix) return false
+        if (!this.isAdjacentTo(other)) return false
+        val lowerNetwork = if (this < other) this else other
+        val newPrefix = prefix - 1u
+        val maskedLower = lowerNetwork.address.copy().apply { mask(newPrefix) }
+        return maskedLower == lowerNetwork.address
+    }
+
 
     /**
      * Assignable range of hosts for this network. For IPv6 this includes the network's router-subnet anycast [address].
@@ -230,7 +259,6 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
                 )
             ) else null) as IpInterface.V4?
 
-        override fun plus(other: IpAddress<Byte, ULong>): IpAddress.V4? = TODO("Not yet implemented")
         override fun addressSpaceUntil(excludingLastN: Int): Sequence<IpAddress.V4> = sequence {
             if (prefix == family.numberOfBits.toUInt()) yield(address.copy() as IpAddress.V4)
             var current = ULong(address.octets)
@@ -309,7 +337,6 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
 
         override val address: IpAddress.V6 = address.toNetWorkAddress(deepCopy, netmask, strict) as IpAddress.V6
 
-        override fun plus(other: IpAddress<Short, Overlong>): IpAddress.V6? = TODO("Not yet implemented")
         override fun addressSpaceUntil(excludingLastN: Int): Sequence<IpAddress.V6> = sequence {
             if (prefix == family.numberOfBits.toUInt()) yield(address.copy() as IpAddress.V6)
             var current = Overlong(address.octets)

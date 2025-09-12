@@ -1,0 +1,1479 @@
+[
+  {
+    "a_cidr": "192.168.10.0/25",
+    "b_cidr": "192.168.10.128/25",
+    "can_merge": true,
+    "expect": "192.168.10.0/24",
+    "note": "mergeable siblings"
+  },
+  {
+    "a_cidr": "0.0.0.0/32",
+    "b_cidr": "0.0.0.1/32",
+    "can_merge": true,
+    "expect": "0.0.0.0/31",
+    "note": "mergeable /31 low end"
+  },
+  {
+    "a_cidr": "10.0.0.254/32",
+    "b_cidr": "10.0.0.255/32",
+    "can_merge": true,
+    "expect": "10.0.0.254/31",
+    "note": "mergeable /31 high end"
+  },
+  {
+    "a_cidr": "10.0.0.0/25",
+    "b_cidr": "10.0.0.128/26",
+    "can_merge": false,
+    "expect": null,
+    "note": "adjacent, different prefix"
+  },
+  {
+    "a_cidr": "10.0.0.0/24",
+    "b_cidr": "10.0.0.128/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "containment"
+  },
+  {
+    "a_cidr": "172.16.0.0/23",
+    "b_cidr": "172.16.1.0/24",
+    "can_merge": false,
+    "expect": null,
+    "note": "containment"
+  },
+  {
+    "a_cidr": "192.168.0.0/24",
+    "b_cidr": "192.168.2.0/24",
+    "can_merge": false,
+    "expect": null,
+    "note": "disjoint"
+  },
+  {
+    "a_cidr": "2001:db8::/65",
+    "b_cidr": "2001:db8:0:0:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8::/64",
+    "note": "mergeable siblings /64"
+  },
+  {
+    "a_cidr": "2001:db8::/65",
+    "b_cidr": "2001:db8:0:0:8000::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "adjacent, different prefix"
+  },
+  {
+    "a_cidr": "2001:db8::/64",
+    "b_cidr": "2001:db8::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "containment"
+  },
+  {
+    "a_cidr": "2001:db8::/64",
+    "b_cidr": "2001:db8:1::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "disjoint"
+  },
+  {
+    "a_cidr": "2001:db8:e339:bdc5:8000::/65",
+    "b_cidr": "2001:db8:b11d:3d3a:8000::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:643c:b56d::/64",
+    "b_cidr": "2001:db8:643c:b56d::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:6613:c33c::/64",
+    "b_cidr": "2001:db8:6613:c33d::/64",
+    "can_merge": true,
+    "expect": "2001:db8:6613:c33c::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.227.64/26",
+    "b_cidr": "10.0.227.128/26",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:a9eb:7262::/64",
+    "b_cidr": "2001:db8:a9eb:7262::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:3f12:cc0c::/63",
+    "b_cidr": "2001:db8:3f12:cc0c::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:9a79:5ff6::/63",
+    "b_cidr": "2001:db8:cdd2:5aa0::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.18.126/31",
+    "b_cidr": "10.0.18.128/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.50.112/28",
+    "b_cidr": "10.0.50.128/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:eaa1:c37a::/64",
+    "b_cidr": "2001:db8:eaa1:c37b::/64",
+    "can_merge": true,
+    "expect": "2001:db8:eaa1:c37a::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:5566:488c::/64",
+    "b_cidr": "2001:db8:5566:488d::/64",
+    "can_merge": true,
+    "expect": "2001:db8:5566:488c::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:4659:988b::/65",
+    "b_cidr": "2001:db8:ec99:5918:8000::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.135.112/29",
+    "b_cidr": "10.0.135.112/30",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.249.0/24",
+    "b_cidr": "10.0.250.0/23",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:bc15:526a::/64",
+    "b_cidr": "2001:db8:4303:f922::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.231.84/31",
+    "b_cidr": "10.0.231.84/32",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:b840:31aa::/65",
+    "b_cidr": "2001:db8:7054:a33b:8000::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.110.16/31",
+    "b_cidr": "10.0.189.182/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.88.0/24",
+    "b_cidr": "10.0.89.0/24",
+    "can_merge": true,
+    "expect": "10.0.88.0/23",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:a83b:c84c::/65",
+    "b_cidr": "2001:db8:a83b:c84c:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:a83b:c84c::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:116c:c93b:8000::/65",
+    "b_cidr": "2001:db8:116c:c93c::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:9c58:4502:8000::/65",
+    "b_cidr": "2001:db8:b24c:3370::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.239.0/25",
+    "b_cidr": "10.0.239.0/26",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:a14:680d::/64",
+    "b_cidr": "2001:db8:a14:680e::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.195.96/27",
+    "b_cidr": "10.0.199.224/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:7568:9e20:8000::/65",
+    "b_cidr": "2001:db8:7568:9e21::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:24e1:ba2c::/63",
+    "b_cidr": "2001:db8:c339:627c::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.117.244/30",
+    "b_cidr": "10.0.117.248/29",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:7de1:a7ac::/65",
+    "b_cidr": "2001:db8:7de1:a7ac:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:7de1:a7ac::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:f6f7:3a19:c000::/66",
+    "b_cidr": "2001:db8:f6f7:3a1a::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.170.192/30",
+    "b_cidr": "10.0.170.192/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:3664:6366::/64",
+    "b_cidr": "2001:db8:3664:6367::/64",
+    "can_merge": true,
+    "expect": "2001:db8:3664:6366::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:9478:e208::/64",
+    "b_cidr": "2001:db8:9478:e208::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.164.30/31",
+    "b_cidr": "10.0.164.32/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:bba2:fb70:8000::/66",
+    "b_cidr": "2001:db8:bba2:fb70:c000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:bba2:fb70:8000::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.239.0/24",
+    "b_cidr": "10.0.240.0/24",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.41.128/28",
+    "b_cidr": "10.0.41.144/28",
+    "can_merge": true,
+    "expect": "10.0.41.128/27",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.181.250/31",
+    "b_cidr": "10.0.181.252/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:ac58:bc7c::/63",
+    "b_cidr": "2001:db8:c099:797c::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:5a63:143::/65",
+    "b_cidr": "2001:db8:5a63:143:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:5a63:143::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.183.188/30",
+    "b_cidr": "10.0.183.192/29",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:9416:d60::/65",
+    "b_cidr": "2001:db8:9416:d60::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.147.0/25",
+    "b_cidr": "10.0.147.128/25",
+    "can_merge": true,
+    "expect": "10.0.147.0/24",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.110.60/31",
+    "b_cidr": "10.0.110.60/32",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:762f:e574::/64",
+    "b_cidr": "2001:db8:762f:e575::/64",
+    "can_merge": true,
+    "expect": "2001:db8:762f:e574::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:4b8:b330::/66",
+    "b_cidr": "2001:db8:4b8:b330::/67",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:716:d68c::/65",
+    "b_cidr": "2001:db8:716:d68c:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:716:d68c::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.15.32/28",
+    "b_cidr": "10.0.15.32/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:27ea:3e9c::/64",
+    "b_cidr": "2001:db8:27ea:3e9c::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:9e6:7139::/65",
+    "b_cidr": "2001:db8:9e6:7139:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:9e6:7139::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:e7b:8cda::/64",
+    "b_cidr": "2001:db8:e7b:8cdb::/64",
+    "can_merge": true,
+    "expect": "2001:db8:e7b:8cda::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.209.246/31",
+    "b_cidr": "10.0.205.6/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:7920:2766::/63",
+    "b_cidr": "2001:db8:7920:2766::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.48.128/29",
+    "b_cidr": "10.0.48.128/28",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:a3c2:e9d4::/64",
+    "b_cidr": "2001:db8:a3c2:e9d5::/64",
+    "can_merge": true,
+    "expect": "2001:db8:a3c2:e9d4::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.244.232/30",
+    "b_cidr": "10.0.244.232/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.245.128/25",
+    "b_cidr": "10.0.26.128/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:e099:e4de::/64",
+    "b_cidr": "2001:db8:e099:e4df::/64",
+    "can_merge": true,
+    "expect": "2001:db8:e099:e4de::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:653:b587::/65",
+    "b_cidr": "2001:db8:653:b587:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:653:b587::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:e9df:a233::/64",
+    "b_cidr": "2001:db8:e9df:a233::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.178.96/31",
+    "b_cidr": "10.0.178.96/30",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:faa4:8764::/63",
+    "b_cidr": "2001:db8:faa4:8764::/62",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:a77:4784::/64",
+    "b_cidr": "2001:db8:a77:4785::/64",
+    "can_merge": true,
+    "expect": "2001:db8:a77:4784::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:7f7d:9330:c000::/66",
+    "b_cidr": "2001:db8:7f7d:9331::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.190.128/26",
+    "b_cidr": "10.0.190.192/26",
+    "can_merge": true,
+    "expect": "10.0.190.128/25",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:dc9:952:8000::/66",
+    "b_cidr": "2001:db8:dc9:952:c000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:dc9:952:8000::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:d4d1:5acc:8000::/66",
+    "b_cidr": "2001:db8:d4d1:5acc:c000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:d4d1:5acc:8000::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:11ef:9cb5::/64",
+    "b_cidr": "2001:db8:9e4c:13ee::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.68.0/24",
+    "b_cidr": "10.0.69.0/24",
+    "can_merge": true,
+    "expect": "10.0.68.0/23",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.123.224/27",
+    "b_cidr": "10.0.38.160/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.180.88/29",
+    "b_cidr": "10.0.180.88/30",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.14.60/31",
+    "b_cidr": "10.0.14.62/31",
+    "can_merge": true,
+    "expect": "10.0.14.60/30",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.79.84/30",
+    "b_cidr": "10.0.79.84/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.159.128/25",
+    "b_cidr": "10.0.160.0/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:dbbc:aa2c:8000::/66",
+    "b_cidr": "2001:db8:dbbc:aa2c:c000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:dbbc:aa2c:8000::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:ee56:ccb7:c000::/66",
+    "b_cidr": "2001:db8:ee56:ccb7:c000::/67",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.73.0/26",
+    "b_cidr": "10.0.73.64/26",
+    "can_merge": true,
+    "expect": "10.0.73.0/25",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:504b:39ef:c000::/66",
+    "b_cidr": "2001:db8:95c7:ae10::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.137.32/27",
+    "b_cidr": "10.0.8.192/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:3bd6:c07:4000::/66",
+    "b_cidr": "2001:db8:3bd6:c07:8000::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:2b53:688f::/64",
+    "b_cidr": "2001:db8:2b53:6890::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.224.176/28",
+    "b_cidr": "10.0.224.192/28",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:7d51:1fac::/64",
+    "b_cidr": "2001:db8:7d51:1fad::/64",
+    "can_merge": true,
+    "expect": "2001:db8:7d51:1fac::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:321b:d6b6:8000::/65",
+    "b_cidr": "2001:db8:321b:d6b7::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.33.0/26",
+    "b_cidr": "10.0.33.64/26",
+    "can_merge": true,
+    "expect": "10.0.33.0/25",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:b654:b8e1::/64",
+    "b_cidr": "2001:db8:1b22:7ef9::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.89.24/29",
+    "b_cidr": "10.0.89.32/29",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.129.24/29",
+    "b_cidr": "10.0.129.32/29",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:f1aa:563e:8000::/66",
+    "b_cidr": "2001:db8:45f7:e05b::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:c468:48e::/63",
+    "b_cidr": "2001:db8:c468:490::/62",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.198.0/28",
+    "b_cidr": "10.0.198.16/28",
+    "can_merge": true,
+    "expect": "10.0.198.0/27",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.181.88/30",
+    "b_cidr": "10.0.181.92/30",
+    "can_merge": true,
+    "expect": "10.0.181.88/29",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.232.82/31",
+    "b_cidr": "10.0.232.84/30",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.198.64/26",
+    "b_cidr": "10.0.198.64/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:b5f5:c8c::/64",
+    "b_cidr": "2001:db8:b5f5:c8d::/64",
+    "can_merge": true,
+    "expect": "2001:db8:b5f5:c8c::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:f711:e66f::/64",
+    "b_cidr": "2001:db8:f711:e670::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:a214:60:c000::/66",
+    "b_cidr": "2001:db8:a214:61::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.58.128/25",
+    "b_cidr": "10.0.59.0/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.103.16/29",
+    "b_cidr": "10.0.103.24/29",
+    "can_merge": true,
+    "expect": "10.0.103.16/28",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:4186:6137::/64",
+    "b_cidr": "2001:db8:4186:6138::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.80.64/27",
+    "b_cidr": "10.0.80.96/27",
+    "can_merge": true,
+    "expect": "10.0.80.64/26",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:9173:b320::/65",
+    "b_cidr": "2001:db8:9173:b320:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:9173:b320::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.28.0/25",
+    "b_cidr": "10.0.12.128/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.148.160/27",
+    "b_cidr": "10.0.148.192/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:c2bb:4a72:8000::/65",
+    "b_cidr": "2001:db8:c2bb:4a73::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:98e0:159e::/63",
+    "b_cidr": "2001:db8:98e0:15a0::/62",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.162.0/24",
+    "b_cidr": "10.0.162.0/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:4c28:24b9::/64",
+    "b_cidr": "2001:db8:4c28:24b9::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:d898:372b::/64",
+    "b_cidr": "2001:db8:d898:372c::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:6f4e:6480::/63",
+    "b_cidr": "2001:db8:6f4e:6480::/62",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.253.176/30",
+    "b_cidr": "10.0.253.180/30",
+    "can_merge": true,
+    "expect": "10.0.253.176/29",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:efa0:8bbe::/64",
+    "b_cidr": "2001:db8:efa0:8bbf::/64",
+    "can_merge": true,
+    "expect": "2001:db8:efa0:8bbe::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.43.64/27",
+    "b_cidr": "10.0.43.96/27",
+    "can_merge": true,
+    "expect": "10.0.43.64/26",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:1b87:c80b::/64",
+    "b_cidr": "2001:db8:1b87:c80c::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:c7a3:ea44:8000::/66",
+    "b_cidr": "2001:db8:c7a3:ea44:c000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:c7a3:ea44:8000::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.49.64/28",
+    "b_cidr": "10.0.49.80/28",
+    "can_merge": true,
+    "expect": "10.0.49.64/27",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:ae76:3794::/63",
+    "b_cidr": "2001:db8:ae76:3794::/62",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.174.8/29",
+    "b_cidr": "10.0.174.8/30",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.132.0/24",
+    "b_cidr": "10.0.133.0/24",
+    "can_merge": true,
+    "expect": "10.0.132.0/23",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.213.0/26",
+    "b_cidr": "10.0.213.64/26",
+    "can_merge": true,
+    "expect": "10.0.213.0/25",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.80.0/27",
+    "b_cidr": "10.0.80.32/27",
+    "can_merge": true,
+    "expect": "10.0.80.0/26",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:38b8:f218:8000::/66",
+    "b_cidr": "2001:db8:38b8:f218:c000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:38b8:f218:8000::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.242.246/31",
+    "b_cidr": "10.0.242.246/32",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:b83a:c235:4000::/66",
+    "b_cidr": "2001:db8:b83a:c235:4000::/67",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.24.192/29",
+    "b_cidr": "10.0.24.200/29",
+    "can_merge": true,
+    "expect": "10.0.24.192/28",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.193.0/27",
+    "b_cidr": "10.0.193.32/27",
+    "can_merge": true,
+    "expect": "10.0.193.0/26",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.246.192/27",
+    "b_cidr": "10.0.246.224/27",
+    "can_merge": true,
+    "expect": "10.0.246.192/26",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:b703:8df1::/66",
+    "b_cidr": "2001:db8:b703:8df1:4000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:b703:8df1::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.127.128/27",
+    "b_cidr": "10.0.176.0/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:1e0a:1efc::/63",
+    "b_cidr": "2001:db8:dc31:fe28::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.235.0/26",
+    "b_cidr": "10.0.235.64/26",
+    "can_merge": true,
+    "expect": "10.0.235.0/25",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:210d:ceee::/63",
+    "b_cidr": "2001:db8:210d:cef0::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:41ce:1dcf:8000::/65",
+    "b_cidr": "2001:db8:64bd:8a7d:8000::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:9119:d41d:4000::/66",
+    "b_cidr": "2001:db8:9119:d41d:4000::/67",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:eda4:606e::/65",
+    "b_cidr": "2001:db8:b07e:6574:8000::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.61.192/26",
+    "b_cidr": "10.0.219.128/26",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:7028:133d:4000::/66",
+    "b_cidr": "2001:db8:7028:133d:8000::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.237.192/26",
+    "b_cidr": "10.0.238.0/26",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:3ad0:1cea::/64",
+    "b_cidr": "2001:db8:3ad0:1ceb::/64",
+    "can_merge": true,
+    "expect": "2001:db8:3ad0:1cea::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:9268:70c::/66",
+    "b_cidr": "2001:db8:9268:70c:4000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:9268:70c::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:a9ac:9a36::/63",
+    "b_cidr": "2001:db8:a9ac:9a38::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.173.0/27",
+    "b_cidr": "10.0.173.32/27",
+    "can_merge": true,
+    "expect": "10.0.173.0/26",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:51e3:c67c::/64",
+    "b_cidr": "2001:db8:51e3:c67d::/64",
+    "can_merge": true,
+    "expect": "2001:db8:51e3:c67c::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.160.236/31",
+    "b_cidr": "10.0.160.236/32",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.249.48/28",
+    "b_cidr": "10.0.249.64/28",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.105.0/26",
+    "b_cidr": "10.0.105.0/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.240.156/31",
+    "b_cidr": "10.0.240.158/31",
+    "can_merge": true,
+    "expect": "10.0.240.156/30",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:49b0:d7b6:8000::/65",
+    "b_cidr": "2001:db8:6e3c:26ea:8000::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:49dc:b942::/64",
+    "b_cidr": "2001:db8:49dc:b943::/64",
+    "can_merge": true,
+    "expect": "2001:db8:49dc:b942::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:466f:e56e::/63",
+    "b_cidr": "2001:db8:466f:e570::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:ac9b:592e::/65",
+    "b_cidr": "2001:db8:ac9b:592e:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:ac9b:592e::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.77.0/24",
+    "b_cidr": "10.0.78.0/24",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.231.192/26",
+    "b_cidr": "10.0.232.0/26",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:11a2:ed1c::/64",
+    "b_cidr": "2001:db8:11a2:ed1d::/64",
+    "can_merge": true,
+    "expect": "2001:db8:11a2:ed1c::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:199d:d9cb::/64",
+    "b_cidr": "2001:db8:199d:d9cc::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:4e40:16e0:4000::/66",
+    "b_cidr": "2001:db8:4e40:16e0:8000::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.21.220/30",
+    "b_cidr": "10.0.21.224/29",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.247.128/25",
+    "b_cidr": "10.0.248.0/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:ccf3:46c0::/65",
+    "b_cidr": "2001:db8:ccf3:46c0:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:ccf3:46c0::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.155.224/28",
+    "b_cidr": "10.0.155.240/28",
+    "can_merge": true,
+    "expect": "10.0.155.224/27",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.90.200/30",
+    "b_cidr": "10.0.90.204/30",
+    "can_merge": true,
+    "expect": "10.0.90.200/29",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.132.32/27",
+    "b_cidr": "10.0.160.96/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:d2cf:696c::/63",
+    "b_cidr": "2001:db8:d2cf:696c::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.59.150/31",
+    "b_cidr": "10.0.59.152/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:761b:bd25::/66",
+    "b_cidr": "2001:db8:761b:bd25:4000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:761b:bd25::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:a273:fa00::/64",
+    "b_cidr": "2001:db8:a273:fa01::/64",
+    "can_merge": true,
+    "expect": "2001:db8:a273:fa00::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:467b:d71c::/65",
+    "b_cidr": "2001:db8:467b:d71c::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.59.176/29",
+    "b_cidr": "10.0.138.88/29",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.248.128/25",
+    "b_cidr": "10.0.249.0/24",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.224.64/26",
+    "b_cidr": "10.0.224.128/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.203.64/28",
+    "b_cidr": "10.0.203.80/28",
+    "can_merge": true,
+    "expect": "10.0.203.64/27",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:38c2:2f4e::/64",
+    "b_cidr": "2001:db8:38c2:2f4f::/64",
+    "can_merge": true,
+    "expect": "2001:db8:38c2:2f4e::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.77.128/26",
+    "b_cidr": "10.0.77.128/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:6e18:4249:8000::/66",
+    "b_cidr": "2001:db8:6e18:4249:c000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:6e18:4249:8000::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.21.0/24",
+    "b_cidr": "10.0.22.0/23",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.186.64/26",
+    "b_cidr": "10.0.186.64/27",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:b55d:404::/63",
+    "b_cidr": "2001:db8:26a:a3aa::/63",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.59.128/26",
+    "b_cidr": "10.0.59.192/26",
+    "can_merge": true,
+    "expect": "10.0.59.128/25",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:1e99:d390:8000::/66",
+    "b_cidr": "2001:db8:1e99:d390:8000::/67",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:a675:ba54::/66",
+    "b_cidr": "2001:db8:a675:ba54:4000::/66",
+    "can_merge": true,
+    "expect": "2001:db8:a675:ba54::/65",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.126.128/25",
+    "b_cidr": "10.0.7.0/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.203.112/29",
+    "b_cidr": "10.0.203.112/30",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.58.232/31",
+    "b_cidr": "10.0.58.234/31",
+    "can_merge": true,
+    "expect": "10.0.58.232/30",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.175.40/29",
+    "b_cidr": "10.0.175.40/30",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:44e8:75ec::/65",
+    "b_cidr": "2001:db8:280c:e59c:8000::/65",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:6683:c48::/64",
+    "b_cidr": "2001:db8:6683:c49::/64",
+    "can_merge": true,
+    "expect": "2001:db8:6683:c48::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:d087:df35::/66",
+    "b_cidr": "2001:db8:29cc:e230:8000::/66",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.68.0/24",
+    "b_cidr": "10.0.69.0/24",
+    "can_merge": true,
+    "expect": "10.0.68.0/23",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:e206:f464::/63",
+    "b_cidr": "2001:db8:e206:f464::/64",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.176.96/31",
+    "b_cidr": "10.0.176.98/31",
+    "can_merge": true,
+    "expect": "10.0.176.96/30",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.66.64/27",
+    "b_cidr": "10.0.66.96/27",
+    "can_merge": true,
+    "expect": "10.0.66.64/26",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:c85a:418e::/64",
+    "b_cidr": "2001:db8:c85a:418f::/64",
+    "can_merge": true,
+    "expect": "2001:db8:c85a:418e::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.208.0/24",
+    "b_cidr": "10.0.208.0/25",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.111.56/30",
+    "b_cidr": "10.0.111.60/30",
+    "can_merge": true,
+    "expect": "10.0.111.56/29",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:6748:723e::/64",
+    "b_cidr": "2001:db8:6748:723f::/64",
+    "can_merge": true,
+    "expect": "2001:db8:6748:723e::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.232.146/31",
+    "b_cidr": "10.0.232.148/31",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "10.0.99.90/31",
+    "b_cidr": "10.0.99.90/32",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  },
+  {
+    "a_cidr": "2001:db8:424f:d14a::/64",
+    "b_cidr": "2001:db8:424f:d14b::/64",
+    "can_merge": true,
+    "expect": "2001:db8:424f:d14a::/63",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "2001:db8:a0a:ef09::/65",
+    "b_cidr": "2001:db8:a0a:ef09:8000::/65",
+    "can_merge": true,
+    "expect": "2001:db8:a0a:ef09::/64",
+    "note": "random mergeable siblings"
+  },
+  {
+    "a_cidr": "10.0.82.56/29",
+    "b_cidr": "10.0.82.64/29",
+    "can_merge": false,
+    "expect": null,
+    "note": "random non-mergeable"
+  }
+]

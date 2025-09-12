@@ -259,6 +259,15 @@ data class AdjacencyCase(
     val relation: String          // "equal" | "A_contains_B" | "B_contains_A" | "adjacent" | "disjoint" | "relation_check"
 )
 
+@Serializable
+data class MergeCase(
+    @SerialName("a_cidr") val aCidr: String,
+    @SerialName("b_cidr") val bCidr: String,
+    @SerialName("can_merge") val canMerge: Boolean,
+    val expect: String? = null,
+    val note: String? = null
+)
+
 
 @Serializable
 data class OverlongFixture(

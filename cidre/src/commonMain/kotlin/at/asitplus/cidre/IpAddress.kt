@@ -45,7 +45,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, spec: Specificat
     val family = spec.family
 
     /**
-     * Masks this IP address in-place (i.e. without copying) according to [prefix].
+     * Masks this IP address *in-place* (i.e. without copying) according to [prefix].
      *
      * @return the number of bits modified
      */
