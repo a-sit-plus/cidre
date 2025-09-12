@@ -1,36 +1,37 @@
 package at.asitplus.cidre
 
-import at.asitplus.cidre.byteops.Overlong
+import at.asitplus.cidre.byteops.Size
+
 
 /**
  * An [address] with a [prefix] belonging to a [network]
  */
-sealed class IpInterface<N : Number, Size>
+sealed class IpInterface<N : Number, S: Size<S>>
 @Throws(IllegalArgumentException::class)
-constructor(override val prefix: Prefix, val network: IpNetwork<N, Size>) :
-    IpAddressAndPrefix<N, Size> by network {
+constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
+    IpAddressAndPrefix<N, S> by network {
 
     override fun toString(): String = "$address/$prefix"
 
     companion object {
         @Suppress("UNCHECKED_CAST")
-        internal fun <N : Number, Size> unsafe(
-            network: IpNetwork<N, Size>,
-            address: IpAddress<N, Size>,
+        internal fun <N : Number, S: Size<S>> unsafe(
+            network: IpNetwork<N, S>,
+            address: IpAddress<N, S>,
             prefix: Prefix
-        ): IpInterface<N, Size> = when (address) {
-            is IpAddress.V4 -> V4(address, prefix, network as IpNetwork.V4) as IpInterface<N, Size>
-            is IpAddress.V6 -> V6(address, prefix, network as IpNetwork.V6) as IpInterface<N, Size>
+        ): IpInterface<N, S> = when (address) {
+            is IpAddress.V4 -> V4(address, prefix, network as IpNetwork.V4) as IpInterface<N, S>
+            is IpAddress.V6 -> V6(address, prefix, network as IpNetwork.V6) as IpInterface<N, S>
         }
 
         @Suppress("UNCHECKED_CAST")
-        operator fun <N : Number, Size> invoke(
-            address: IpAddress<N, Size>,
+        operator fun <N : Number, S: Size<S>> invoke(
+            address: IpAddress<N, S>,
             prefix: Prefix
-        ): IpInterface<N, Size> =
+        ): IpInterface<N, S> =
             when (address) {
-                is IpAddress.V4 -> V4(address, prefix) as IpInterface<N, Size>
-                is IpAddress.V6 -> V6(address, prefix) as IpInterface<N, Size>
+                is IpAddress.V4 -> V4(address, prefix) as IpInterface<N, S>
+                is IpAddress.V6 -> V6(address, prefix) as IpInterface<N, S>
             }
 
         @Throws(IllegalArgumentException::class)
@@ -41,7 +42,7 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, Size>) :
     }
 
     class V4 internal constructor(override val address: IpAddress.V4, prefix: Prefix, network: IpNetwork.V4) :
-        IpInterface<Byte, ULong>(prefix, network) {
+        IpInterface<Byte, Size.V4>(prefix, network) {
 
         constructor(address: IpAddress.V4, prefix: Prefix) : this(
             address,
@@ -60,7 +61,7 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, Size>) :
     }
 
     class V6(override val address: IpAddress.V6, prefix: Prefix, network: IpNetwork.V6) :
-        IpInterface<Short, Overlong>(prefix, network) {
+        IpInterface<Short, Size.V6>(prefix, network) {
 
         constructor(address: IpAddress.V6, prefix: Prefix) : this(
             address,

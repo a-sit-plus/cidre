@@ -1,7 +1,7 @@
 import at.asitplus.*
 import at.asitplus.cidre.IpAddress
 import at.asitplus.cidre.IpNetwork
-import at.asitplus.cidre.byteops.Overlong
+import at.asitplus.cidre.byteops.Size
 import at.asitplus.cidre.byteops.toNetmask
 import kotlinx.serialization.json.Json
 import kotlin.test.*
@@ -30,31 +30,31 @@ class TestAgainstPython {
         println(case.input + " ${case.operation} " + case.argument + " = " + case.output)
         when (case.operation) {
             "AND" -> assertEquals(
-                Overlong(case.output.hexToByteArray()),
-                Overlong(case.input.hexToByteArray()) and Overlong(case.argument!!.hexToByteArray())
+                Size.V6(case.output.hexToByteArray()),
+                Size.V6(case.input.hexToByteArray()) and Size.V6(case.argument!!.hexToByteArray())
             )
 
             "OR" -> assertEquals(
-                Overlong(case.output.hexToByteArray()),
-                Overlong(case.input.hexToByteArray()) or Overlong(case.argument!!.hexToByteArray())
+                Size.V6(case.output.hexToByteArray()),
+                Size.V6(case.input.hexToByteArray()) or Size.V6(case.argument!!.hexToByteArray())
             )
 
             "XOR" -> assertEquals(
-                Overlong(case.output.hexToByteArray()),
-                Overlong(case.input.hexToByteArray()) xor Overlong(case.argument!!.hexToByteArray())
+                Size.V6(case.output.hexToByteArray()),
+                Size.V6(case.input.hexToByteArray()) xor Size.V6(case.argument!!.hexToByteArray())
             )
 
             "SHR" -> assertEquals(
-                Overlong(case.output.hexToByteArray()),
-                Overlong(case.input.hexToByteArray()) shr case.argument!!.toInt()
+                Size.V6(case.output.hexToByteArray()),
+                Size.V6(case.input.hexToByteArray()) shr case.argument!!.toInt()
             )
 
             "SHL" -> assertEquals(
-                Overlong(case.output.hexToByteArray()),
-                Overlong(case.input.hexToByteArray()) shl case.argument!!.toInt()
+                Size.V6(case.output.hexToByteArray()),
+                Size.V6(case.input.hexToByteArray()) shl case.argument!!.toInt()
             )
 
-            "INV" -> assertEquals(Overlong(case.output.hexToByteArray()), Overlong(case.input.hexToByteArray()).inv())
+            "INV" -> assertEquals(Size.V6(case.output.hexToByteArray()), Size.V6(case.input.hexToByteArray()).inv())
         }
     }
 
@@ -249,14 +249,14 @@ class TestAgainstPython {
             else assertEquals(IpAddress.V4(it.broadcast), net.broadcastAddress!!.address)
         }
         var size_bytes = it.size_be_hex.hexToByteArray()
-        val size = Overlong(ByteArray(17).apply {
+        val size = Size.V6(ByteArray(17).apply {
             size_bytes.indices.forEach {
                 this[17 - size_bytes.size + it] = size_bytes[it]
 
             }
         })
         if (net is IpNetwork.V4) {
-            if (net.size < 100000000u) {
+            if (net.size < Size.V4(100000000u)) {
                 println(net.size)
                 val sp = net.addressSpace
                 assertEquals(net.address, sp.first())
@@ -265,7 +265,16 @@ class TestAgainstPython {
         }
 
         when (net) {
-            is IpNetwork.V4 -> assertEquals(size, Overlong(net.size))
+            is IpNetwork.V4 -> assertEquals(Size.V4(size_bytes.let {
+                if (it.size < 4)
+                    ByteArray(5).apply {
+                        size_bytes.indices.forEach {
+                            this[5 - size_bytes.size + it] = size_bytes[it]
+                        }
+                    }
+                else it
+            }), net.size)
+
             is IpNetwork.V6 -> assertEquals(size, net.size)
         }
     }

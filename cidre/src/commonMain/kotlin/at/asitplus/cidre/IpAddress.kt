@@ -10,8 +10,8 @@ import kotlin.jvm.JvmName
  * * [N] indicates the type of [segments]. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
  * * [octets] contains the byte-representation of this IP address in network order (BE)
  */
-sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: Unit) :
-    Comparable<IpAddress<N, Size>> {
+sealed class IpAddress<N : Number, S: Size<S>>(val octets: ByteArray, disambiguation: Unit) :
+    Comparable<IpAddress<N, S>> {
 
     /** IP address family ([IpFamily.V4], [IpFamily.V6]*/
     abstract val family: IpFamily
@@ -29,7 +29,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
     /**
      * Compares the IP addresses' octets interpreted as unsigned BE (network order) integer
      */
-    override fun compareTo(other: IpAddress<N, Size>): Int = octets.compareUnsignedBE(other.octets)
+    override fun compareTo(other: IpAddress<N, S>): Int = octets.compareUnsignedBE(other.octets)
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is IpAddress<*, *>) return false
@@ -60,7 +60,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
 
     /**Deep-copies an IP address*/
     @Suppress("UNCHECKED_CAST")
-    fun copy(): IpAddress<N, Size> = IpAddress(octets.copyOf()) as IpAddress<N, Size>
+    fun copy(): IpAddress<N, S> = IpAddress(octets.copyOf()) as IpAddress<N, S>
 
     /**
      * unspecified addresses are:
@@ -80,7 +80,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
      * @throws IllegalArgumentException if invalid [octets] are provided
      */
     @Throws(IllegalArgumentException::class)
-    constructor(octets: ByteArray) : IpAddress<Byte, ULong>(octets, Unit) {
+    constructor(octets: ByteArray) : IpAddress<Byte, Size.V4>(octets, Unit) {
 
         override val family: Companion get() = IpFamily.V4
 
@@ -180,7 +180,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, disambiguation: 
      * @throws IllegalArgumentException if invalid [octets] are provided
      */
     @Throws(IllegalArgumentException::class)
-    constructor(octets: ByteArray) : IpAddress<Short, Overlong>(octets, Unit) {
+    constructor(octets: ByteArray) : IpAddress<Short, Size.V6>(octets, Unit) {
 
         override val segments: List<Short> by lazy { octets.toShortArray().asList() }
 
