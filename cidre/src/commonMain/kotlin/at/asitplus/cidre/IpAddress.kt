@@ -1,10 +1,8 @@
 package at.asitplus.cidre
 
-import at.asitplus.cidre.byteops.Overlong
-import at.asitplus.cidre.byteops.andInplace
-import at.asitplus.cidre.byteops.compareUnsignedBE
-import at.asitplus.cidre.byteops.toNetmask
-import at.asitplus.cidre.byteops.toShortArray
+import at.asitplus.cidre.byteops.*
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlin.jvm.JvmName
 
 /**
@@ -12,7 +10,8 @@ import kotlin.jvm.JvmName
  * * [N] indicates the type of [segments]. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
  * * [octets] contains the byte-representation of this IP address in network order (BE)
  */
-sealed class IpAddress<N : Number, Size>(val octets: ByteArray, spec: Specification<N, Size>) : Comparable<IpAddress<N, Size>> {
+sealed class IpAddress<N : Number, Size>(val octets: ByteArray, spec: Specification<N, Size>) :
+    Comparable<IpAddress<N, Size>> {
 
     init {
         require(octets.size == spec.numberOfOctets) { "Illegal number of octets specified for ${this::class.simpleName}: ${octets.size}. Expected: ${spec.numberOfOctets}." }
@@ -30,7 +29,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, spec: Specificat
     override fun compareTo(other: IpAddress<N, Size>): Int = octets.compareUnsignedBE(other.octets)
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is IpAddress<*,*>) return false
+        if (other !is IpAddress<*, *>) return false
 
         if (!octets.contentEquals(other.octets)) return false
 
@@ -75,7 +74,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, spec: Specificat
     enum class Family(val numberOfOctets: Int) {
         V4(4), V6(16);
 
-        val numberOfBits = numberOfOctets*8
+        val numberOfBits = numberOfOctets * 8
     }
 
     /**
@@ -549,7 +548,7 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, spec: Specificat
          * @throws IllegalArgumentException if an invalid string is provided
          */
         @Throws(IllegalArgumentException::class)
-        operator fun invoke(stringRepresentation: String): IpAddress<*,*> = when {
+        operator fun invoke(stringRepresentation: String): IpAddress<*, *> = when {
             V6.segmentSeparator in stringRepresentation -> V6(stringRepresentation)
             V4.segmentSeparator in stringRepresentation -> V4(stringRepresentation)
             else -> throw IllegalArgumentException("Invalid address '$stringRepresentation'")
@@ -561,11 +560,54 @@ sealed class IpAddress<N : Number, Size>(val octets: ByteArray, spec: Specificat
          * @throws IllegalArgumentException if invalid [octets] are provided
          */
         @Throws(IllegalArgumentException::class)
-        operator fun invoke(octets: ByteArray): IpAddress<*,*> = when (octets.size) {
+        operator fun invoke(octets: ByteArray): IpAddress<*, *> = when (octets.size) {
             V6.numberOfOctets -> V6(octets)
             V4.numberOfOctets -> V4(octets)
             else -> throw IllegalArgumentException("Invalid number of octets: ${octets.size}")
         }
     }
 
+}
+
+
+/**
+ * Contract-enabled predicate: returns true iff this is an IPv4 IpAddressAndPrefix.
+ * Enables smart-cast to IpAddressAndPrefix.V4 in the true branch.
+ */
+@OptIn(ExperimentalContracts::class)
+fun IpAddress<*, *>.isV4(): Boolean {
+    contract {
+        returns(true) implies (this@isV4 is IpAddress.V4)
+        returns(false) implies (this@isV4 is IpAddress.V6)
+    }
+
+    return this is IpAddressAndPrefix.V4
+}
+
+/**
+ * Contract-enabled predicate: returns true iff this is an IPv6 IpAddressAndPrefix.
+ * Enables smart-cast to IpAddressAndPrefix.V6 in the true branch.
+ */
+@OptIn(ExperimentalContracts::class)
+fun IpAddress<*, *>.isV6(): Boolean {
+    contract {
+        returns(true) implies (this@isV6 is IpAddress.V6)
+        returns(false) implies (this@isV6 is IpAddress.V4)
+    }
+    return this is IpAddressAndPrefix.V6
+}
+
+@OptIn(ExperimentalContracts::class)
+fun IpAddress.V4.isSameFamily(other: IpAddress<*,*>): Boolean {
+    contract {
+        returns(true) implies (other is IpAddress.V4)
+    }
+    return other is IpAddress.V4
+}
+@OptIn(ExperimentalContracts::class)
+fun IpAddress.V6.isSameFamily(other: IpAddress<*,*>): Boolean {
+    contract {
+        returns(true) implies (other is IpAddress.V6)
+    }
+    return other is IpAddress.V6
 }

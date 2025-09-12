@@ -2,6 +2,8 @@ package at.asitplus.cidre
 
 import at.asitplus.cidre.byteops.Overlong
 import at.asitplus.cidre.byteops.invInPlace
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 
 /**CIDR prefix length*/
@@ -25,7 +27,7 @@ sealed interface IpAddressAndPrefix<N : Number, Size> {
 
     /** Network-order (BE) layout of a CIDR prefix */
     val netmask: Netmask
-
+    
     /**
      * The inverse of [netmask]
      */
@@ -115,7 +117,6 @@ sealed interface IpAddressAndPrefix<N : Number, Size> {
         /**`true` if this is (part of)  the [IpNetwork.V6.SpecialRanges.reserved] address range. */
         val isReserved: Boolean
 
-
         /**
          * Returns a string representation in the form of `address/prefix`
          * if [expanded] is set to `true` all hextets are printed in full length.  <br>
@@ -138,4 +139,39 @@ internal fun parseIpAndPrefix(stringRepresentation: String) = try {
 } catch (e: Throwable) {
     if (e is IllegalArgumentException) throw e
     else throw IllegalArgumentException("$stringRepresentation is not a valid IP address", e)
+}
+
+/**
+ * Contract-enabled predicate: returns true iff this is an IPv4 IpAddressAndPrefix.
+ * Enables smart-cast to IpAddressAndPrefix.V4 in the true branch.
+ */
+@OptIn(ExperimentalContracts::class)
+fun IpAddressAndPrefix<*, *>.isV4(): Boolean {
+    contract { returns(true) implies (this@isV4 is IpAddressAndPrefix.V4) }
+    return this is IpAddressAndPrefix.V4
+}
+
+/**
+ * Contract-enabled predicate: returns true iff this is an IPv6 IpAddressAndPrefix.
+ * Enables smart-cast to IpAddressAndPrefix.V6 in the true branch.
+ */
+@OptIn(ExperimentalContracts::class)
+fun IpAddressAndPrefix<*, *>.isV6(): Boolean {
+    contract { returns(true) implies (this@isV6 is IpAddressAndPrefix.V6) }
+    return this is IpAddressAndPrefix.V6
+}
+
+@OptIn(ExperimentalContracts::class)
+fun IpAddressAndPrefix.V4.isSameFamily(other: IpAddressAndPrefix<*,*>): Boolean {
+    contract {
+        returns(true) implies (other is IpAddressAndPrefix.V4)
+    }
+    return other is IpAddressAndPrefix.V4
+}
+@OptIn(ExperimentalContracts::class)
+fun IpAddressAndPrefix.V6.isSameFamily(other: IpAddressAndPrefix<*,*>): Boolean {
+    contract {
+        returns(true) implies (other is IpAddressAndPrefix.V6)
+    }
+    return other is IpAddressAndPrefix.V6
 }

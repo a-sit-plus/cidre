@@ -84,7 +84,7 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
 
 
     /**
-     * Tow networks overlap if either contains the other
+     * Two networks overlap if either contains the other
      */
     fun overlaps(other: IpNetwork<N, Size>): Boolean = other.contains(this) or contains(other)
 
