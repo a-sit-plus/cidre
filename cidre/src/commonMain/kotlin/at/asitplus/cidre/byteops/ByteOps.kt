@@ -153,7 +153,7 @@ fun Prefix.toNetmask(family: IpAddress.Family): Netmask = toNetmask(family.numbe
  * Validates that the mask's length and that it is contiguous (all 1-bits followed by 0-bits).
  *
  * @throws IllegalArgumentException if the netmask is not contiguous
- * @throws IllegalArgumentException if the netmask size matches neither [IpAddress.V4.numberOfOctets] nor [IpAddress.V6.numberOfOctets]
+ * @throws IllegalArgumentException if the netmask size matches neither [IpAddress.Companion.numberOfOctets] nor [IpAddress.Companion.numberOfOctets]
  */
 @Throws(IllegalArgumentException::class)
 fun Netmask.toPrefix(): Prefix {

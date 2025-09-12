@@ -148,7 +148,7 @@ constructor(address: IpAddress<N, Size>, override val prefix: Prefix, strict: Bo
                 }
 
                 else -> {
-                    val seq = addressSpaceUntil(if (family == IpAddress.Family.V4) 1 else 0)
+                    val seq = addressSpaceUntil(if (family == IpAddress.V4) 1 else 0)
                     seq.drop(1).forEach {
                         yield(interfaceFor(it as IpAddress<N, Size>))
                     }
