@@ -1,6 +1,6 @@
 package at.asitplus.cidre
 
-import at.asitplus.cidre.byteops.Size
+import at.asitplus.cidre.byteops.CidrNumber
 import at.asitplus.cidre.byteops.invInPlace
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -15,7 +15,7 @@ typealias Netmask = ByteArray
 /**
  * Sealed base interface of [IpAddress] and [IpInterface], attaching common semantics and functionality to the combination of an [address] and [prefix].
  */
-sealed interface IpAddressAndPrefix<N : Number, S: Size<S>> {
+sealed interface IpAddressAndPrefix<N : Number, S: CidrNumber<S>> {
 
     /** Computed once. Do not mess with its octets!*/
     val address: IpAddress<N, S>
@@ -54,7 +54,7 @@ sealed interface IpAddressAndPrefix<N : Number, S: Size<S>> {
      *
      * @see IpAddressAndPrefix
      */
-    sealed interface V4 : IpAddressAndPrefix<Byte, Size.V4> {
+    sealed interface V4 : IpAddressAndPrefix<Byte, CidrNumber.V4> {
 
         override val address: IpAddress.V4
 
@@ -85,7 +85,7 @@ sealed interface IpAddressAndPrefix<N : Number, S: Size<S>> {
      *
      * @see IpAddressAndPrefix
      */
-    sealed interface V6 : IpAddressAndPrefix<Short, Size.V6> {
+    sealed interface V6 : IpAddressAndPrefix<Short, CidrNumber.V6> {
 
         /**`true` if this is (part of) part of the [IpNetwork.V6.SpecialRanges.globalUnicast] address range. This is the equivalent of an IPv4 public address.
          * This is the IPv6 equivalent of [IpInterface.V4.isPublic] */

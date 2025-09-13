@@ -1,7 +1,7 @@
 import at.asitplus.*
 import at.asitplus.cidre.IpAddress
 import at.asitplus.cidre.IpNetwork
-import at.asitplus.cidre.byteops.Size
+import at.asitplus.cidre.byteops.CidrNumber
 import at.asitplus.cidre.byteops.toNetmask
 import kotlinx.serialization.json.Json
 import kotlin.test.*
@@ -30,31 +30,34 @@ class TestAgainstPython {
         println(case.input + " ${case.operation} " + case.argument + " = " + case.output)
         when (case.operation) {
             "AND" -> assertEquals(
-                Size.V6(case.output.hexToByteArray()),
-                Size.V6(case.input.hexToByteArray()) and Size.V6(case.argument!!.hexToByteArray())
+                CidrNumber.V6(case.output.hexToByteArray()),
+                CidrNumber.V6(case.input.hexToByteArray()) and CidrNumber.V6(case.argument!!.hexToByteArray())
             )
 
             "OR" -> assertEquals(
-                Size.V6(case.output.hexToByteArray()),
-                Size.V6(case.input.hexToByteArray()) or Size.V6(case.argument!!.hexToByteArray())
+                CidrNumber.V6(case.output.hexToByteArray()),
+                CidrNumber.V6(case.input.hexToByteArray()) or CidrNumber.V6(case.argument!!.hexToByteArray())
             )
 
             "XOR" -> assertEquals(
-                Size.V6(case.output.hexToByteArray()),
-                Size.V6(case.input.hexToByteArray()) xor Size.V6(case.argument!!.hexToByteArray())
+                CidrNumber.V6(case.output.hexToByteArray()),
+                CidrNumber.V6(case.input.hexToByteArray()) xor CidrNumber.V6(case.argument!!.hexToByteArray())
             )
 
             "SHR" -> assertEquals(
-                Size.V6(case.output.hexToByteArray()),
-                Size.V6(case.input.hexToByteArray()) shr case.argument!!.toInt()
+                CidrNumber.V6(case.output.hexToByteArray()),
+                CidrNumber.V6(case.input.hexToByteArray()) shr case.argument!!.toInt()
             )
 
             "SHL" -> assertEquals(
-                Size.V6(case.output.hexToByteArray()),
-                Size.V6(case.input.hexToByteArray()) shl case.argument!!.toInt()
+                CidrNumber.V6(case.output.hexToByteArray()),
+                CidrNumber.V6(case.input.hexToByteArray()) shl case.argument!!.toInt()
             )
 
-            "INV" -> assertEquals(Size.V6(case.output.hexToByteArray()), Size.V6(case.input.hexToByteArray()).inv())
+            "INV" -> assertEquals(
+                CidrNumber.V6(case.output.hexToByteArray()),
+                CidrNumber.V6(case.input.hexToByteArray()).inv()
+            )
         }
     }
 
@@ -249,14 +252,9 @@ class TestAgainstPython {
             else assertEquals(IpAddress.V4(it.broadcast), net.broadcastAddress!!.address)
         }
         var size_bytes = it.size_be_hex.hexToByteArray()
-        val size = Size.V6(ByteArray(17).apply {
-            size_bytes.indices.forEach {
-                this[17 - size_bytes.size + it] = size_bytes[it]
-
-            }
-        })
+        val size = CidrNumber.V6.fromUnpadded(size_bytes)
         if (net is IpNetwork.V4) {
-            if (net.size < Size.V4(100000000u)) {
+            if (net.size < CidrNumber.V4(100000000u)) {
                 println(net.size)
                 val sp = net.addressSpace
                 assertEquals(net.address, sp.first())
@@ -265,15 +263,10 @@ class TestAgainstPython {
         }
 
         when (net) {
-            is IpNetwork.V4 -> assertEquals(Size.V4(size_bytes.let {
-                if (it.size < 4)
-                    ByteArray(5).apply {
-                        size_bytes.indices.forEach {
-                            this[5 - size_bytes.size + it] = size_bytes[it]
-                        }
-                    }
-                else it
-            }), net.size)
+            is IpNetwork.V4 -> {
+                var expected = CidrNumber.V4.fromUnpadded(size_bytes)
+                assertEquals(expected, net.size)
+            }
 
             is IpNetwork.V6 -> assertEquals(size, net.size)
         }

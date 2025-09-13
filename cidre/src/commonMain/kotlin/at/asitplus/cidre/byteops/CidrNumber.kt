@@ -1,15 +1,29 @@
 package at.asitplus.cidre.byteops
 
+import at.asitplus.cidre.byteops.CidrNumber.V4.Companion.MAX_VALUE
+import at.asitplus.cidre.byteops.CidrNumber.V6.Companion.MAX_VALUE
+import kotlin.experimental.ExperimentalObjCName
 import kotlin.jvm.JvmInline
+import kotlin.jvm.JvmName
+import kotlin.jvm.JvmStatic
+import kotlin.native.ObjCName
 
 /**
- * IP address space size
+ * Number with a byte layout optimized for CIDR/IP operations.
+ * The maximum number of addresses inside an IP address space is 2^32 for IPv4 and 2^128 for IPv6. Hence,
+ * 32/128-bit numbers are not enough to represent the size of /0 networks, and an additional bit is needed.
+ * At the same time, the *actual* number of bytes used is 4/16, which is why (by default) a CidrNumber's
+ * byte-representation is truncated to 4/16 bytes, to make it efficiently usable for CIDR operations.
+ *
+ * Its String representation is the hex-encoded byte-representation.
+ *
+ * @see toByteArray
  */
-interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
+interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
     operator fun plus(other: TSelf): TSelf
     operator fun minus(other: TSelf): TSelf
-    operator fun plus(other: UInt):TSelf
-    operator fun minus(other: UInt):TSelf
+    operator fun plus(other: UInt): TSelf
+    operator fun minus(other: UInt): TSelf
     infix fun and(other: TSelf): TSelf
     infix fun or(other: TSelf): TSelf
     infix fun xor(other: TSelf): TSelf
@@ -18,62 +32,122 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
     operator fun inv(): TSelf
     operator fun inc(): TSelf
     operator fun dec(): TSelf
-    fun toByteArray(): ByteArray
 
     /**
-     * 33 Bit Unsigned Int. It's [MAX_VALUE] is hence 2^32 and **NOT** 2^32-1.
+     * Converts the internal representation of the object into a ByteArray optimized for CIDR/IP operations.
+     * The maximum number of addresses inside an IP address space is 2^32 for IPv4 and 2^128 for IPv6. Hence,
+     * 32/128-bit numbers are not enough to represent the size of /0 networks, and an additional bit is needed.
+     *
+     * However, this function by default truncates to 4/16 bytes, as useful for CIDR operations.
+     * To write the number of addresses correctly, set [truncate]` = false`.
      */
+    fun toByteArray(truncate: Boolean = true): ByteArray
+
+    /**
+     * Minimal, fixed-width 3**3**-bit unsigned integer for CIDR/IP operations,
+     * meaning its [MAX_VALUE] is 2^3**3**-1 (and not 2^32-1). This is required to represent the maximum number of addresses inside
+     * an IPv4 network.
+     *
+     * * Always exactly 3**3** bits wide for arithmetic.
+     * * Network byte order (big-endian) for serialization.
+     * * Tailored for IPv4 arithmetic: compare, +/-, bitwise ops, shifts.
+     * * Implemented as a value class on [ULong] with clamping to 33 bit.
+     */
+
+
+    companion object {
+        /**
+         * Parse from
+         * * 4 or 5 bytes (IPv4)
+         * * 16 or 17 bytes (IPv6)
+         *
+         * @throws IllegalArgumentException for invalid lengths
+         */
+        @OptIn(ExperimentalObjCName::class)
+        @JvmStatic
+        @JvmName("fromBytes")
+        @ObjCName("fromBytes")
+        operator fun invoke(bytes: ByteArray): CidrNumber<*> =
+            when (bytes.size) {
+                4, 5 -> V4(bytes)
+                16, 17 -> V6(bytes)
+                else -> throw IllegalArgumentException("invalid byte length: ${bytes.size}")
+            }
+
+    }
+
     @JvmInline
-    value class V4(private val raw: ULong) : Size<V4> {
-
-        override fun toString() = raw.coerceAtMost(MAX_VALUE.raw).toString()
-
-        companion object {
-            val ZERO = V4(0u)
-            val ONE = V4(1u)
-            val MAX_VALUE = V4(1uL shl 32)
+    value class V4 private constructor(val raw: ULong) : CidrNumber<CidrNumber.V4> {
 
 
+        override fun toString(): String = toByteArray().toHexString()
 
-            operator fun invoke(bytes: ByteArray): V4 {
-                require(bytes.size ==4 || bytes.size==5) { "ByteArray must contain 4 or 5 bytes. Has: ${bytes.size}" }
+        companion object Companion {
 
+            @OptIn(ExperimentalObjCName::class)
+            @JvmStatic
+            @JvmName("fromLong")
+            @ObjCName("fromLong")
+            operator fun invoke(raw: ULong) = CidrNumber.V4(raw and MAX_VALUE.raw)
+            val ZERO = CidrNumber.V4(0u)
+            val ONE = CidrNumber.V4(1u)
+            val MAX_VALUE = CidrNumber.V4((2uL shl 33) - 1uL)
+
+            /**
+             * Parse from 4 or 5 bytes (big-endian).
+             * This supports the full 33-bit range [0, 2^33-1].
+             *
+             * @throws IllegalArgumentException for invalid lengths
+             */
+            @OptIn(ExperimentalObjCName::class)
+            @JvmStatic
+            @JvmName("fromBytes")
+            @ObjCName("fromBytes")
+            operator fun invoke(bytes: ByteArray): CidrNumber.V4 {
+                require(bytes.size == 4 || bytes.size == 5) { "ByteArray must contain 4 or 5 bytes. Has: ${bytes.size}" }
                 var acc = 0uL
                 var i = 0
                 while (i < bytes.size) {
                     acc = (acc shl 8) or (bytes[i].toUByte().toULong() and 0xFFuL)
                     i++
                 }
-                return V4(acc)
+                return CidrNumber.V4(acc)
             }
+
+            fun fromUnpadded(bytes: ByteArray): CidrNumber.V4 = CidrNumber.V4(
+                if (bytes.size < 4) ByteArray(5).apply {
+                    bytes.indices.forEach { this[5 - bytes.size + it] = bytes[it] }
+                } else bytes
+            )
         }
 
 
-        override fun plus(other: V4): V4 = V4(raw + other.raw)
-        override fun plus(other: UInt): V4 = V4(raw + other)
+        override fun plus(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw + other.raw)
+        override fun plus(other: UInt): CidrNumber.V4 = CidrNumber.V4(raw + other)
 
-        override fun minus(other: V4): V4 = V4(raw - other.raw)
-        override fun minus(other: UInt): V4  = V4(raw-other)
+        override fun minus(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw - other.raw)
+        override fun minus(other: UInt): CidrNumber.V4 = CidrNumber.V4(raw - other)
 
-        override fun and(other: V4): V4 = V4(raw.and(other.raw))
+        override fun and(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw.and(other.raw))
 
-        override fun or(other: V4): V4 = V4(raw.or(other.raw))
+        override fun or(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw.or(other.raw))
 
-        override fun xor(other: V4): V4 = V4(raw.xor(other.raw))
+        override fun xor(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw.xor(other.raw))
 
-        override fun shl(n: Int): V4 = V4(raw.shl(n))
+        override fun shl(n: Int): CidrNumber.V4 = CidrNumber.V4(raw.shl(n))
 
-        override fun shr(n: Int): V4 = V4(raw.shr(n))
+        override fun shr(n: Int): CidrNumber.V4 = CidrNumber.V4(raw.shr(n))
 
-        override fun inv(): V4 = V4(raw.inv())
+        override fun inv(): CidrNumber.V4 = CidrNumber.V4(raw.inv())
 
-        override fun inc(): V4 = V4(raw.inc())
+        override fun inc(): CidrNumber.V4 = CidrNumber.V4(raw.inc())
 
-        override fun dec(): V4 = V4(raw.dec())
+        override fun dec(): CidrNumber.V4 = CidrNumber.V4(raw.dec())
 
-        override fun toByteArray(): ByteArray {
-            val out = ByteArray(4)
-            var v = raw.coerceAtMost(MAX_VALUE.raw)
+
+        override fun toByteArray(truncate: Boolean): ByteArray {
+            val out = ByteArray(if (truncate || raw <= UInt.MAX_VALUE) 4 else 5)
+            var v = raw
             for (i in 0 until out.size) {
                 out[out.size - 1 - i] = (v and 0xFFuL).toUByte().toByte()
                 v = v shr 8
@@ -81,13 +155,13 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
             return out
         }
 
-        override fun compareTo(other: V4): Int = raw.coerceAtMost(MAX_VALUE.raw).compareTo(other.raw.coerceAtMost(MAX_VALUE.raw))
+        override fun compareTo(other: CidrNumber.V4): Int = raw.compareTo(other.raw)
 
     }
 
     /**
      * Minimal, fixed-width 12**9**-bit unsigned integer for CIDR/IP operations,
-     * meaning its [MAX_VALUE] is 2^12**9** (and not 2^128-1). This is required to represent the maximum number of addresses inside
+     * meaning its [MAX_VALUE] is 2^12**9**-1 (and not 2^128-1). This is required to represent the maximum number of addresses inside
      * an IPv6 network.
      *
      * * Always exactly 12**9** bits wide for arithmetic.
@@ -100,8 +174,7 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
      *  lo: least-significant 64 bits (bits 63..0)
      *  extraBit: bit 65
      */
-    class V6(hi: ULong, lo: ULong, extraBit: Boolean = false) : Size<V6> {
-        constructor(number: ULong) : this(0uL, number)
+    class V6 internal constructor(hi: ULong, lo: ULong, extraBit: Boolean = false) : CidrNumber<V6> {
 
         var hi: ULong = hi
             private set
@@ -110,7 +183,8 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
         var extraBit: Boolean = extraBit
             private set
 
-        // for efficiency
+        override fun toString(): String = toByteArray().toHexString()
+
         override fun compareTo(other: V6): Int = when {
             this.extraBit != other.extraBit -> if (this.extraBit) 1 else -1
             this.hi != other.hi -> if (this.hi < other.hi) -1 else 1
@@ -118,7 +192,6 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
             else -> 0
         }
 
-        // ----- Addition / Subtraction (mod 2^129) -----
         override operator fun plus(other: V6): V6 {
             // 64-bit low limb
             val loSum = this.lo + other.lo
@@ -178,7 +251,6 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
             this.hi = hiSum
             this.extraBit = newExtra
         }
-
 
 
         override operator fun minus(other: V6): V6 {
@@ -276,13 +348,13 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
             extraBit = this.extraBit && other.extraBit
         )
 
-       override infix fun or(other: V6): V6 = V6(
+        override infix fun or(other: V6): V6 = V6(
             this.hi or other.hi,
             this.lo or other.lo,
             extraBit = this.extraBit || other.extraBit
         )
 
-       override infix fun xor(other: V6): V6 = V6(
+        override infix fun xor(other: V6): V6 = V6(
             this.hi xor other.hi,
             this.lo xor other.lo,
             extraBit = this.extraBit.xor(other.extraBit)
@@ -324,7 +396,7 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
         }
 
         // ----- Shifts (logical) -----
-       override infix fun shl(n: Int): V6 {
+        override infix fun shl(n: Int): V6 {
             require(n in 0..128) { "shift must be in [0,128]" }
             if (n == 0) return this
             var newHi: ULong
@@ -405,8 +477,8 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
         }
 
 
-       override fun toByteArray(): ByteArray {
-            if (!extraBit) {
+        override fun toByteArray(truncate: Boolean): ByteArray {
+            if (truncate || !extraBit) {
                 val b = ByteArray(16)
                 writeULongBE(b, 0, hi)
                 writeULongBE(b, 8, lo)
@@ -427,7 +499,7 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
 
 
         override operator fun dec(): V6 {
-            this-=1uL
+            this -= 1uL
             return this
         }
 
@@ -442,8 +514,6 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
             return true
         }
 
-
-        override fun toString(): String  = toByteArray().toHexString()
         override fun hashCode(): Int {
             var result = extraBit.hashCode()
             result = 31 * result + hi.hashCode()
@@ -457,6 +527,12 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
             val ONE = V6(0uL, 1uL)
             val MAX_VALUE = V6(ULong.MAX_VALUE, ULong.MAX_VALUE, extraBit = true)
 
+            @OptIn(ExperimentalObjCName::class)
+            @JvmStatic
+            @JvmName("fromLong")
+            @ObjCName("fromLong")
+            operator fun invoke(number: ULong) = V6(0uL, number)
+
             /**
              * Parse from 16 or 17 bytes (big-endian).
              * * 16-byte form: standard 128-bit value (extraBit = false).
@@ -468,6 +544,10 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
              * @throws IllegalArgumentException for invalid lengths or invalid header values.
              */
             @Throws(IllegalArgumentException::class)
+            @OptIn(ExperimentalObjCName::class)
+            @JvmStatic
+            @JvmName("fromBytes")
+            @ObjCName("fromBytes")
             // ---- V6 factory from BE bytes (canonical: 16 or 17)
             // 17-byte form: first byte is 0x01 (since values < 2^129 ⇒ top byte ∈ {0x00,0x01})
             operator fun invoke(bytes: ByteArray): V6 {
@@ -496,6 +576,12 @@ interface Size<TSelf : Size<TSelf>> : Comparable<TSelf> {
                     else -> error("Expected 16 or 17 bytes, got ${bytes.size}")
                 }
             }
+
+            fun fromUnpadded(bytes: ByteArray): CidrNumber.V6 = CidrNumber.V6(
+                if (bytes.size < 16) ByteArray(17).apply {
+                    bytes.indices.forEach { this[17 - bytes.size + it] = bytes[it] }
+                } else bytes
+            )
 
             // ---- BE limb helpers (your read is fine; write fixed to use 0xFFuL)
             private fun readULongBE(src: ByteArray, offset: Int): ULong {

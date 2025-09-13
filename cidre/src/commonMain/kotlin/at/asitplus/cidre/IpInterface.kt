@@ -1,12 +1,12 @@
 package at.asitplus.cidre
 
-import at.asitplus.cidre.byteops.Size
+import at.asitplus.cidre.byteops.CidrNumber
 
 
 /**
  * An [address] with a [prefix] belonging to a [network]
  */
-sealed class IpInterface<N : Number, S: Size<S>>
+sealed class IpInterface<N : Number, S: CidrNumber<S>>
 @Throws(IllegalArgumentException::class)
 constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
     IpAddressAndPrefix<N, S> by network {
@@ -15,7 +15,7 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
 
     companion object {
         @Suppress("UNCHECKED_CAST")
-        internal fun <N : Number, S: Size<S>> unsafe(
+        internal fun <N : Number, S: CidrNumber<S>> unsafe(
             network: IpNetwork<N, S>,
             address: IpAddress<N, S>,
             prefix: Prefix
@@ -25,7 +25,7 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
         }
 
         @Suppress("UNCHECKED_CAST")
-        operator fun <N : Number, S: Size<S>> invoke(
+        operator fun <N : Number, S: CidrNumber<S>> invoke(
             address: IpAddress<N, S>,
             prefix: Prefix
         ): IpInterface<N, S> =
@@ -42,7 +42,7 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
     }
 
     class V4 internal constructor(override val address: IpAddress.V4, prefix: Prefix, network: IpNetwork.V4) :
-        IpInterface<Byte, Size.V4>(prefix, network) {
+        IpInterface<Byte, CidrNumber.V4>(prefix, network) {
 
         constructor(address: IpAddress.V4, prefix: Prefix) : this(
             address,
@@ -61,7 +61,7 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
     }
 
     class V6(override val address: IpAddress.V6, prefix: Prefix, network: IpNetwork.V6) :
-        IpInterface<Short, Size.V6>(prefix, network) {
+        IpInterface<Short, CidrNumber.V6>(prefix, network) {
 
         constructor(address: IpAddress.V6, prefix: Prefix) : this(
             address,

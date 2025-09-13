@@ -181,3 +181,36 @@ fun Netmask.toPrefix(): Prefix {
     }
     return prefix
 }
+
+/**
+ * Converts the UInt value to its IPv4 address representation in the form of a 4-byte-long ByteArray.
+ * Each byte in the array corresponds to one octet of the IPv4 address, arranged in network byte order (big-endian).
+ *
+ * @return A ByteArray containing 4 bytes representing the IPv4 address.
+ */
+fun UInt.toIPv4Bytes(): ByteArray {
+    val out = ByteArray(4)
+    var v = this
+    for (i in 0 until out.size) {
+        out[out.size - 1 - i] = (v and 0xFFu).toUByte().toByte()
+        v = v shr 8
+    }
+    return out
+}
+
+/**
+ * Converts the UInt value to its IPv4 address representation in the form of a 4-byte-long ByteArray.
+ * Each byte in the array corresponds to one octet of the IPv4 address, arranged in network byte order (big-endian).
+ * Any values larger than [UInt.MAX_VALUE] will be truncated to four bytes
+ *
+ * @return A ByteArray containing 4 bytes representing the IPv4 address.
+ */
+fun ULong.toIPv4Bytes(): ByteArray {
+    val out = ByteArray(if (this > UInt.MAX_VALUE) 5 else 4)
+    var v = this
+    for (i in 0 until out.size) {
+        out[out.size - 1 - i] = (v and 0xFFuL).toUByte().toByte()
+        v = v shr 8
+    }
+    return out
+}

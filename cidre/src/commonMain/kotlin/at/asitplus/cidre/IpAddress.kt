@@ -10,7 +10,7 @@ import kotlin.jvm.JvmName
  * * [N] indicates the type of [segments]. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
  * * [octets] contains the byte-representation of this IP address in network order (BE)
  */
-sealed class IpAddress<N : Number, S: Size<S>>(val octets: ByteArray, disambiguation: Unit) :
+sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disambiguation: Unit) :
     Comparable<IpAddress<N, S>> {
 
     /** IP address family ([IpFamily.V4], [IpFamily.V6]*/
@@ -80,7 +80,7 @@ sealed class IpAddress<N : Number, S: Size<S>>(val octets: ByteArray, disambigua
      * @throws IllegalArgumentException if invalid [octets] are provided
      */
     @Throws(IllegalArgumentException::class)
-    constructor(octets: ByteArray) : IpAddress<Byte, Size.V4>(octets, Unit) {
+    constructor(octets: ByteArray) : IpAddress<Byte, CidrNumber.V4>(octets, Unit) {
 
         override val family: Companion get() = IpFamily.V4
 
@@ -180,7 +180,7 @@ sealed class IpAddress<N : Number, S: Size<S>>(val octets: ByteArray, disambigua
      * @throws IllegalArgumentException if invalid [octets] are provided
      */
     @Throws(IllegalArgumentException::class)
-    constructor(octets: ByteArray) : IpAddress<Short, Size.V6>(octets, Unit) {
+    constructor(octets: ByteArray) : IpAddress<Short, CidrNumber.V6>(octets, Unit) {
 
         override val segments: List<Short> by lazy { octets.toShortArray().asList() }
 
