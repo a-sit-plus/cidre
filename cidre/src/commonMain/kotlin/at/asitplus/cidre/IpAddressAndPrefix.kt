@@ -29,7 +29,7 @@ sealed interface IpAddressAndPrefix<N : Number, S: CidrNumber<S>> {
     val netmask: Netmask
 
     /**
-     * The inverse of [netmask]
+     * The complement of [netmask]
      */
     val hostMask: ByteArray get() = netmask.copyOf().apply { invInPlace() }
 
@@ -142,20 +142,13 @@ internal fun parseIpAndPrefix(stringRepresentation: String) = try {
     else throw IllegalArgumentException("$stringRepresentation is not a valid IP address", e)
 }
 
-/**
- * Contract-enabled predicate: returns true iff this is an IPv4 IpAddressAndPrefix.
- * Enables smart-cast to IpAddressAndPrefix.V4 in the true branch.
- */
+
 @OptIn(ExperimentalContracts::class)
 fun IpAddressAndPrefix<*, *>.isV4(): Boolean {
     contract { returns(true) implies (this@isV4 is IpAddressAndPrefix.V4) }
     return this is IpAddressAndPrefix.V4
 }
 
-/**
- * Contract-enabled predicate: returns true iff this is an IPv6 IpAddressAndPrefix.
- * Enables smart-cast to IpAddressAndPrefix.V6 in the true branch.
- */
 @OptIn(ExperimentalContracts::class)
 fun IpAddressAndPrefix<*, *>.isV6(): Boolean {
     contract { returns(true) implies (this@isV6 is IpAddressAndPrefix.V6) }

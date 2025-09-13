@@ -4,7 +4,19 @@
 
 ## NEXT
 * Revised generic type arguments
-* Introduce `Overlong` 129 bit unsigned int
+* Introduce `CidrNumber` optimized for CIDR operations
+  * `CidrNumber.V4` for IPv4
+  * `CidrNumber.V6` for IPv6
+* CIDR math helpers on IP Addresses:
+  * `toCidrNumber` to get numeric representation
+  * `plus`
+  * `minus`
+  * `shl`
+  * `shr`
+  * `and`
+  * `or`
+  * `xor`
+  * `inv`
 * More properties:
   * `hostMask`
   * `numberOfHostBits`

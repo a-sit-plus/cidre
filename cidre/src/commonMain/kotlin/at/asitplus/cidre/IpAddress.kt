@@ -10,7 +10,7 @@ import kotlin.jvm.JvmName
  * * [N] indicates the type of [segments]. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
  * * [octets] contains the byte-representation of this IP address in network order (BE)
  */
-sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disambiguation: Unit) :
+sealed class IpAddress<N : Number, S : CidrNumber<S>>(val octets: ByteArray, disambiguation: Unit) :
     Comparable<IpAddress<N, S>> {
 
     /** IP address family ([IpFamily.V4], [IpFamily.V6]*/
@@ -19,6 +19,8 @@ sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disa
     init {
         require(octets.size == family.numberOfOctets) { "Illegal number of octets specified for ${this::class.simpleName}: ${octets.size}. Expected: ${family.numberOfOctets}." }
     }
+
+    abstract fun toCidrNumber(): S
 
     /**
      * The address's segments. For IPv4 those are [Byte]s, for IPv6 they are [Short]s laid out in network order (BE).
@@ -69,6 +71,32 @@ sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disa
      */
     val isSpecified: Boolean get() = !octets.all { it == 0.toByte() }
 
+    @Suppress("UNCHECKED_CAST")
+    operator fun plus(number: S): IpAddress<N, S> = IpAddress(toCidrNumber() + number) as IpAddress<N, S>
+
+    @Suppress("UNCHECKED_CAST")
+    operator fun minus(number: S): IpAddress<N, S> = IpAddress(toCidrNumber() - number) as IpAddress<N, S>
+
+    inline infix fun shl(bits: Int): IpAddress<N, S> = IpAddress(octets shl bits) as IpAddress<N, S>
+    inline infix fun shr(bits: Int): IpAddress<N, S> = IpAddress(octets shr bits) as IpAddress<N, S>
+
+    //@formatter:off
+    inline infix fun or(address: IpAddress<N, S>): IpAddress<N, S> =
+    IpAddress(octets or address.octets) as IpAddress<N, S>
+
+    inline infix fun and(address: IpAddress<N, S>): IpAddress<N, S> =
+    IpAddress(octets and address.octets) as IpAddress<N, S>
+
+    inline infix fun xor(address: IpAddress<N, S>): IpAddress<N, S> =
+    IpAddress(octets xor address.octets) as IpAddress<N, S>
+    //@formatter:on
+
+    inline infix fun or(netmask: Netmask): IpAddress<N, S> = IpAddress(octets or netmask) as IpAddress<N, S>
+    inline infix fun xor(netmask: Netmask): IpAddress<N, S> = IpAddress(octets xor netmask) as IpAddress<N, S>
+    inline infix fun and(netmask: Netmask): IpAddress<N, S> = IpAddress(octets and netmask) as IpAddress<N, S>
+
+    inline operator fun inv(): IpAddress<N, S> = IpAddress(octets.inv()) as IpAddress<N, S>
+
     /**
      * Internet Protocol (IpV4), originally defined by [RFC 791](https://www.rfc-editor.org/rfc/rfc791.html)
      */
@@ -85,6 +113,8 @@ sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disa
         override val family: Companion get() = IpFamily.V4
 
         override val segments: List<Byte> by lazy { octets.toList() }
+
+        override fun toCidrNumber(): CidrNumber.V4 = CidrNumber.V4(octets)
 
         /**
          * String representation as per [RFC 1123, Section 2](https://www.rfc-editor.org/rfc/rfc1123.html#section-2):
@@ -166,6 +196,14 @@ sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disa
                     value.toUByte().toByte()
                 })
             }
+
+            /**
+             * Creates an IP address from the passed [numeric] representation.
+             * Note that if the numeric representation exceeds the address space (i.e., if the size of a /0 network is passed),
+             * it simply overflows and never throws.
+             */
+            operator fun invoke(numeric: CidrNumber.V4): IpAddress.V4 = IpAddress.V4(numeric.toByteArray())
+
         }
     }
 
@@ -185,6 +223,8 @@ sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disa
         override val segments: List<Short> by lazy { octets.toShortArray().asList() }
 
         override val family: Companion get() = IpFamily.V6
+
+        override fun toCidrNumber(): CidrNumber.V6 = CidrNumber.V6(octets)
 
         /**
          * *Has an impact on the string representation of this address!*
@@ -434,6 +474,14 @@ sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disa
 
                 return V6(result)
             }
+
+            /**
+             * Creates an IP address from the passed [numeric] representation.
+             * Note that if the numeric representation exceeds the address space (i.e., if the size of a /0 network is passed),
+             * it simply overflows and never throws.
+             */
+            operator fun invoke(numeric: CidrNumber.V6): IpAddress.V6 = IpAddress.V6(numeric.toByteArray())
+
         }
     }
 
@@ -463,15 +511,18 @@ sealed class IpAddress<N : Number, S: CidrNumber<S>>(val octets: ByteArray, disa
             V4.numberOfOctets -> V4(octets)
             else -> throw IllegalArgumentException("Invalid number of octets: ${octets.size}")
         }
+
+        /**
+         * Creates an IP address from the passed [numeric] representation.
+         * Note that if the numeric representation exceeds the address space (i.e., if the size of a /0 network is passed),
+         * it simply overflows and never throws.
+         */
+        operator fun invoke(numeric: CidrNumber<*>): IpAddress<*, *> = IpAddress(numeric.toByteArray())
+
     }
 
 }
 
-
-/**
- * Contract-enabled predicate: returns true iff this is an IPv4 IpAddressAndPrefix.
- * Enables smart-cast to IpAddressAndPrefix.V4 in the true branch.
- */
 @OptIn(ExperimentalContracts::class)
 fun IpAddress<*, *>.isV4(): Boolean {
     contract {
@@ -482,10 +533,7 @@ fun IpAddress<*, *>.isV4(): Boolean {
     return this is IpAddressAndPrefix.V4
 }
 
-/**
- * Contract-enabled predicate: returns true iff this is an IPv6 IpAddressAndPrefix.
- * Enables smart-cast to IpAddressAndPrefix.V6 in the true branch.
- */
+
 @OptIn(ExperimentalContracts::class)
 fun IpAddress<*, *>.isV6(): Boolean {
     contract {

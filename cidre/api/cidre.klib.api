@@ -212,9 +212,21 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
     final val octets // at.asitplus.cidre/IpAddress.octets|{}octets[0]
         final fun <get-octets>(): kotlin/ByteArray // at.asitplus.cidre/IpAddress.octets.<get-octets>|<get-octets>(){}[0]
 
+    abstract fun toCidrNumber(): #B // at.asitplus.cidre/IpAddress.toCidrNumber|toCidrNumber(){}[0]
     final fun copy(): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.copy|copy(){}[0]
     final fun mask(kotlin/ByteArray): kotlin/Int // at.asitplus.cidre/IpAddress.mask|mask(kotlin.ByteArray){}[0]
     final fun mask(kotlin/UInt): kotlin/Int // at.asitplus.cidre/IpAddress.mask|mask(kotlin.UInt){}[0]
+    final fun minus(#B): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.minus|minus(1:1){}[0]
+    final fun plus(#B): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.plus|plus(1:1){}[0]
+    final inline fun and(at.asitplus.cidre/IpAddress<#A, #B>): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.and|and(at.asitplus.cidre.IpAddress<1:0,1:1>){}[0]
+    final inline fun and(kotlin/ByteArray): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.and|and(kotlin.ByteArray){}[0]
+    final inline fun inv(): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.inv|inv(){}[0]
+    final inline fun or(at.asitplus.cidre/IpAddress<#A, #B>): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.or|or(at.asitplus.cidre.IpAddress<1:0,1:1>){}[0]
+    final inline fun or(kotlin/ByteArray): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.or|or(kotlin.ByteArray){}[0]
+    final inline fun shl(kotlin/Int): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.shl|shl(kotlin.Int){}[0]
+    final inline fun shr(kotlin/Int): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.shr|shr(kotlin.Int){}[0]
+    final inline fun xor(at.asitplus.cidre/IpAddress<#A, #B>): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.xor|xor(at.asitplus.cidre.IpAddress<1:0,1:1>){}[0]
+    final inline fun xor(kotlin/ByteArray): at.asitplus.cidre/IpAddress<#A, #B> // at.asitplus.cidre/IpAddress.xor|xor(kotlin.ByteArray){}[0]
     open fun compareTo(at.asitplus.cidre/IpAddress<#A, #B>): kotlin/Int // at.asitplus.cidre/IpAddress.compareTo|compareTo(at.asitplus.cidre.IpAddress<1:0,1:1>){}[0]
     open fun equals(kotlin/Any?): kotlin/Boolean // at.asitplus.cidre/IpAddress.equals|equals(kotlin.Any?){}[0]
     open fun hashCode(): kotlin/Int // at.asitplus.cidre/IpAddress.hashCode|hashCode(){}[0]
@@ -229,6 +241,7 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
         final val segments // at.asitplus.cidre/IpAddress.V4.segments|{}segments[0]
             final fun <get-segments>(): kotlin.collections/List<kotlin/Byte> // at.asitplus.cidre/IpAddress.V4.segments.<get-segments>|<get-segments>(){}[0]
 
+        final fun toCidrNumber(): at.asitplus.cidre.byteops/CidrNumber.V4 // at.asitplus.cidre/IpAddress.V4.toCidrNumber|toCidrNumber(){}[0]
         final fun toString(): kotlin/String // at.asitplus.cidre/IpAddress.V4.toString|toString(){}[0]
 
         final enum class Class : kotlin/Enum<at.asitplus.cidre/IpAddress.V4.Class> { // at.asitplus.cidre/IpAddress.V4.Class|null[0]
@@ -253,6 +266,7 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
             final val segmentSeparator // at.asitplus.cidre/IpAddress.V4.Companion.segmentSeparator|{}segmentSeparator[0]
                 final fun <get-segmentSeparator>(): kotlin/Char // at.asitplus.cidre/IpAddress.V4.Companion.segmentSeparator.<get-segmentSeparator>|<get-segmentSeparator>(){}[0]
 
+            final fun invoke(at.asitplus.cidre.byteops/CidrNumber.V4): at.asitplus.cidre/IpAddress.V4 // at.asitplus.cidre/IpAddress.V4.Companion.invoke|invoke(at.asitplus.cidre.byteops.CidrNumber.V4){}[0]
             final fun invoke(kotlin/String): at.asitplus.cidre/IpAddress.V4 // at.asitplus.cidre/IpAddress.V4.Companion.invoke|invoke(kotlin.String){}[0]
         }
     }
@@ -271,6 +285,7 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
         final val segments // at.asitplus.cidre/IpAddress.V6.segments|{}segments[0]
             final fun <get-segments>(): kotlin.collections/List<kotlin/Short> // at.asitplus.cidre/IpAddress.V6.segments.<get-segments>|<get-segments>(){}[0]
 
+        final fun toCidrNumber(): at.asitplus.cidre.byteops/CidrNumber.V6 // at.asitplus.cidre/IpAddress.V6.toCidrNumber|toCidrNumber(){}[0]
         final fun toString(): kotlin/String // at.asitplus.cidre/IpAddress.V6.toString|toString(){}[0]
         final fun toString(kotlin/Boolean): kotlin/String // at.asitplus.cidre/IpAddress.V6.toString|toString(kotlin.Boolean){}[0]
 
@@ -286,11 +301,13 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
             final val segmentSeparator // at.asitplus.cidre/IpAddress.V6.Companion.segmentSeparator|{}segmentSeparator[0]
                 final fun <get-segmentSeparator>(): kotlin/Char // at.asitplus.cidre/IpAddress.V6.Companion.segmentSeparator.<get-segmentSeparator>|<get-segmentSeparator>(){}[0]
 
+            final fun invoke(at.asitplus.cidre.byteops/CidrNumber.V6): at.asitplus.cidre/IpAddress.V6 // at.asitplus.cidre/IpAddress.V6.Companion.invoke|invoke(at.asitplus.cidre.byteops.CidrNumber.V6){}[0]
             final fun invoke(kotlin/String): at.asitplus.cidre/IpAddress.V6 // at.asitplus.cidre/IpAddress.V6.Companion.invoke|invoke(kotlin.String){}[0]
         }
     }
 
     final object Companion { // at.asitplus.cidre/IpAddress.Companion|null[0]
+        final fun invoke(at.asitplus.cidre.byteops/CidrNumber<*>): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/IpAddress.Companion.invoke|invoke(at.asitplus.cidre.byteops.CidrNumber<*>){}[0]
         final fun invoke(kotlin/ByteArray): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/IpAddress.Companion.invoke|invoke(kotlin.ByteArray){}[0]
         final fun invoke(kotlin/String): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/IpAddress.Companion.invoke|invoke(kotlin.String){}[0]
     }
@@ -532,8 +549,11 @@ final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/compareUnsignedBE(kotlin/
 final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/inv(): kotlin/ByteArray // at.asitplus.cidre.byteops/inv|inv@kotlin.ByteArray(){}[0]
 final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/invInPlace() // at.asitplus.cidre.byteops/invInPlace|invInPlace@kotlin.ByteArray(){}[0]
 final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/or(kotlin/ByteArray): kotlin/ByteArray // at.asitplus.cidre.byteops/or|or@kotlin.ByteArray(kotlin.ByteArray){}[0]
+final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/shl(kotlin/Int): kotlin/ByteArray // at.asitplus.cidre.byteops/shl|shl@kotlin.ByteArray(kotlin.Int){}[0]
+final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/shr(kotlin/Int): kotlin/ByteArray // at.asitplus.cidre.byteops/shr|shr@kotlin.ByteArray(kotlin.Int){}[0]
 final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/toPrefix(): kotlin/UInt // at.asitplus.cidre.byteops/toPrefix|toPrefix@kotlin.ByteArray(){}[0]
 final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/toShortArray(kotlin/Boolean = ...): kotlin/ShortArray // at.asitplus.cidre.byteops/toShortArray|toShortArray@kotlin.ByteArray(kotlin.Boolean){}[0]
+final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/xor(kotlin/ByteArray): kotlin/ByteArray // at.asitplus.cidre.byteops/xor|xor@kotlin.ByteArray(kotlin.ByteArray){}[0]
 final fun (kotlin/UInt).at.asitplus.cidre.byteops/toIPv4Bytes(): kotlin/ByteArray // at.asitplus.cidre.byteops/toIPv4Bytes|toIPv4Bytes@kotlin.UInt(){}[0]
 final fun (kotlin/UInt).at.asitplus.cidre.byteops/toNetmask(at.asitplus.cidre/IpFamily): kotlin/ByteArray // at.asitplus.cidre.byteops/toNetmask|toNetmask@kotlin.UInt(at.asitplus.cidre.IpFamily){}[0]
 final fun (kotlin/UInt).at.asitplus.cidre.byteops/toNetmask(kotlin/Int): kotlin/ByteArray // at.asitplus.cidre.byteops/toNetmask|toNetmask@kotlin.UInt(kotlin.Int){}[0]

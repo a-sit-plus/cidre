@@ -29,6 +29,17 @@ infix fun ByteArray.or(other: ByteArray): ByteArray {
     for (i in indices) r[i] = (this[i].toInt() or other[i].toInt()).toUByte().toByte()
     return r
 }
+/**
+ * logical `OR` operation returning a newly-allocated [ByteArray].
+ * @throws IllegalArgumentException if bytes are of different size
+ */
+@Throws(IllegalArgumentException::class)
+infix fun ByteArray.xor(other: ByteArray): ByteArray {
+    require(size == other.size) { "Mismatched sizes: $size vs ${other.size}" }
+    val r = ByteArray(size)
+    for (i in indices) r[i] = (this[i].toInt() xor other[i].toInt()).toUByte().toByte()
+    return r
+}
 
 /**
  * In-place logical `AND` operation, modifying the receiver ByteArray. Returns the number of modified bits
@@ -214,3 +225,74 @@ fun ULong.toIPv4Bytes(): ByteArray {
     }
     return out
 }
+
+/**
+ * Logical left shift (zero-fill) of a big-endian ByteArray by [bits].
+ * - bits < 0 throws
+ * - bits == 0 returns a copy
+ * - bits >= size*8 returns all zeros
+ */
+infix fun ByteArray.shl(bits: Int): ByteArray {
+    require(bits >= 0) { "bits must be >= 0" }
+    val n = size
+    if (n == 0) return this.copyOf()
+    if (bits == 0) return this.copyOf()
+    val totalBits = n * 8
+    if (bits >= totalBits) return ByteArray(n)
+
+    val byteShift = bits ushr 3          // bits / 8
+    val bitShift = bits and 7            // bits % 8
+    val out = ByteArray(n)
+
+    // big-endian: index 0 is most-significant byte
+    // For left shift, dest[i] pulls from src[i + byteShift] and carries from src[i + byteShift + 1]
+    for (i in 0 until n) {
+        val si = i + byteShift
+        if (si >= n) {
+            out[i] = 0
+            continue
+        }
+        var v = (this[si].toInt() and 0xFF) shl bitShift
+        if (bitShift != 0 && si + 1 < n) {
+            v = v or ((this[si + 1].toInt() and 0xFF) ushr (8 - bitShift))
+        }
+        out[i] = (v and 0xFF).toByte()
+    }
+    return out
+}
+
+
+/**
+ * Logical right shift (zero-fill) of a big-endian ByteArray by [bits].
+ * - bits < 0 throws
+ * - bits == 0 returns a copy
+ * - bits >= size*8 returns all zeros
+ */
+infix fun ByteArray.shr(bits: Int): ByteArray {
+    require(bits >= 0) { "bits must be >= 0" }
+    val n = size
+    if (n == 0) return this.copyOf()
+    if (bits == 0) return this.copyOf()
+    val totalBits = n * 8
+    if (bits >= totalBits) return ByteArray(n)
+
+    val byteShift = bits ushr 3          // bits / 8
+    val bitShift = bits and 7            // bits % 8
+    val out = ByteArray(n)
+
+    // For right shift, dest[i] pulls from src[i - byteShift] and carries from src[i - byteShift - 1]
+    for (i in 0 until n) {
+        val si = i - byteShift
+        if (si < 0) {
+            out[i] = 0
+            continue
+        }
+        var v = (this[si].toInt() and 0xFF) ushr bitShift
+        if (bitShift != 0 && si - 1 >= 0) {
+            v = v or ((this[si - 1].toInt() and 0xFF) shl (8 - bitShift))
+        }
+        out[i] = (v and 0xFF).toByte()
+    }
+    return out
+}
+

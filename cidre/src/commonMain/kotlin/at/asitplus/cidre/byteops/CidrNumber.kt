@@ -27,8 +27,8 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
     infix fun and(other: TSelf): TSelf
     infix fun or(other: TSelf): TSelf
     infix fun xor(other: TSelf): TSelf
-    infix fun shl(n: Int): TSelf
-    infix fun shr(n: Int): TSelf
+    infix fun shl(bits: Int): TSelf
+    infix fun shr(bits: Int): TSelf
     operator fun inv(): TSelf
     operator fun inc(): TSelf
     operator fun dec(): TSelf
@@ -134,9 +134,9 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
 
         override fun xor(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw.xor(other.raw))
 
-        override fun shl(n: Int): CidrNumber.V4 = CidrNumber.V4(raw.shl(n))
+        override fun shl(bits: Int): CidrNumber.V4 = CidrNumber.V4(raw.shl(bits))
 
-        override fun shr(n: Int): CidrNumber.V4 = CidrNumber.V4(raw.shr(n))
+        override fun shr(bits: Int): CidrNumber.V4 = CidrNumber.V4(raw.shr(bits))
 
         override fun inv(): CidrNumber.V4 = CidrNumber.V4(raw.inv())
 
@@ -396,33 +396,33 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
         }
 
         // ----- Shifts (logical) -----
-        override infix fun shl(n: Int): V6 {
-            require(n in 0..128) { "shift must be in [0,128]" }
-            if (n == 0) return this
+        override infix fun shl(bits: Int): V6 {
+            require(bits in 0..128) { "shift must be in [0,128]" }
+            if (bits == 0) return this
             var newHi: ULong
             var newLo: ULong
             val newExtra: Boolean
             when {
-                n < 64 -> {
+                bits < 64 -> {
                     // carry lo -> hi, compute extra from hi bit at index (64 - n)
-                    newHi = (hi shl n) or (lo shr (64 - n))
-                    newLo = (lo shl n)
-                    val t = 64 - n // 0..63
+                    newHi = (hi shl bits) or (lo shr (64 - bits))
+                    newLo = (lo shl bits)
+                    val t = 64 - bits // 0..63
                     newExtra = ((hi shr t) and 1uL) == 1uL
                 }
 
-                n == 64 -> {
+                bits == 64 -> {
                     newHi = lo
                     newLo = 0uL
                     val t = 0
                     newExtra = ((hi shr t) and 1uL) == 1uL
                 }
 
-                n < 128 -> {
-                    val k = n - 64 // 1..63
+                bits < 128 -> {
+                    val k = bits - 64 // 1..63
                     newHi = (lo shl k)
                     newLo = 0uL
-                    val t = 128 - n // 1..63 maps to lo bit index
+                    val t = 128 - bits // 1..63 maps to lo bit index
                     newExtra = ((lo shr t) and 1uL) == 1uL
                 }
 
@@ -435,34 +435,34 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             return V6(newHi, newLo, newExtra)
         }
 
-        override infix fun shr(n: Int): V6 {
-            require(n in 0..128) { "shift must be in [0,128]" }
-            if (n == 0) return this
+        override infix fun shr(bits: Int): V6 {
+            require(bits in 0..128) { "shift must be in [0,128]" }
+            if (bits == 0) return this
             var newHi: ULong
             var newLo: ULong
             // After any right shift (n>0), the new extra (bit 128) is always zero.
             val newExtra = false
             when {
-                n < 64 -> {
-                    newLo = (lo shr n) or (hi shl (64 - n))
-                    newHi = (hi shr n)
+                bits < 64 -> {
+                    newLo = (lo shr bits) or (hi shl (64 - bits))
+                    newHi = (hi shr bits)
                     // Inject previous extraBit into hi at bit index (64 - n)
                     if (extraBit) {
-                        val t = 64 - n // 1..63 (or 0 when n=64, but this branch is n<64)
+                        val t = 64 - bits // 1..63 (or 0 when n=64, but this branch is n<64)
                         newHi = newHi or (1uL shl t)
                     }
                 }
 
-                n == 64 -> {
+                bits == 64 -> {
                     newLo = hi
                     newHi = if (extraBit) 1uL else 0uL // extraBit moves to hi bit-0
                 }
 
-                n < 128 -> {
-                    val k = n - 64 // 1..63
+                bits < 128 -> {
+                    val k = bits - 64 // 1..63
                     newLo = (hi shr k)
                     if (extraBit) {
-                        val t = 128 - n // 1..63 -> lo bit index
+                        val t = 128 - bits // 1..63 -> lo bit index
                         newLo = newLo or (1uL shl t)
                     }
                     newHi = 0uL
