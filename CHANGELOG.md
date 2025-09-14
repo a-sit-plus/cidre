@@ -1,5 +1,7 @@
 # Changelog
 
+## NEXT
+
 ## 0.2.0
 * Revised generic type arguments
 * Introduce `CidrNumber` optimized for CIDR operations
