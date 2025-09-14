@@ -1,13 +1,16 @@
 package at.asitplus.cidre
 
+import at.asitplus.cidre.byteops.CidrNumber
 import at.asitplus.cidre.byteops.and
+import at.asitplus.cidre.byteops.or
 import at.asitplus.cidre.byteops.toNetmask
 
 
-sealed class IpNetwork<N : Number, T : IpAddress<N>>
+sealed class IpNetwork<N : Number, S : CidrNumber<S>>
 @Throws(IllegalArgumentException::class)
-constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: Boolean) : IpAddressAndPrefix<N, T>,
-    Comparable<IpNetwork<N, T>> {
+constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boolean, deepCopy: Boolean) :
+    IpAddressAndPrefix<N, S>,
+    Comparable<IpNetwork<N, S>> {
 
     init {
         require(prefix <= address.octets.size.toUInt() * 8u) { "Prefix $prefix too long for IP address ${address.family}. Max length: ${address.octets.size * 8}" }
@@ -15,72 +18,194 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
 
     override val netmask: Netmask = prefix.toNetmask(address.family)
 
-    @Suppress("UNCHECKED_CAST")
-    override val address: T = if (deepCopy) IpAddress(address.octets.copyOf()).apply { mask(netmask) }.also {
-        if (strict) require(it == address) { "$address is not an actual network address. Should be: $it" }
-    } as T
-    else {
-        val changedBits = address.mask(netmask)
-        if (strict) require(changedBits == 0) { "Implementation error in address-into-network wrapping. Report this bug here: https://github.com/a-sit-plus/cidre/issues/new" }
-        address
-    }
-
     override val isLinkLocal: Boolean get() = this == specialRanges.linkLocal
 
     override val isLoopback: Boolean get() = this == specialRanges.loopback
 
     override val isMulticast: Boolean get() = this == specialRanges.multicast
 
-    val networkPart: ByteArray by lazy { TODO("the network slice of the address octets") }
-    val hostPart: ByteArray by lazy { TODO("the host slice of the address octets") }
-
     override fun toString(): String = "$address/$prefix"
 
     //Ordering by network address, then by netmask length (shorter prefixes come first if addresses equal).
-    override fun compareTo(other: IpNetwork<N, T>): Int {
+    override fun compareTo(other: IpNetwork<N, S>): Int {
         //ip addresses are network address, so we can compare those and be good
         val byIp = address.compareTo(other.address)
         if (byIp != 0) return byIp
         return prefix.compareTo(other.prefix)
     }
 
+    protected val lastOctetInBlock get() = (address.octets or hostMask)
+
+    /**
+     * The very last address inside this network's [addressSpace].
+     * Lazily computed once. Do not mess with its octets!
+     */
+    val lastAddress: IpAddress<N, S> by lazy { @Suppress("UNCHECKED_CAST") IpAddress(lastOctetInBlock) as IpAddress<N, S> }
+
     /**
      * Creates an [IpInterface] associated with this exact IpNetwork instance, avoiding the creation of new [IpNetwork] instances
      */
-    fun interfaceFor(address: T): IpInterface<N, T> = IpInterface.unsafe(this, address, prefix)
+    fun interfaceFor(address: IpAddress<N, S>): IpInterface<N, S> = IpInterface.unsafe(this, address, prefix)
 
-    fun subnet(newPrefix: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
-    fun subnetRelative(prefixDiff: UInt): Sequence<IpNetwork<N, T>> = TODO("maybe implement separately for V4 and V6?")
+    /**
+     * Two networks `A` and `B` are adjacent iff either:
+     * * `A.lastAddress + 1 == B.address`
+     * * `B.lastAddress + 1 == A.address`
+     */
+    fun isAdjacentTo(other: IpNetwork<N, S>): Boolean = if (overlaps(other)) false else {
+        val a = if (this < other) this else other
+        val b = if (this > other) this else other
+        ((a.lastAddress.toCidrNumber() + 1u) ?: false) == b.address.toCidrNumber()
+    }
 
-    fun isAdjacentTo(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
+    /**
+     * For two networks
+     * * *A* = *a* / *pA*
+     * * *B* = *b* / *pB*
+     *
+     * *A* is a subnet of *B* iff:
+     * * *pA* ≥ *pB*
+     * * *a* masked with *pB* == *b*
+     */
+    fun isSubnetOf(other: IpNetwork<N, S>): Boolean =
+        ((prefix >= other.prefix) && address.copy().apply { mask(other.prefix) } == other.address)
+
+    /**
+     * For two networks
+     * * *A* = *a* / *pA*
+     * * *B* = *b* / *pB*
+     *
+     * *A* is a supernet of *B* iff:
+     * * *pA* ≤ *pB*
+     * * b masked with *pA* == *a*
+     */
+    fun isSupernetOf(other: IpNetwork<N, S>): Boolean =
+        ((prefix <= other.prefix) && other.address.copy().apply { mask(prefix) } == address)
+
+
+    /**
+     * Two networks overlap if either contains the other
+     */
+    fun overlaps(other: IpNetwork<N, S>): Boolean = other.contains(this) or contains(other)
 
     /*
     TODO later
+    fun subnet(newPrefix: UInt): Sequence<IpNetwork<N, S>> = TODO("maybe implement separately for V4 and V6?")
+    fun subnetRelative(prefixDiff: UInt): Sequence<IpNetwork<N, S>> =
+        TODO("maybe implement separately for V4 and V6?")
+
     fun supernet(newPrefix: UInt): IpNetwork<N, T>? = TODO("maybe implement separately for V4 and V6?")
     fun supernetRelative(prefixDiff: UInt): IpNetwork<N, T>? = TODO("maybe implement separately for V4 and V6?")
     */
 
-    //Aggregation; may fail if disjoint
-    abstract operator fun plus(other: T): T?
+    /**
+     * Tries to merge this network with an[other]. This will fail and return `null` unless the following conditions are met:
+     * * Same [prefix]
+     * * The [other] network is adjacent to this network
+     * * Masking the lower network’s [address] with the [prefix] of what would be the merged supernet must yield itself
+     *
+     * @return the resulting supernet with [prefix]` - 1` if merging is possible, or `null` otherwise.
+     */
+    operator fun plus(other: IpNetwork<N, S>): IpNetwork<N, S>? {
+        if (!canMergeWith(other)) return null
+        val lowerNetwork = if (this < other) this else other
+        val newPrefix = this.prefix - 1u
+        @Suppress("UNCHECKED_CAST")
+        return IpNetwork(lowerNetwork.address.copy(), newPrefix)
+    }
 
-    val hostRange: Sequence<IpInterface<N, T>> get() = addressSpace.map { IpInterface.unsafe(this, it, prefix) }
-    abstract val addressSpace: Sequence<T>
+    /**
+     * Checks if this network can be merged with an[other]. Merging is possible, iff the following conditions are met:
+     * * Same [prefix]
+     * * The [other] network is adjacent to this network
+     * * Masking the lower network’s [address] with the [prefix] of what would be the merged supernet must yield itself
+     */
+    fun canMergeWith(other: IpNetwork<N, S>): Boolean {
+        if (prefix == 0u) return false
+        if (this.prefix != other.prefix) return false
+        if (!this.isAdjacentTo(other)) return false
+        val lowerNetwork = if (this < other) this else other
+        val newPrefix = prefix - 1u
+        val maskedLower = lowerNetwork.address.copy().apply { mask(newPrefix) }
+        return maskedLower == lowerNetwork.address
+    }
 
-    fun first(): IpInterface<N, T> = TODO()
-    fun last(): IpInterface<N, T> = TODO()
-    val size: Long get() = TODO()
 
-    fun isSubnetOf(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
-    fun overlapsWith(other: IpNetwork<N, T>): Boolean = TODO("maybe implement separately for V4 and V6?")
+    /**
+     * Assignable range of hosts for this network. For IPv6 this includes the network's router-subnet anycast [address].
+     * **For IPv4, this is generally NOT the full address range, but excludes this network's [address] and the last address in the block**,
+     * which can instead be obtained through [addressSpace] and contains only bare addresses without a netmask.
+     *
+     * @return a fresh sequence of newly allocated [IpInterface]s every access
+     */
+    val assignableHostRange: Sequence<IpInterface<N, S>>
+        get() = sequence {
+            when (prefix) {
+                address.family.numberOfBits.toUInt() -> yield(interfaceFor(address.copy()))
+                address.family.numberOfBits.toUInt() - 1u -> {
+                    yield(interfaceFor(address.copy()))
+                    yield(interfaceFor(IpAddress(lastOctetInBlock) as IpAddress<N, S>))
+                }
+
+                else -> {
+                    val seq = addressSpaceUntil(if (family == IpAddress.V4) 1u else 0u)
+                    seq.drop(1).forEach {
+                        yield(interfaceFor(it as IpAddress<N, S>))
+                    }
+                }
+            }
+        }
+
+    /**
+     * The **whole** range of this network, including the network [address] itself and the last address in the block.
+     * **For IPv4, this is generally NOT the range of assignable addresses**, which can be obtained through [assignableHostRange]!
+     *
+     * @return a fresh sequence og newly allocated [IpAddress]es on every access
+     */
+    val addressSpace: Sequence<IpAddress<N, S>> = addressSpaceUntil(0u)
+
+    protected abstract fun addressSpaceUntil(excludingLastN: UInt): Sequence<IpAddress<N, S>>
+
+    /**
+     * First assignable host (this [address]/[prefix] for a full netmask and point-to-point).
+     */
+    val firstAssignableHost: IpInterface<N, S> by lazy {
+        when (prefix) {
+            address.family.numberOfBits.toUInt(), address.family.numberOfBits.toUInt() - 1u -> address.copy()
+            else -> when (this) {
+                is IpNetwork.V4 -> address + 1u
+                is IpNetwork.V6 -> address.copy()
+            }
+        }.run { interfaceFor(this as IpAddress<N, S>) }
+    }
+
+    /**
+     * Last assignable host (this corresponds to the last address in the [addressSpace] for a full netmask and point-to-point).
+     */
+    val lastAssignableHost: IpInterface<N, S> by lazy {
+        when (prefix) {
+            address.family.numberOfBits.toUInt() -> address.copy()
+            address.family.numberOfBits.toUInt() - 1u -> IpAddress(lastOctetInBlock)
+            else -> when (this) {
+                is IpNetwork.V4 -> (CidrNumber(lastOctetInBlock) - 1u).let {
+                    require( it !=null){"$address should be in range of 0-$it, $prefix"}
+                    IpAddress(it)
+                }
+                is IpNetwork.V6 -> IpAddress.V6(lastOctetInBlock)
+            }
+        }.run { interfaceFor(this as IpAddress<N, S>) }
+    }
+    abstract val size: S
+
 
     /** Tests if [address] is inside this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    fun contains(address: T): Boolean = (address.octets and netmask) contentEquals this.address.octets
+    fun contains(address: IpAddress<N, S>): Boolean = (address.octets and netmask) contentEquals this.address.octets
 
     /** Tests if [ipInterface] belongs this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    fun contains(ipInterface: IpInterface<N, T>): Boolean = ipInterface.network == this
+    fun contains(ipInterface: IpInterface<N, S>): Boolean = ipInterface.network == this
 
     /**Tests if [network] is fully contained inside this network.*/
-    fun contains(network: IpNetwork<N, T>): Boolean {
+    fun contains(network: IpNetwork<N, S>): Boolean {
         if (prefix > network.prefix) return false
         return address.octets contentEquals (network.address.octets and netmask)
     }
@@ -103,18 +228,18 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
 
     //lazy breaks inti cycle
     @Suppress("UNCHECKED_CAST")
-    val specialRanges: SpecialRanges<N, T> by lazy {
+    val specialRanges: SpecialRanges<N, S> by lazy {
         when (address) {
             is IpAddress.V4 -> V4.specialRanges
             is IpAddress.V6 -> V6.specialRanges
-        } as SpecialRanges<N, T>
+        } as SpecialRanges<N, S>
     }
 
     class V4 internal constructor(address: IpAddress.V4, prefix: Prefix, strict: Boolean, deepCopy: Boolean) :
 
-        IpNetwork<Byte, IpAddress.V4>(address, prefix, strict, deepCopy), IpAddressAndPrefix.V4 {
+        IpNetwork<Byte, CidrNumber.V4>(address, prefix, strict, deepCopy), IpAddressAndPrefix.V4 {
         /**
-         * Note that [address] will be deep-copied into [at.asitplus.cidre.IpNetwork.address], so the passed reference won't be touched
+         * Note that [address] will be deep-copied into [IpNetwork.address], so the passed reference won't be touched
          */
         constructor(address: IpAddress.V4, prefix: Prefix, strict: Boolean = true) : this(
             address,
@@ -123,12 +248,32 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
             deepCopy = true
         )
 
-        val broadcastAddress: IpInterface<Byte, IpAddress.V4> get() = TODO()
+        override val address: IpAddress.V4 = address.toNetWorkAddress(deepCopy, netmask, strict) as IpAddress.V4
 
-        override fun plus(other: IpAddress.V4): IpAddress.V4? = TODO("Not yet implemented")
-        override val addressSpace: Sequence<IpAddress.V4> get() = TODO("Not yet implemented")
+        override val size: CidrNumber.V4 by lazy { CidrNumber.V4(1uL shl (address.family.numberOfBits - prefix.toInt())) }
 
-        companion object : Specification<Byte, IpAddress.V4> {
+        /**
+         * IPv4 broadcast address. `null` for RFC 3021 point-to-point networks (i.e, `/31`) and single-address ( `/32`) networks.
+         */
+        val broadcastAddress: IpInterface.V4?
+            get() = (if (prefix < 31u) interfaceFor(
+                IpAddress.V4(
+                    lastOctetInBlock
+                )
+            ) else null) as IpInterface.V4?
+
+        override fun addressSpaceUntil(excludingLastN: UInt): Sequence<IpAddress.V4> = sequence {
+            if (prefix == family.numberOfBits.toUInt()) yield(address.copy() as IpAddress.V4)
+            var current = CidrNumber.V4(address.octets)
+            val last = CidrNumber.V4(lastOctetInBlock) - excludingLastN
+            assert(last != null, "0xBADCAB")
+            while (current <= last) {
+                yield(IpAddress.V4(current))
+                current = (current + 1u) ?: throw ImplementationError("0x5ADCAB")
+            }
+        }
+
+        companion object : Specification<Byte, CidrNumber.V4> {
             @Throws(IllegalArgumentException::class)
             operator fun invoke(stringRepresentation: String, strict: Boolean = true): V4 {
                 val network = IpNetwork(stringRepresentation, strict)
@@ -150,14 +295,15 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
             }
 
             //lazy prevents initializationexception when constructor throws
-            override val specialRanges: IpNetwork.SpecialRanges<Byte, IpAddress.V4> by lazy { IpNetwork.V4.SpecialRanges }
+            override val specialRanges: IpNetwork.SpecialRanges<Byte, CidrNumber.V4> get() = IpNetwork.V4.SpecialRanges
+            override val family: IpFamily get() = IpFamily.V4
         }
 
         override val isPrivate: Boolean get() = IpNetwork.V4.SpecialRanges.private.contains(this)
 
         override val isPublic: Boolean get() = !(isPrivate || isLinkLocal || isMulticast || isLoopback)
 
-        object SpecialRanges : IpNetwork.SpecialRanges<Byte, IpAddress.V4> {
+        object SpecialRanges : IpNetwork.SpecialRanges<Byte, CidrNumber.V4> {
             /**`127.0.0.0/8`*/
             override val loopback = V4("127.0.0.0/8")
 
@@ -182,7 +328,7 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
     }
 
     class V6 internal constructor(address: IpAddress.V6, prefix: Prefix, strict: Boolean, deepCopy: Boolean) :
-        IpNetwork<Short, IpAddress.V6>(address, prefix, strict, deepCopy), IpAddressAndPrefix.V6 {
+        IpNetwork<Short, CidrNumber.V6>(address, prefix, strict, deepCopy), IpAddressAndPrefix.V6 {
 
         /**
          * Note that [address] will be deep-copied into [at.asitplus.cidre.IpNetwork.address], so the passed reference won't be touched
@@ -194,10 +340,23 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
             deepCopy = true
         )
 
-        override fun plus(other: IpAddress.V6): IpAddress.V6? = TODO("Not yet implemented")
-        override val addressSpace: Sequence<IpAddress.V6> get() = TODO("Not yet implemented")
+        override val address: IpAddress.V6 = address.toNetWorkAddress(deepCopy, netmask, strict) as IpAddress.V6
 
-        companion object : Specification<Short, IpAddress.V6> {
+        override fun addressSpaceUntil(excludingLastN: UInt): Sequence<IpAddress.V6> = sequence {
+            if (prefix == family.numberOfBits.toUInt()) yield(address.copy() as IpAddress.V6)
+            var current = CidrNumber.V6(address.octets)
+            val toExclude = excludingLastN.toULong()
+            val last = CidrNumber.V6(lastOctetInBlock) - toExclude
+            assert(last != null, "0xBADCAB1E")
+            while (current <= last) {
+                yield(IpAddress.V6(current))
+                current = (current + 1u) ?: throw ImplementationError("0x5ADCAB1E")
+            }
+        }
+
+        override val size: CidrNumber.V6 by lazy { CidrNumber.V6(1uL) shl address.family.numberOfBits - prefix.toInt() }
+
+        companion object : Specification<Short, CidrNumber.V6> {
             @Throws(IllegalArgumentException::class)
             operator fun invoke(stringRepresentation: String, strict: Boolean = true): V6 {
                 val network = IpNetwork(stringRepresentation, strict)
@@ -219,7 +378,9 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
             }
 
             //lazy prevents initializationexception when constructor throws
-            override val specialRanges: IpNetwork.SpecialRanges<Short, IpAddress.V6> by lazy { IpNetwork.V6.SpecialRanges }
+            override val specialRanges: IpNetwork.V6.SpecialRanges get() = IpNetwork.V6.SpecialRanges
+
+            override val family: IpFamily get() = IpFamily.V6
         }
 
 
@@ -240,7 +401,7 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
 
         override val isReserved: Boolean get() = this == IpNetwork.V6.SpecialRanges.reserved
 
-        object SpecialRanges : IpNetwork.SpecialRanges<Short, IpAddress.V6> {
+        object SpecialRanges : IpNetwork.SpecialRanges<Short, CidrNumber.V6> {
 
             /**`::1/128`*/
             override val loopback = V6("::1/128")
@@ -284,17 +445,33 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
         }
     }
 
-    sealed interface SpecialRanges<N : Number, T : IpAddress<N>> {
-        val loopback: IpNetwork<N, T>
-        val linkLocal: IpNetwork<N, T>
-        val multicast: IpNetwork<N, T>
+    sealed interface SpecialRanges<N : Number, S : CidrNumber<S>> {
+        val loopback: IpNetwork<N, S>
+        val linkLocal: IpNetwork<N, S>
+        val multicast: IpNetwork<N, S>
     }
 
-    interface Specification<N : Number, T : IpAddress<N>> {
-        val specialRanges: SpecialRanges<N, T>
+    interface Specification<N : Number, S : CidrNumber<S>> {
+        val specialRanges: SpecialRanges<N, S>
+        val family: IpFamily
     }
 
     companion object {
+
+        @Suppress("UNCHECKED_CAST")
+        private fun <N : Number, S : CidrNumber<S>> IpAddress<N, S>.toNetWorkAddress(
+            deepCopy: Boolean,
+            netmask: Netmask,
+            strict: Boolean
+        ): IpAddress<N, S> = if (deepCopy) IpAddress(octets.copyOf()).apply { mask(netmask) }.also {
+            if (strict) require(it == this) { "$this is not an actual network address. Should be: $it" }
+        } as IpAddress<N, S>
+        else {
+            val changedBits = mask(netmask)
+            if (strict) assert(changedBits == 0, "0xBADC0DE")
+            this
+        }
+
         /**
          * Note that [address] will be deep-copied into [at.asitplus.cidre.IpNetwork.address], so the passed reference won't be touched
          * @throws IllegalArgumentException in case the specified [prefix] is too long or if [strict] = `true` and the passed address is not the designated network's address.
@@ -315,13 +492,13 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
          */
         @Throws(IllegalArgumentException::class)
         @Suppress("UNCHECKED_CAST")
-        operator fun <N : Number> invoke(
-            address: IpAddress<N>,
+        operator fun <N : Number, S : CidrNumber<S>> invoke(
+            address: IpAddress<N, S>,
             prefix: Prefix,
             strict: Boolean = true
-        ): IpNetwork<N, IpAddress<N>> = when (address) {
-            is IpAddress.V4 -> V4(address, prefix, strict) as IpNetwork<N, IpAddress<N>>
-            is IpAddress.V6 -> V6(address, prefix, strict) as IpNetwork<N, IpAddress<N>>
+        ): IpNetwork<N, S> = when (address) {
+            is IpAddress.V4 -> V4(address, prefix, strict) as IpNetwork<N, S>
+            is IpAddress.V6 -> V6(address, prefix, strict) as IpNetwork<N, S>
         }
 
         /**
@@ -331,21 +508,24 @@ constructor(address: T, override val prefix: Prefix, strict: Boolean, deepCopy: 
          * @throws IllegalArgumentException in case the specified [prefix] is too long
          */
         @Throws(IllegalArgumentException::class)
-        fun <N : Number> forAddress(address: IpAddress<N>, prefix: Prefix): IpNetwork<N, IpAddress<N>> =
+        fun <N : Number, S : CidrNumber<S>> forAddress(
+            address: IpAddress<N, S>,
+            prefix: Prefix
+        ): IpNetwork<N, S> =
             when (address) {
                 is IpAddress.V4 -> IpNetwork.V4(
                     address,
                     prefix,
                     strict = false,
                     deepCopy = false
-                ) as IpNetwork<N, IpAddress<N>>
+                ) as IpNetwork<N, S>
 
                 is IpAddress.V6 -> IpNetwork.V6(
                     address,
                     prefix,
                     strict = false,
                     deepCopy = false
-                ) as IpNetwork<N, IpAddress<N>>
+                ) as IpNetwork<N, S>
             }
 
     }

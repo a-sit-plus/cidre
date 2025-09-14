@@ -1,5 +1,10 @@
 package at.asitplus.cidre
 
+import at.asitplus.cidre.byteops.CidrNumber
+import at.asitplus.cidre.byteops.invInPlace
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
+
 
 /**CIDR prefix length*/
 typealias Prefix = UInt
@@ -10,17 +15,25 @@ typealias Netmask = ByteArray
 /**
  * Sealed base interface of [IpAddress] and [IpInterface], attaching common semantics and functionality to the combination of an [address] and [prefix].
  */
-sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
+sealed interface IpAddressAndPrefix<N : Number, S : CidrNumber<S>> {
 
-    val address: T
+    /** Computed once. Do not mess with its octets!*/
+    val address: IpAddress<N, S>
 
-    val family: IpAddress.Family get() = address.family
+    val family: IpFamily get() = address.family
 
     /** CIDR prefix length */
     val prefix: Prefix
 
     /** Network-order (BE) layout of a CIDR prefix */
     val netmask: Netmask
+
+    /**
+     * The complement of [netmask]
+     */
+    val hostMask: ByteArray get() = netmask.copyOf().apply { invInPlace() }
+
+    val numberOfHostBits get(): UInt = family.numberOfBits.toUInt() - prefix
 
     /**`true` if this is (part of) the [IpNetwork.SpecialRanges.linkLocal] network */
     val isLinkLocal: Boolean
@@ -36,7 +49,9 @@ sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
      *
      * @see IpAddressAndPrefix
      */
-    sealed interface V4 : IpAddressAndPrefix<Byte, IpAddress.V4> {
+    sealed interface V4 : IpAddressAndPrefix<Byte, CidrNumber.V4> {
+
+        override val address: IpAddress.V4
 
         /**`true` if this is private, i.e. (part of) any [IpNetwork.V4.SpecialRanges.private] network */
         val isPrivate: Boolean
@@ -65,11 +80,13 @@ sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
      *
      * @see IpAddressAndPrefix
      */
-    sealed interface V6 : IpAddressAndPrefix<Short, IpAddress.V6> {
+    sealed interface V6 : IpAddressAndPrefix<Short, CidrNumber.V6> {
 
         /**`true` if this is (part of) part of the [IpNetwork.V6.SpecialRanges.globalUnicast] address range. This is the equivalent of an IPv4 public address.
          * This is the IPv6 equivalent of [IpInterface.V4.isPublic] */
         val isGlobalUnicast: Boolean
+
+        override val address: IpAddress.V6
 
         /**
          * `true` if this is (part of)  the [IpNetwork.V6.SpecialRanges.uniqueLocal] address range.
@@ -96,7 +113,6 @@ sealed interface IpAddressAndPrefix<N : Number, T : IpAddress<N>> {
         /**`true` if this is (part of)  the [IpNetwork.V6.SpecialRanges.reserved] address range. */
         val isReserved: Boolean
 
-
         /**
          * Returns a string representation in the form of `address/prefix`
          * if [expanded] is set to `true` all hextets are printed in full length.  <br>
@@ -119,4 +135,33 @@ internal fun parseIpAndPrefix(stringRepresentation: String) = try {
 } catch (e: Throwable) {
     if (e is IllegalArgumentException) throw e
     else throw IllegalArgumentException("$stringRepresentation is not a valid IP address", e)
+}
+
+
+@OptIn(ExperimentalContracts::class)
+fun IpAddressAndPrefix<*, *>.isV4(): Boolean {
+    contract { returns(true) implies (this@isV4 is IpAddressAndPrefix.V4) }
+    return this is IpAddressAndPrefix.V4
+}
+
+@OptIn(ExperimentalContracts::class)
+fun IpAddressAndPrefix<*, *>.isV6(): Boolean {
+    contract { returns(true) implies (this@isV6 is IpAddressAndPrefix.V6) }
+    return this is IpAddressAndPrefix.V6
+}
+
+@OptIn(ExperimentalContracts::class)
+fun IpAddressAndPrefix.V4.isSameFamily(other: IpAddressAndPrefix<*, *>): Boolean {
+    contract {
+        returns(true) implies (other is IpAddressAndPrefix.V4)
+    }
+    return other is IpAddressAndPrefix.V4
+}
+
+@OptIn(ExperimentalContracts::class)
+fun IpAddressAndPrefix.V6.isSameFamily(other: IpAddressAndPrefix<*, *>): Boolean {
+    contract {
+        returns(true) implies (other is IpAddressAndPrefix.V6)
+    }
+    return other is IpAddressAndPrefix.V6
 }

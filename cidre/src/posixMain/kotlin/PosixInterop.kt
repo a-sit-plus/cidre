@@ -27,7 +27,7 @@ fun IpAddress.V6.toInAddr(): CValue<in6_addr> =
 
 /**@return `CValue<in6_addr>` for IPv6 and `CValue<in_addr>` for IPv4 */
 @OptIn(ExperimentalForeignApi::class)
-fun IpAddress<*>.toInAddr(): CValue<out CStructVar> = when (this) {
+fun IpAddress<*, *>.toInAddr(): CValue<out CStructVar> = when (this) {
     is IpAddress.V4 -> toInAddr()
     is IpAddress.V6 -> toInAddr()
 }
