@@ -9,29 +9,27 @@ import kotlin.jvm.JvmStatic
 import kotlin.native.ObjCName
 
 /**
- * Number with a byte layout optimized for CIDR/IP operations.
+ * Number with a byte layout and semantics optimized for CIDR/IP operations.
  * The maximum number of addresses inside an IP address space is 2^32 for IPv4 and 2^128 for IPv6. Hence,
  * 32/128-bit numbers are not enough to represent the size of /0 networks, and an additional bit is needed.
- * At the same time, the *actual* number of bytes used is 4/16, which is why (by default) a CidrNumber's
+ * At the same time, the *actual* number of bytes used for addresses and netmasks is 4/16, which is why (by default) a CidrNumber's
  * byte-representation is truncated to 4/16 bytes, to make it efficiently usable for CIDR operations.
  *
  * Its String representation is the hex-encoded byte-representation.
  *
  * @see toByteArray
  */
-interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
-    operator fun plus(other: TSelf): TSelf
-    operator fun minus(other: TSelf): TSelf
-    operator fun plus(other: UInt): TSelf
-    operator fun minus(other: UInt): TSelf
+sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
+    operator fun plus(other: TSelf): TSelf?
+    operator fun minus(other: TSelf): TSelf?
+    operator fun plus(other: UInt): TSelf?
+    operator fun minus(other: UInt): TSelf?
     infix fun and(other: TSelf): TSelf
     infix fun or(other: TSelf): TSelf
     infix fun xor(other: TSelf): TSelf
     infix fun shl(bits: Int): TSelf
     infix fun shr(bits: Int): TSelf
     operator fun inv(): TSelf
-    operator fun inc(): TSelf
-    operator fun dec(): TSelf
 
     /**
      * Converts the internal representation of the object into a ByteArray optimized for CIDR/IP operations.
@@ -80,7 +78,7 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
     value class V4 private constructor(val raw: ULong) : CidrNumber<CidrNumber.V4> {
 
 
-        override fun toString(): String = toByteArray().toHexString()
+        override fun toString(): String = toByteArray(truncate=false).toHexString()
 
         companion object Companion {
 
@@ -88,10 +86,10 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             @JvmStatic
             @JvmName("fromLong")
             @ObjCName("fromLong")
-            operator fun invoke(raw: ULong) = CidrNumber.V4(raw and MAX_VALUE.raw)
+            operator fun invoke(raw: ULong) = CidrNumber.V4(raw and 0x1FFFFFFFFuL)
             val ZERO = CidrNumber.V4(0u)
             val ONE = CidrNumber.V4(1u)
-            val MAX_VALUE = CidrNumber.V4((2uL shl 33) - 1uL)
+            val MAX_VALUE = CidrNumber.V4((1uL shl 32))
 
             /**
              * Parse from 4 or 5 bytes (big-endian).
@@ -122,11 +120,27 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
         }
 
 
-        override fun plus(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw + other.raw)
-        override fun plus(other: UInt): CidrNumber.V4 = CidrNumber.V4(raw + other)
+        override fun plus(other: CidrNumber.V4): CidrNumber.V4? {
+            val max = MAX_VALUE.raw
+            val b = other.raw
+            return if (raw > max - b) null else CidrNumber.V4(raw + b)
+        }
 
-        override fun minus(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw - other.raw)
-        override fun minus(other: UInt): CidrNumber.V4 = CidrNumber.V4(raw - other)
+        override fun plus(other: UInt): CidrNumber.V4? {
+            val b = other.toULong()
+            val max = MAX_VALUE.raw
+            return if (raw > max - b) null else CidrNumber.V4(raw + b)
+        }
+
+        override fun minus(other: CidrNumber.V4): CidrNumber.V4? {
+            val b = other.raw
+            return if (raw < b) null else CidrNumber.V4(raw - b)
+        }
+
+        override fun minus(other: UInt): CidrNumber.V4? {
+            val b = other.toULong()
+            return if (raw < b) null else CidrNumber.V4(raw - b)
+        }
 
         override fun and(other: CidrNumber.V4): CidrNumber.V4 = CidrNumber.V4(raw.and(other.raw))
 
@@ -139,11 +153,6 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
         override fun shr(bits: Int): CidrNumber.V4 = CidrNumber.V4(raw.shr(bits))
 
         override fun inv(): CidrNumber.V4 = CidrNumber.V4(raw.inv())
-
-        override fun inc(): CidrNumber.V4 = CidrNumber.V4(raw.inc())
-
-        override fun dec(): CidrNumber.V4 = CidrNumber.V4(raw.dec())
-
 
         override fun toByteArray(truncate: Boolean): ByteArray {
             val out = ByteArray(if (truncate || raw <= UInt.MAX_VALUE) 4 else 5)
@@ -183,7 +192,7 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
         var extraBit: Boolean = extraBit
             private set
 
-        override fun toString(): String = toByteArray().toHexString()
+        override fun toString(): String = toByteArray(truncate = false).toHexString()
 
         override fun compareTo(other: V6): Int = when {
             this.extraBit != other.extraBit -> if (this.extraBit) 1 else -1
@@ -192,7 +201,7 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             else -> 0
         }
 
-        override operator fun plus(other: V6): V6 {
+        override operator fun plus(other: V6): V6? {
             // 64-bit low limb
             val loSum = this.lo + other.lo
             val carryLo = if (loSum < this.lo) 1uL else 0uL
@@ -208,6 +217,9 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             val aE = if (this.extraBit) 1 else 0
             val bE = if (other.extraBit) 1 else 0
             val newExtra = ((aE + bE + carryOutHi) and 1) == 1
+            // overflow to 130th bit if the sum into the 129th bit >= 2
+            val overflow = (aE + bE + carryOutHi) >= 2
+            if (overflow) return null
 
             return V6(hiSum, loSum, newExtra)
         }
@@ -253,7 +265,9 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
         }
 
 
-        override operator fun minus(other: V6): V6 {
+        override operator fun minus(other: V6): V6? {
+            // underflow if this < other
+            if (this < other) return null
             // 64-bit low limb
             val borrowLo = if (this.lo < other.lo) 1uL else 0uL
             val loDiff = this.lo - other.lo
@@ -311,10 +325,10 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             this.extraBit = newExtra
         }
 
-        override fun plus(number: UInt): V6 = this + number.toULong()
+        override operator fun plus(number: UInt): V6? = this + number.toULong()
 
         // Add ULong without creating a temporary V6
-        operator fun plus(number: ULong): V6 {
+        operator fun plus(number: ULong): V6? {
             val oldLo = this.lo
             val loSum = oldLo + number
             val carryLo = if (loSum < oldLo) 1uL else 0uL
@@ -323,14 +337,20 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             val hiSum = oldHi + carryLo
             val carryToExtra = if (hiSum < oldHi) 1 else 0
 
-            val newExtra = this.extraBit.xor(carryToExtra == 1)
+            val aE = if (this.extraBit) 1 else 0
+            val newExtra = ((aE) xor (carryToExtra and 1)) == 1
+            // overflow if extraBit (1) + carryToExtra (1) would carry out beyond 129th bit
+            if (aE + carryToExtra >= 2) return null
+
             return V6(hiSum, loSum, newExtra)
         }
 
-        override operator fun minus(number: UInt): V6 = this - number.toULong()
+        override operator fun minus(number: UInt): V6? = this - number.toULong()
 
         // Subtract ULong without creating a temporary V6
-        operator fun minus(number: ULong): V6 {
+        operator fun minus(number: ULong): V6? {
+            // underflow if value < number (since number is <= 2^64-1 and has extraBit=false, hi=0)
+            if (!this.extraBit && this.hi == 0uL && this.lo < number) return null
             val borrowLo = if (this.lo < number) 1uL else 0uL
             val loDiff = this.lo - number
 
@@ -338,7 +358,9 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             val hiDiff = oldHi - borrowLo
             val borrowFromExtra = if (oldHi < borrowLo) 1 else 0
 
-            val newExtra = this.extraBit.xor(borrowFromExtra == 1)
+            val aE = if (this.extraBit) 1 else 0
+            val newExtra = ((aE) xor (borrowFromExtra and 1)) == 1
+
             return V6(hiDiff, loDiff, newExtra)
         }
 
@@ -491,18 +513,6 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             return b
         }
 
-
-        override operator fun inc(): V6 {
-            this += 1uL
-            return this
-        }
-
-
-        override operator fun dec(): V6 {
-            this -= 1uL
-            return this
-        }
-
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is V6) return false
@@ -525,7 +535,7 @@ interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
         companion object Companion {
             val ZERO = V6(0uL, 0uL)
             val ONE = V6(0uL, 1uL)
-            val MAX_VALUE = V6(ULong.MAX_VALUE, ULong.MAX_VALUE, extraBit = true)
+            val MAX_VALUE = V6(0uL, 0uL, extraBit = true)
 
             @OptIn(ExperimentalObjCName::class)
             @JvmStatic

@@ -72,10 +72,22 @@ sealed class IpAddress<N : Number, S : CidrNumber<S>>(val octets: ByteArray, dis
     val isSpecified: Boolean get() = !octets.all { it == 0.toByte() }
 
     @Suppress("UNCHECKED_CAST")
-    operator fun plus(number: S): IpAddress<N, S> = IpAddress(toCidrNumber() + number) as IpAddress<N, S>
+    operator fun plus(number: S): IpAddress<N, S>? =(toCidrNumber() + number)?.let{ IpAddress(it)  as IpAddress<N, S> }
 
     @Suppress("UNCHECKED_CAST")
-    operator fun minus(number: S): IpAddress<N, S> = IpAddress(toCidrNumber() - number) as IpAddress<N, S>
+    operator fun minus(number: S): IpAddress<N, S>? = (toCidrNumber() - number)?.let{ IpAddress(it)  as IpAddress<N, S> }
+
+    @Suppress("UNCHECKED_CAST")
+    operator fun plus(number: UInt): IpAddress<N, S>? =(toCidrNumber() + number)?.let{ IpAddress(it)  as IpAddress<N, S> }
+
+    @Suppress("UNCHECKED_CAST")
+    operator fun minus(number: UInt): IpAddress<N, S>? = (toCidrNumber() - number)?.let{ IpAddress(it)  as IpAddress<N, S> }
+
+    @Suppress("UNCHECKED_CAST")
+    operator fun plus(other: IpAddress<N, S>): S? = (CidrNumber(octets) as S) + (CidrNumber(other.octets) as S)
+
+    @Suppress("UNCHECKED_CAST")
+    operator fun minus(other: IpAddress<N, S>): S? = (CidrNumber(octets) as S) - (CidrNumber(other.octets) as S)
 
     inline infix fun shl(bits: Int): IpAddress<N, S> = IpAddress(octets shl bits) as IpAddress<N, S>
     inline infix fun shr(bits: Int): IpAddress<N, S> = IpAddress(octets shr bits) as IpAddress<N, S>

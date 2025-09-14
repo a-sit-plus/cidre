@@ -265,6 +265,7 @@ class TestAgainstPython {
         when (net) {
             is IpNetwork.V4 -> {
                 var expected = CidrNumber.V4.fromUnpadded(size_bytes)
+                println(size_bytes.toHexString())
                 assertEquals(expected, net.size)
             }
 
