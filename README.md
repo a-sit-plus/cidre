@@ -32,10 +32,17 @@ Currently, CIDRE provides the following functionality:
 * converting CIDR prefixes from/to netmasks
 * checking whether addresses or networks are fully contained within a network
 * comparing networks and addresses within the same family (IPv4/IPv6)
-
-Planned features include:
-* iterating over, slicing, splitting, and merging networks
-* subnetting and supernetting
+* calculating address and host ranges, adjacency, overlap and containment checks
+* CIDR math based on custom `CidrNumber` type, a fixed-width, BE-optimized unsigned integer:
+    - V4 range: [0, 2^32]; V6 range: [0, 2^128]
+    - Arithmetic (+/−) returns null on overflow/underflow
+    - Bitwise ops, shifts, and inversion operate within modeled width and always succeed
+    - Truncation:
+      - Intatiation through default constructor truncates the passed value `CidrNumber.V4.MAX_VALUE` / `CidrNumber.V6.MAX_VALUE`
+      - `toByteArray(truncate: Boolean = true)` produces
+         - `truncate = true`: 4/16-byte forms directly usable for Netmasks and IpAddresses
+         - `truncate = false`: preserves the 33rd/129th bit (corresponds to `MAX_VALUE`), which is the size of a /0 network.
+    - Be sure to check out the [full API docs on `CidrNumber`](https://a-sit-plus.github.io/cidre/cidre/at.asitplus.cidre.byteops/-cidr-number)! 
 
 In general, CIDRE's data model has semantics influenced by [netaddr](https://github.com/netaddr/netaddr/?tab=readme-ov-file): An `IpNetwork` covers a range of `IpInterface`s, both of which consist of an `address` and a `prefix`.   
 Semantically, an `IpInterface` has only a single `IpAddress` (although no validation is performed whether it is distinct from the associated network's address), while a network spans a range.  
@@ -52,7 +59,6 @@ In more technical terms, CIDRE introduces three main classes:
 
 `IpNetwork`, `IpAddress`, and their IPv4/IPv6 specializations share the `IpAddressAndPrefix` interface hierarchy, which groups common semantics and functionality.  
 Addresses and networks are not comparable, so this is mainly an application of DRY.
-
 
 ## Using in your Projects
 
@@ -80,9 +86,33 @@ Simply `toString()` any IP address to get its string representation, or access `
 An `IpAddress`'s companion object also provides helpful properties such as segment separator, number of octets, and readily usable `Regex` instances to check whether a string is a valid representation of
 an IP address or a single address segment.
 
-#### Ordering
+#### IP Address Arithmetic
 
-IP addresses are `Comparable` inside a family (IPv4, IPv6) and are ordered by comparing their octets interpreted as a BE-encoded unsigned integer.
+All operations work only withing a family (IPv4 / IPv6).
+In general, IP addresses are `Comparable` and are ordered by comparing their octets interpreted as a BE-encoded unsigned integer.
+Any IP addresses and netmask can be converted to a `CidrNumber`, but arithmetical and bitwise operations are also available directly on
+IP addresses:
+
+```kotlin
+//Use qualified constructor to enforce family
+val lower = IpAddress.V4("192.168.0.1")
+val higher = IpAddress.V4("192.168.0.99")
+
+println("Distance = ${lower - higher}") //null due to underflow
+println("Distance = ${higher - lower}") //00000062 (=98)
+println("Summed = ${lower + CidrNumber.V4(98u)}") //192.168.0.99
+
+println("Numeric:          ${lower.toCidrNumber()}")   //c0a80001
+var shifted = lower shl 8
+println("Numeric shifted = ${shifted.toCidrNumber()}") //a8000100
+println("Shifted = $shifted") //168.0.1.0 due to truncation
+
+val maskedBits = higher.mask(24u)
+val maskedCopy = higher and (24u.toNetmask(IpFamily.V4))
+// Masked in-place= 192.168.0.0 (modified bits: 4), manually masked = 192.168.0.0
+println("Masked in-place= $higher (modified bits: $maskedBits), manually masked = $maskedCopy")
+```
+
 
 #### Platform Interop
 
@@ -121,13 +151,33 @@ CIDRE models two closely related concepts:
   The network’s address itself is part of the network (and for IPv4, the broadcast address is also considered inside for membership checks).
 - `IpInterface`: a single address bound to a prefix and associated with a network, and therefore carries a reference to the associated `IpNetwork`.
 
+Both can be created from the same string format:
+```kotlin
+val addrAndPrefix = "::dead/42"
+val iface = IpInterface(addrAndPrefix)
+val net = IpNetwork(addrAndPrefix, strict = false) //be lenient and auto-mask
+println("iface: $iface") //::dead/42
+println("net:   $net")   //::/42
+
+//normalises in-place and associates (not copies) the address with the nwtwork
+val associated = IpNetwork.forAddress(iface.address, iface.prefix)
+
+println("net:   $associated") //::/42
+println("iface: $associated") //::/42 <-- not the change here!
+println(associated.address === iface.address) //true
+
+//no normalisation, but copying, so we can be strict!
+val deepCopied = IpNetwork(iface.address, iface.prefix, strict = true)
+println(deepCopied.address == iface.address)  //true
+println(deepCopied.address === iface.address) //false
+```
+
 Both share the `IpAddressAndPrefix` interface and its respective IPv4 and IPv6 specializations and therefore expose:
 - `address` and prefix (CIDR prefix length)
 - `netmask` (network-order ByteArray)
 - common flags (e.g., `isLinkLocal`, `isLoopback`, `isMulticast`). IPv4- and IPv6-specific flags are available on their
   respective interfaces (IpAddressAndPrefix.V4 / V6).
 - consistent `toString()` behavior ("address/prefix"); IPv4 variants also support netmask printing helpers.
-
 
 #### Creating IpInterfaces from Networks
 
@@ -160,14 +210,61 @@ Conceptually:
 - An `IpInterface` is a single address bound to a prefix.
 - The network address is part of the network; for IPv4, the broadcast address (when applicable) is also inside.
 
-#### Containment
+- Network relations and size helpers:
+    - `size`
+    - `lastAddress`, `firstAssignableHost`, `lastAssignableHost`
+    - Sequences:
+      - `assignableHostRange`: routable, assignable hosts inside a network.  
+        The interval boundaries can be accessed through:
+        - `firstAssignableHost`
+        - `lastAssignableHost`
+      - `addressSpace`: the whole address space, including network address and (for IPv4) broadcast address.  
+        The interval boundaries can be accessed through:
+      - `address` (network address)
+      - `lastAddress`
+    - IPv4: `broadcastAddress` (when applicable; may or may not be `lastAddress` depending on the network)
+
+The following example illustrates regular and edge cases:
+```kotlin
+//point-to-point -> no broadcast
+val pointToPoint = IpNetwork.V4("192.168.0.0/31")
+println(pointToPoint.address)               //192.0.0.0
+println(pointToPoint.lastAddress)           //192.0.0.1
+println(pointToPoint.firstAssignableHost)   //192.168.0.0/31
+println(pointToPoint.lastAssignableHost)    //192.168.0.1/31
+println(pointToPoint.broadcastAddress)      //null
+println(pointToPoint.size)                  // 00000002 (= 2)
+
+//perhaps the most used private IP range
+val private = IpNetwork.V4("192.168.0.0/24")
+println(private.address)                //192.168.0.0
+println(private.lastAddress)            //192.168.0.255
+println(private.firstAssignableHost)    //192.168.0.1/24
+println(private.lastAssignableHost)     //192.168.0.254/24
+println(private.broadcastAddress)       //192.168.0.255/24
+println(private.size)                   //00000100 (= 256)
+
+//maxing out
+val unspec = IpNetwork.V4("0.0.0.0/0")
+println(unspec.address)               //0.0.0.0
+println(unspec.lastAddress)           //255.255.255.255
+println(unspec.firstAssignableHost)   //0.0.0.1/0
+println(unspec.lastAssignableHost)    //255.255.255.254/0
+println(unspec.broadcastAddress)      //255.255.255.255/0
+println(unspec.size)                  //0100000000 (= 2^32; observe the fifth octet required to represent it!)
+```
+
+#### Containment and Overlap Checks
 
 Containment checks are explicit (and fast!):
 - Address in network: `network.contains(ipAddress)`
 - Interface in network: `network.contains(ipInterface)`
 - Network fully contained in another network: `anotherNetwork.contains(network)`
-
-
+- Overlap check: `overlaps` (= a contains b or b contains a)
+- Relations between networks
+  - `isSubnetOf`
+  - `isSupernetOf`
+  - `isAdjacentTo`
 
 ### Low-Level Utilities
 The `at.asitplus.cidre.byteops` package provides low-level helper functions:
@@ -179,14 +276,17 @@ The `at.asitplus.cidre.byteops` package provides low-level helper functions:
 * `fun Netmask.toPrefix(): Prefix` converting a netmask into its CIDR prefix length.
 * `ByteArray.toShortArray(bigEndian: Boolean = true): ShortArray` grouping pairs of bytes into a short. Useful to get IPv6 hextets from octets.
 
+The full list of low-level ops can be found [here](https://a-sit-plus.github.io/cidre/cidre/at.asitplus.cidre.byteops/).
 
 ## Roadmap
-- More comprehensive tests
-- Address range enumeration
+- More comprehensive tests for low-level ops
 - Subnet enumeration (absolute and relative, e.g., `/24` or “+2 bits”)
 - Supernetting helpers (absolute and relative)
-- Overlap and adjacency checks
-- Safe aggregation of adjacent/overlapping ranges where possible and merging of networks
+- Some more comprehensive tests, covering subnetting and supernetting
+- As required/sensible, once API is stable, and tests are comprehensive: performance optimization
+- Even More comprehensive tests and benchmarks, ensuring optimizations are not misguided and indeed improve performance
+
+Note that the API is still subject to subtle changes and the inner workings may be completely overhauled at some point, if deemed sensible.
 
 ## Contributing
 External contributions are greatly appreciated!

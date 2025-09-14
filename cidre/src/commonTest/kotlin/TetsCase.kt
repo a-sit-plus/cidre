@@ -3,7 +3,6 @@ package at.asitplus
 // CidrFixtures.kt
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.test.Test
 
 // Common "meta" block (accommodates both packs)
 @Serializable
@@ -218,4 +217,68 @@ data class NetmaskMeta(
 data class NetmaskFixture(
     val meta: NetmaskMeta? = null,
     val cases: List<NetmaskCase>
+)
+
+
+@Serializable
+data class NetworkPropsFixture(
+    val generated_at: String,
+    val counts: Counts,
+    val test_networks: List<TestNetwork>,
+    val adjacency_cases: List<AdjacencyCase>
+)
+
+@Serializable
+data class Counts(
+    val test_networks: Int,
+    val adjacency_cases: Int
+)
+
+
+@Serializable
+data class TestNetwork(
+    val family: String,           // "IPv4" or "IPv6"
+    val cidr: String,             // e.g., "192.0.2.0/24"
+    val address: String,          // network address string
+    val prefix: Int,
+    val network_address: String,
+    val last_address: String,     // top of block (broadcast for IPv4)
+    val first_assignable: String,
+    val last_assignable: String,
+    val broadcast: String?,       // null for IPv6
+    val num_addresses: String,    // keep as string; huge for IPv6
+    val size_be_hex: String       // big-endian byte encoding (hex) of num_addresses
+)
+@Serializable
+data class AdjacencyCase(
+    val family: String,           // "IPv4" or "IPv6"
+    val a_cidr: String,
+    val b_cidr: String,
+    val are_adjacent: Boolean,
+    val overlaps: Boolean,
+    val relation: String          // "equal" | "A_contains_B" | "B_contains_A" | "adjacent" | "disjoint" | "relation_check"
+)
+
+@Serializable
+data class MergeCase(
+    @SerialName("a_cidr") val aCidr: String,
+    @SerialName("b_cidr") val bCidr: String,
+    @SerialName("can_merge") val canMerge: Boolean,
+    val expect: String? = null,
+    val note: String? = null
+)
+
+
+@Serializable
+data class OverlongFixture(
+    val generated_at: String,
+    val tests: List<OverlongOp>
+)
+
+@Serializable
+data class OverlongOp(
+    val input: String,        // hex, 16 or 17 bytes BE (lowercase)
+    val operation: String,    // "INV" | "AND" | "OR" | "XOR" | "SHL" | "SHR"
+    val argument: String? = null, // null for INV; decimal shift for SHL/SHR; hex-be for AND/OR/XOR
+    val output: String        // expected hex-be
 )

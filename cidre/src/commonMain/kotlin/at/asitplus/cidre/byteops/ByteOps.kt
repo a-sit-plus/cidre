@@ -1,8 +1,10 @@
 package at.asitplus.cidre.byteops
 
 import at.asitplus.cidre.IpAddress
+import at.asitplus.cidre.IpFamily
 import at.asitplus.cidre.Netmask
 import at.asitplus.cidre.Prefix
+import kotlin.experimental.inv
 
 /**
  * logical `AND` operation returning a newly-allocated [ByteArray].
@@ -13,6 +15,29 @@ infix fun ByteArray.and(other: ByteArray): ByteArray {
     require(size == other.size) { "Mismatched sizes: $size vs ${other.size}" }
     val r = ByteArray(size)
     for (i in indices) r[i] = (this[i].toInt() and other[i].toInt()).toUByte().toByte()
+    return r
+}
+
+/**
+ * logical `OR` operation returning a newly-allocated [ByteArray].
+ * @throws IllegalArgumentException if bytes are of different size
+ */
+@Throws(IllegalArgumentException::class)
+infix fun ByteArray.or(other: ByteArray): ByteArray {
+    require(size == other.size) { "Mismatched sizes: $size vs ${other.size}" }
+    val r = ByteArray(size)
+    for (i in indices) r[i] = (this[i].toInt() or other[i].toInt()).toUByte().toByte()
+    return r
+}
+/**
+ * logical `OR` operation returning a newly-allocated [ByteArray].
+ * @throws IllegalArgumentException if bytes are of different size
+ */
+@Throws(IllegalArgumentException::class)
+infix fun ByteArray.xor(other: ByteArray): ByteArray {
+    require(size == other.size) { "Mismatched sizes: $size vs ${other.size}" }
+    val r = ByteArray(size)
+    for (i in indices) r[i] = (this[i].toInt() xor other[i].toInt()).toUByte().toByte()
     return r
 }
 
@@ -99,7 +124,7 @@ fun ByteArray.compareUnsignedBE(other: ByteArray): Int {
  * @throws IllegalArgumentException in case the prefix exceeds the specified [octetCount]
  */
 @Throws(IllegalArgumentException::class)
-fun UInt.toNetmask(octetCount: Int): Netmask {
+fun Prefix.toNetmask(octetCount: Int): Netmask {
     val prefix = this.toInt()
     require(prefix in 0..(octetCount * 8)) { "prefix out of range for $octetCount-octet address" }
 
@@ -121,19 +146,26 @@ fun UInt.toNetmask(octetCount: Int): Netmask {
 }
 
 /**
+ * **IN-PLACE** inversion
+ * @see [kotlin.experimental.inv]*/
+fun ByteArray.invInPlace() = forEachIndexed { i, byte -> this[i] = byte.inv() }
+
+operator fun ByteArray.inv() = copyOf().apply { invInPlace() }
+
+/**
  * Creates a netmask from this prefix. The resulting number of octets depends on the specified [family].
  *
  * @throws IllegalArgumentException in case the prefix is too long
  */
 @Throws(IllegalArgumentException::class)
-fun Prefix.toNetmask(family: IpAddress.Family): Netmask = toNetmask(family.numberOfOctets)
+fun Prefix.toNetmask(family: IpFamily): Netmask = toNetmask(family.numberOfOctets)
 
 /**
  * Converts a netmask into its CIDR prefix length.
  * Validates that the mask's length and that it is contiguous (all 1-bits followed by 0-bits).
  *
  * @throws IllegalArgumentException if the netmask is not contiguous
- * @throws IllegalArgumentException if the netmask size matches neither [IpAddress.V4.numberOfOctets] nor [IpAddress.V6.numberOfOctets]
+ * @throws IllegalArgumentException if the netmask size matches neither [IpAddress.Companion.numberOfOctets] nor [IpAddress.Companion.numberOfOctets]
  */
 @Throws(IllegalArgumentException::class)
 fun Netmask.toPrefix(): Prefix {
@@ -160,3 +192,107 @@ fun Netmask.toPrefix(): Prefix {
     }
     return prefix
 }
+
+/**
+ * Converts the UInt value to its IPv4 address representation in the form of a 4-byte-long ByteArray.
+ * Each byte in the array corresponds to one octet of the IPv4 address, arranged in network byte order (big-endian).
+ *
+ * @return A ByteArray containing 4 bytes representing the IPv4 address.
+ */
+fun UInt.toIPv4Bytes(): ByteArray {
+    val out = ByteArray(4)
+    var v = this
+    for (i in 0 until out.size) {
+        out[out.size - 1 - i] = (v and 0xFFu).toUByte().toByte()
+        v = v shr 8
+    }
+    return out
+}
+
+/**
+ * Converts the UInt value to its IPv4 address representation in the form of a 4-byte-long ByteArray.
+ * Each byte in the array corresponds to one octet of the IPv4 address, arranged in network byte order (big-endian).
+ * Any values larger than [UInt.MAX_VALUE] will be truncated to four bytes
+ *
+ * @return A ByteArray containing 4 bytes representing the IPv4 address.
+ */
+fun ULong.toIPv4Bytes(): ByteArray {
+    val out = ByteArray(if (this > UInt.MAX_VALUE) 5 else 4)
+    var v = this
+    for (i in 0 until out.size) {
+        out[out.size - 1 - i] = (v and 0xFFuL).toUByte().toByte()
+        v = v shr 8
+    }
+    return out
+}
+
+/**
+ * Logical left shift (zero-fill) of a big-endian ByteArray by [bits].
+ * - bits < 0 throws
+ * - bits == 0 returns a copy
+ * - bits >= size*8 returns all zeros
+ */
+infix fun ByteArray.shl(bits: Int): ByteArray {
+    require(bits >= 0) { "bits must be >= 0" }
+    val n = size
+    if (n == 0) return this.copyOf()
+    if (bits == 0) return this.copyOf()
+    val totalBits = n * 8
+    if (bits >= totalBits) return ByteArray(n)
+
+    val byteShift = bits ushr 3          // bits / 8
+    val bitShift = bits and 7            // bits % 8
+    val out = ByteArray(n)
+
+    // big-endian: index 0 is most-significant byte
+    // For left shift, dest[i] pulls from src[i + byteShift] and carries from src[i + byteShift + 1]
+    for (i in 0 until n) {
+        val si = i + byteShift
+        if (si >= n) {
+            out[i] = 0
+            continue
+        }
+        var v = (this[si].toInt() and 0xFF) shl bitShift
+        if (bitShift != 0 && si + 1 < n) {
+            v = v or ((this[si + 1].toInt() and 0xFF) ushr (8 - bitShift))
+        }
+        out[i] = (v and 0xFF).toByte()
+    }
+    return out
+}
+
+
+/**
+ * Logical right shift (zero-fill) of a big-endian ByteArray by [bits].
+ * - bits < 0 throws
+ * - bits == 0 returns a copy
+ * - bits >= size*8 returns all zeros
+ */
+infix fun ByteArray.shr(bits: Int): ByteArray {
+    require(bits >= 0) { "bits must be >= 0" }
+    val n = size
+    if (n == 0) return this.copyOf()
+    if (bits == 0) return this.copyOf()
+    val totalBits = n * 8
+    if (bits >= totalBits) return ByteArray(n)
+
+    val byteShift = bits ushr 3          // bits / 8
+    val bitShift = bits and 7            // bits % 8
+    val out = ByteArray(n)
+
+    // For right shift, dest[i] pulls from src[i - byteShift] and carries from src[i - byteShift - 1]
+    for (i in 0 until n) {
+        val si = i - byteShift
+        if (si < 0) {
+            out[i] = 0
+            continue
+        }
+        var v = (this[si].toInt() and 0xFF) ushr bitShift
+        if (bitShift != 0 && si - 1 >= 0) {
+            v = v or ((this[si - 1].toInt() and 0xFF) shl (8 - bitShift))
+        }
+        out[i] = (v and 0xFF).toByte()
+    }
+    return out
+}
+
