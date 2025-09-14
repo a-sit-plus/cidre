@@ -1,7 +1,7 @@
 package at.asitplus.cidre.byteops
 
-import at.asitplus.cidre.byteops.CidrNumber.V4.Companion.MAX_VALUE
-import at.asitplus.cidre.byteops.CidrNumber.V6.Companion.MAX_VALUE
+import at.asitplus.cidre.byteops.CidrNumber.V4.Companion.fromUnpadded
+import at.asitplus.cidre.byteops.CidrNumber.V6.Companion.fromUnpadded
 import kotlin.experimental.ExperimentalObjCName
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmName
@@ -11,24 +11,123 @@ import kotlin.native.ObjCName
 /**
  * Number with a byte layout and semantics optimized for CIDR/IP operations.
  * The maximum number of addresses inside an IP address space is 2^32 for IPv4 and 2^128 for IPv6. Hence,
- * 32/128-bit numbers are not enough to represent the size of /0 networks, and an additional bit is needed.
- * At the same time, the *actual* number of bytes used for addresses and netmasks is 4/16, which is why (by default) a CidrNumber's
- * byte-representation is truncated to 4/16 bytes, to make it efficiently usable for CIDR operations.
+ * 32/128-bit unsigned integers are not enough to represent the size of /0 networks, and an additional bit is needed.
+ * At the same time, the actual number of bytes used for addresses and netmasks is 4/16, which is why (by default) a CidrNumber's
+ * byte representation is truncated to 4/16 bytes to keep it efficient for CIDR operations.
  *
- * Its String representation is the hex-encoded byte-representation.
+ * Ranges:
+ * - IPv4 ([CidrNumber.V4]): valid values are in [0, 2^32]. Creating a [CidrNumber.V4] from an [ULong] truncates it to the modeled IPv4 width (2^32). It does not signal overflow
+ * - IPv6 ([CidrNumber.V6]): valid values are in [0, 2^128].
+ *
+ * Overflow/underflow semantics:
+ * - Arithmetic operations (+ and -) return null on overflow/underflow, ensuring values stay within the valid ranges above.
+ * - Bitwise operations (and, or, xor), shifts (shl, shr), and inversion (inv) operate within the modeled bit-width and
+ *   always yield a representable value in the respective range.
+ *
+ * Its String representation is the hex-encoded byte-representation of the number produced by
+ * [toByteArray]`(truncate = false)`.
+ * I.e., 5 bytes for IPv4 when equal to 2^32 and 17 bytes for IPv6 when equal to 2^128; otherwise 4/16 bytes.
  *
  * @see toByteArray
  */
+
 sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
+    /**
+     * Adds [other] to this CIDR number.
+     *
+     * Nullability semantics:
+     * - Returns `null` if the mathematical sum exceeds the maximum valid value
+     *   (i.e., > 2^32 for IPv4 or > 2^128 for IPv6).
+     * - Otherwise returns the exact sum.
+     */
     operator fun plus(other: TSelf): TSelf?
+
+    /**
+     * Subtracts [other] from this CIDR number.
+     *
+     * Nullability semantics:
+     * - Returns `null` if the mathematical result would be negative (underflow).
+     * - Otherwise returns the exact difference.
+     */
     operator fun minus(other: TSelf): TSelf?
+
+    /**
+     * Adds an unsigned 32-bit integer to this CIDR number.
+     *
+     * Nullability semantics:
+     * - Returns `null` if the mathematical sum exceeds the maximum valid value
+     *   (i.e., > 2^32 for IPv4 or > 2^128 for IPv6).
+     * - Otherwise returns the exact sum.
+     */
     operator fun plus(other: UInt): TSelf?
+
+    /**
+     * Subtracts an unsigned 32-bit integer from this CIDR number.
+     *
+     * Nullability semantics:
+     * - Returns null if the mathematical result would be negative (underflow).
+     * - Otherwise returns the exact difference.
+     */
     operator fun minus(other: UInt): TSelf?
+
+    /**
+     * Bitwise AND within the modeled bit width.
+     *
+     * Behavior:
+     * - Always succeeds
+     * - Never returns `null`.
+     */
     infix fun and(other: TSelf): TSelf
+
+    /**
+     * Bitwise OR within the modeled bit width.
+     *
+     * Behavior:
+     * - Always succeeds
+     * - Never returns `null`.
+     */
     infix fun or(other: TSelf): TSelf
+
+    /**
+     * Bitwise XOR within the modeled bit width.
+     *
+     * Behavior:
+     * - Always succeeds
+     * - Never returns `null`.
+     */
     infix fun xor(other: TSelf): TSelf
+
+    /**
+     * Logical left shift within the modeled bit width.
+     *
+     * Behavior:
+     * - Always succeeds; bits shifted out are discarded, zeros shifted in.
+     * - Never returns `null`.
+     *
+     * @throws IllegalArgumentException if the shift count is outside the supported range for the family.
+     */
+    @Throws(IllegalArgumentException::class)
     infix fun shl(bits: Int): TSelf
+
+    /**
+     * Logical right shift within the modeled bit width.
+     *
+     * Behavior:
+     * - Always succeeds; bits shifted out are discarded, zeros shifted in.
+     * - Never returns `null`.
+     *
+     * @throws IllegalArgumentException if the shift count is outside the supported range for the family.
+     */
+    @Throws(IllegalArgumentException::class)
     infix fun shr(bits: Int): TSelf
+
+    /**
+     * Bitwise inversion within the modeled bit width.
+     *
+     * Behavior:
+     * - Always succeeds; flips all bits (33 bits for IPv4, 129 bits for IPv6).
+     * - Never returns `null`.
+     */
     operator fun inv(): TSelf
 
     /**
@@ -36,28 +135,15 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
      * The maximum number of addresses inside an IP address space is 2^32 for IPv4 and 2^128 for IPv6. Hence,
      * 32/128-bit numbers are not enough to represent the size of /0 networks, and an additional bit is needed.
      *
-     * However, this function by default truncates to 4/16 bytes, as useful for CIDR operations.
-     * To write the number of addresses correctly, set [truncate]` = false`.
+     * By default, this function truncates to 4/16 bytes (sufficient for most CIDR operations).
+     * To serialize the full range (including 2^32 for IPv4 and 2^128 for IPv6), set [truncate] = false.
      */
     fun toByteArray(truncate: Boolean = true): ByteArray
 
-    /**
-     * Minimal, fixed-width 3**3**-bit unsigned integer for CIDR/IP operations,
-     * meaning its [MAX_VALUE] is 2^3**3**-1 (and not 2^32-1). This is required to represent the maximum number of addresses inside
-     * an IPv4 network.
-     *
-     * * Always exactly 3**3** bits wide for arithmetic.
-     * * Network byte order (big-endian) for serialization.
-     * * Tailored for IPv4 arithmetic: compare, +/-, bitwise ops, shifts.
-     * * Implemented as a value class on [ULong] with clamping to 33 bit.
-     */
-
-
     companion object {
+
         /**
-         * Parse from
-         * * 4 or 5 bytes (IPv4)
-         * * 16 or 17 bytes (IPv6)
+         * Parse from 4 or 5 bytes (IPv4) and 16 or 17 bytes (IPv6).
          *
          * @throws IllegalArgumentException for invalid lengths
          */
@@ -71,17 +157,28 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
                 16, 17 -> V6(bytes)
                 else -> throw IllegalArgumentException("invalid byte length: ${bytes.size}")
             }
-
     }
 
     @JvmInline
     value class V4 private constructor(val raw: ULong) : CidrNumber<CidrNumber.V4> {
 
 
-        override fun toString(): String = toByteArray(truncate=false).toHexString()
+        override fun toString(): String = toByteArray(truncate = false).toHexString()
 
         companion object Companion {
-
+            /**
+             * Creates a [CidrNumber.V4] from a raw unsigned 64-bit value by truncating it to the modeled IPv4 width (2^32).
+             *
+             * Truncation semantics:
+             * - The input [raw] is masked to the V4 modeling width (33 bits). Any bits above that width are discarded.
+             * - It does not signal overflow; it intentionally truncates to fit the internal representation.
+             *
+             * - Use when you need to coerce a value into the V4 modeling range (e.g., from a larger integer)
+             *   and you accept truncation.
+             * - If you need overflow detection (i.e., to ensure results stay within [0, 2^32] without silent truncation),
+             *   use the arithmetic APIs (plus/minus) which return null on overflow/underflow, or construct from bytes
+             *   using the documented 4/5-byte value-preserving encodings.
+             */
             @OptIn(ExperimentalObjCName::class)
             @JvmStatic
             @JvmName("fromLong")
@@ -92,8 +189,8 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             val MAX_VALUE = CidrNumber.V4((1uL shl 32))
 
             /**
-             * Parse from 4 or 5 bytes (big-endian).
-             * This supports the full 33-bit range [0, 2^33-1].
+             * Parse from exactly 4 or 5 bytes. To parse unpadded byte arrays use [fromUnpadded].
+             * Valid big-endian encoded values are in [0, 2^32].
              *
              * @throws IllegalArgumentException for invalid lengths
              */
@@ -112,6 +209,12 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
                 return CidrNumber.V4(acc)
             }
 
+            /**
+             * Parse unpadded byte arrays.
+             * Valid big-endian encoded values are in [0, 2^32].
+             *
+             * @throws IllegalArgumentException for invalid lengths
+             */
             fun fromUnpadded(bytes: ByteArray): CidrNumber.V4 = CidrNumber.V4(
                 if (bytes.size < 4) ByteArray(5).apply {
                     bytes.indices.forEach { this[5 - bytes.size + it] = bytes[it] }
@@ -168,29 +271,8 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
 
     }
 
-    /**
-     * Minimal, fixed-width 12**9**-bit unsigned integer for CIDR/IP operations,
-     * meaning its [MAX_VALUE] is 2^12**9**-1 (and not 2^128-1). This is required to represent the maximum number of addresses inside
-     * an IPv6 network.
-     *
-     * * Always exactly 12**9** bits wide for arithmetic.
-     * * Network byte order (big-endian) for serialization.
-     * * Tailored for IPv6 arithmetic: compare, +/-, bitwise ops, shifts.
-     * * Implemented via two 64-bit limbs + an extra Boolean.
-     *
-     * Storage layout (big-endian semantics):
-     *  hi: most-significant 64 bits (bits 127..64)
-     *  lo: least-significant 64 bits (bits 63..0)
-     *  extraBit: bit 65
-     */
-    class V6 internal constructor(hi: ULong, lo: ULong, extraBit: Boolean = false) : CidrNumber<V6> {
-
-        var hi: ULong = hi
-            private set
-        var lo: ULong = lo
-            private set
-        var extraBit: Boolean = extraBit
-            private set
+    class V6 internal constructor(private var hi: ULong, private var lo: ULong, private var extraBit: Boolean = false) :
+        CidrNumber<V6> {
 
         override fun toString(): String = toByteArray(truncate = false).toHexString()
 
@@ -245,8 +327,6 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             this.extraBit = newExtra
         }
 
-
-        // In-place add: this += number (lower 64-bits only)
         operator fun plusAssign(number: ULong) {
             val oldLo = this.lo
             val loSum = oldLo + number
@@ -327,7 +407,6 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
 
         override operator fun plus(number: UInt): V6? = this + number.toULong()
 
-        // Add ULong without creating a temporary V6
         operator fun plus(number: ULong): V6? {
             val oldLo = this.lo
             val loSum = oldLo + number
@@ -347,7 +426,6 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
 
         override operator fun minus(number: UInt): V6? = this - number.toULong()
 
-        // Subtract ULong without creating a temporary V6
         operator fun minus(number: ULong): V6? {
             // underflow if value < number (since number is <= 2^64-1 and has extraBit=false, hi=0)
             if (!this.extraBit && this.hi == 0uL && this.lo < number) return null
@@ -417,7 +495,6 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             return this
         }
 
-        // ----- Shifts (logical) -----
         override infix fun shl(bits: Int): V6 {
             require(bits in 0..128) { "shift must be in [0,128]" }
             if (bits == 0) return this
@@ -544,14 +621,10 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
             operator fun invoke(number: ULong) = V6(0uL, number)
 
             /**
-             * Parse from 16 or 17 bytes (big-endian).
-             * * 16-byte form: standard 128-bit value (extraBit = false).
-             * * 17-byte form: the first byte is a header (0x00 or 0x01) representing the 129th MSB,
-             *   followed by a 16-byte 128-bit value (hi||lo). Header 0x01 sets extraBit = true.
+             * Parse from exactly 16 or 17 bytes. To parse unpadded byte arrays use [fromUnpadded].
+             * Valid big-endian encoded values are in [0, 2^128].
              *
-             * This supports the full 129-bit range [0, 2^129-1].
-             *
-             * @throws IllegalArgumentException for invalid lengths or invalid header values.
+             * @throws IllegalArgumentException for invalid lengths
              */
             @Throws(IllegalArgumentException::class)
             @OptIn(ExperimentalObjCName::class)
@@ -587,6 +660,12 @@ sealed interface CidrNumber<TSelf : CidrNumber<TSelf>> : Comparable<TSelf> {
                 }
             }
 
+            /**
+             * Parse from unpadded byte arrays.
+             * Valid big-endian encoded values are in [0, 2^32].
+             *
+             * @throws IllegalArgumentException for invalid lengths
+             */
             fun fromUnpadded(bytes: ByteArray): CidrNumber.V6 = CidrNumber.V6(
                 if (bytes.size < 16) ByteArray(17).apply {
                     bytes.indices.forEach { this[17 - bytes.size + it] = bytes[it] }

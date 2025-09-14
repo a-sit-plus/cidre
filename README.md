@@ -182,12 +182,9 @@ The `at.asitplus.cidre.byteops` package provides low-level helper functions:
 
 ## Roadmap
 - More comprehensive tests
-- Address range enumeration
 - Subnet enumeration (absolute and relative, e.g., `/24` or “+2 bits”)
 - Supernetting helpers (absolute and relative)
-- Overlap and adjacency checks
-- Safe aggregation of adjacent/overlapping ranges where possible and merging of networks
-- 
+- (As required/sensible, once API is stable and tests are comprehensive:) Performance optimization
 
 ## Contributing
 External contributions are greatly appreciated!

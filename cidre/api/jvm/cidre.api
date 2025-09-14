@@ -1,3 +1,8 @@
+public final class at/asitplus/cidre/ImplementationError : java/lang/RuntimeException {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
 public abstract class at/asitplus/cidre/IpAddress : java/lang/Comparable {
 	public static final field Companion Lat/asitplus/cidre/IpAddress$Companion;
 	public synthetic fun <init> ([BLkotlin/Unit;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -15,10 +20,14 @@ public abstract class at/asitplus/cidre/IpAddress : java/lang/Comparable {
 	public final fun isSpecified ()Z
 	public final fun mask ([B)I
 	public final fun mask-WZ4Q5Ns (I)I
+	public final fun minus (Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/byteops/CidrNumber;
 	public final fun minus (Lat/asitplus/cidre/byteops/CidrNumber;)Lat/asitplus/cidre/IpAddress;
+	public final fun minus-WZ4Q5Ns (I)Lat/asitplus/cidre/IpAddress;
 	public final fun or (Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpAddress;
 	public final fun or ([B)Lat/asitplus/cidre/IpAddress;
+	public final fun plus (Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/byteops/CidrNumber;
 	public final fun plus (Lat/asitplus/cidre/byteops/CidrNumber;)Lat/asitplus/cidre/IpAddress;
+	public final fun plus-WZ4Q5Ns (I)Lat/asitplus/cidre/IpAddress;
 	public final fun shl (I)Lat/asitplus/cidre/IpAddress;
 	public final fun shr (I)Lat/asitplus/cidre/IpAddress;
 	public abstract fun toCidrNumber ()Lat/asitplus/cidre/byteops/CidrNumber;
@@ -406,9 +415,7 @@ public final class at/asitplus/cidre/byteops/ByteOpsKt {
 public abstract interface class at/asitplus/cidre/byteops/CidrNumber : java/lang/Comparable {
 	public static final field Companion Lat/asitplus/cidre/byteops/CidrNumber$Companion;
 	public abstract fun and (Lat/asitplus/cidre/byteops/CidrNumber;)Lat/asitplus/cidre/byteops/CidrNumber;
-	public abstract fun dec ()Lat/asitplus/cidre/byteops/CidrNumber;
 	public static fun fromBytes ([B)Lat/asitplus/cidre/byteops/CidrNumber;
-	public abstract fun inc ()Lat/asitplus/cidre/byteops/CidrNumber;
 	public abstract fun inv ()Lat/asitplus/cidre/byteops/CidrNumber;
 	public abstract fun minus (Lat/asitplus/cidre/byteops/CidrNumber;)Lat/asitplus/cidre/byteops/CidrNumber;
 	public abstract fun minus-WZ4Q5Ns (I)Lat/asitplus/cidre/byteops/CidrNumber;
@@ -439,9 +446,6 @@ public final class at/asitplus/cidre/byteops/CidrNumber$V4 : at/asitplus/cidre/b
 	public synthetic fun compareTo (Ljava/lang/Object;)I
 	public fun compareTo-bW6hvuo (J)I
 	public static fun compareTo-bW6hvuo (JJ)I
-	public synthetic fun dec ()Lat/asitplus/cidre/byteops/CidrNumber;
-	public fun dec-VytxSZA ()J
-	public static fun dec-VytxSZA (J)J
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun equals-impl (JLjava/lang/Object;)Z
 	public static final fun equals-impl0 (JJ)Z
@@ -450,27 +454,24 @@ public final class at/asitplus/cidre/byteops/CidrNumber$V4 : at/asitplus/cidre/b
 	public final fun getRaw-s-VKNKU ()J
 	public fun hashCode ()I
 	public static fun hashCode-impl (J)I
-	public synthetic fun inc ()Lat/asitplus/cidre/byteops/CidrNumber;
-	public fun inc-VytxSZA ()J
-	public static fun inc-VytxSZA (J)J
 	public synthetic fun inv ()Lat/asitplus/cidre/byteops/CidrNumber;
 	public fun inv-VytxSZA ()J
 	public static fun inv-VytxSZA (J)J
 	public synthetic fun minus (Lat/asitplus/cidre/byteops/CidrNumber;)Lat/asitplus/cidre/byteops/CidrNumber;
-	public fun minus--cxhFqE (I)J
-	public static fun minus--cxhFqE (JI)J
 	public synthetic fun minus-WZ4Q5Ns (I)Lat/asitplus/cidre/byteops/CidrNumber;
-	public fun minus-en4KZP0 (J)J
-	public static fun minus-en4KZP0 (JJ)J
+	public fun minus-XeC4hhs (J)Lat/asitplus/cidre/byteops/CidrNumber$V4;
+	public static fun minus-XeC4hhs (JJ)Lat/asitplus/cidre/byteops/CidrNumber$V4;
+	public fun minus-wpIz3vU (I)Lat/asitplus/cidre/byteops/CidrNumber$V4;
+	public static fun minus-wpIz3vU (JI)Lat/asitplus/cidre/byteops/CidrNumber$V4;
 	public synthetic fun or (Lat/asitplus/cidre/byteops/CidrNumber;)Lat/asitplus/cidre/byteops/CidrNumber;
 	public fun or-en4KZP0 (J)J
 	public static fun or-en4KZP0 (JJ)J
 	public synthetic fun plus (Lat/asitplus/cidre/byteops/CidrNumber;)Lat/asitplus/cidre/byteops/CidrNumber;
-	public fun plus--cxhFqE (I)J
-	public static fun plus--cxhFqE (JI)J
 	public synthetic fun plus-WZ4Q5Ns (I)Lat/asitplus/cidre/byteops/CidrNumber;
-	public fun plus-en4KZP0 (J)J
-	public static fun plus-en4KZP0 (JJ)J
+	public fun plus-XeC4hhs (J)Lat/asitplus/cidre/byteops/CidrNumber$V4;
+	public static fun plus-XeC4hhs (JJ)Lat/asitplus/cidre/byteops/CidrNumber$V4;
+	public fun plus-wpIz3vU (I)Lat/asitplus/cidre/byteops/CidrNumber$V4;
+	public static fun plus-wpIz3vU (JI)Lat/asitplus/cidre/byteops/CidrNumber$V4;
 	public synthetic fun shl (I)Lat/asitplus/cidre/byteops/CidrNumber;
 	public fun shl-iPdYk4w (I)J
 	public static fun shl-iPdYk4w (JI)J
@@ -504,17 +505,10 @@ public final class at/asitplus/cidre/byteops/CidrNumber$V6 : at/asitplus/cidre/b
 	public final fun andInPlace (Lat/asitplus/cidre/byteops/CidrNumber$V6;)Lat/asitplus/cidre/byteops/CidrNumber$V6;
 	public fun compareTo (Lat/asitplus/cidre/byteops/CidrNumber$V6;)I
 	public synthetic fun compareTo (Ljava/lang/Object;)I
-	public fun dec ()Lat/asitplus/cidre/byteops/CidrNumber$V6;
-	public synthetic fun dec ()Lat/asitplus/cidre/byteops/CidrNumber;
 	public fun equals (Ljava/lang/Object;)Z
 	public static final fun fromBytes ([B)Lat/asitplus/cidre/byteops/CidrNumber$V6;
 	public static final fun fromLong (J)Lat/asitplus/cidre/byteops/CidrNumber$V6;
-	public final fun getExtraBit ()Z
-	public final fun getHi-s-VKNKU ()J
-	public final fun getLo-s-VKNKU ()J
 	public fun hashCode ()I
-	public fun inc ()Lat/asitplus/cidre/byteops/CidrNumber$V6;
-	public synthetic fun inc ()Lat/asitplus/cidre/byteops/CidrNumber;
 	public fun inv ()Lat/asitplus/cidre/byteops/CidrNumber$V6;
 	public synthetic fun inv ()Lat/asitplus/cidre/byteops/CidrNumber;
 	public final fun invInPlace ()Lat/asitplus/cidre/byteops/CidrNumber$V6;
