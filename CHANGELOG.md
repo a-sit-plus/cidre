@@ -1,8 +1,6 @@
 # Changelog
 
-## 0.1
-
-## NEXT
+## 0.2.0
 * Revised generic type arguments
 * Introduce `CidrNumber` optimized for CIDR operations
   * `CidrNumber.V4` for IPv4

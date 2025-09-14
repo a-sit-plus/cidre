@@ -279,10 +279,12 @@ The `at.asitplus.cidre.byteops` package provides low-level helper functions:
 The full list of low-level ops can be found [here](https://a-sit-plus.github.io/cidre/cidre/at.asitplus.cidre.byteops/).
 
 ## Roadmap
+- More comprehensive tests for low-level ops
 - Subnet enumeration (absolute and relative, e.g., `/24` or “+2 bits”)
 - Supernetting helpers (absolute and relative)
-- More comprehensive tests
-- As required/sensible, once API is stable and tests are comprehensive: performance optimization
+- Some more comprehensive tests, covering subnetting and supernetting
+- As required/sensible, once API is stable, and tests are comprehensive: performance optimization
+- Even More comprehensive tests and benchmarks, ensuring optimizations are not misguided and indeed improve performance
 
 Note that the API is still subject to subtle changes and the inner workings may be completely overhauled at some point, if deemed sensible.
 
