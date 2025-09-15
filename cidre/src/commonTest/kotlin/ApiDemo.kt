@@ -18,14 +18,14 @@ class ApiDemo {
         println("iface: $iface") //::dead/42
         println("net:   $net")   //::/42
 
-        //normalises in-place and associates (not copies) the address with the nwtwork
+        //normalizes in-place and associates (not copies) the address with the network
         val associated = IpNetwork.forAddress(iface.address, iface.prefix)
 
         println("net:   $associated") //::/42
-        println("iface: $associated") //::/42 <-- not the change here!
+        println("iface: $associated") //::/42 <-- note the change here!
         println(associated.address === iface.address) //true
 
-        //no normalisation, but copying, so we can be strict!
+        //no normalization, but copying, so we can be strict!
         val deepCopied = IpNetwork(iface.address, iface.prefix, strict = true)
         println(deepCopied.address == iface.address)  //true
         println(deepCopied.address === iface.address) //false
@@ -56,8 +56,8 @@ class ApiDemo {
     fun ranges() {
         //point-to-point -> no broadcast
         val pointToPoint = IpNetwork.V4("192.168.0.0/31")
-        println(pointToPoint.address)               //192.0.0.0
-        println(pointToPoint.lastAddress)           //192.0.0.1
+        println(pointToPoint.address)               //192.168.0.0
+        println(pointToPoint.lastAddress)           //192.168.0.1
         println(pointToPoint.firstAssignableHost)   //192.168.0.0/31
         println(pointToPoint.lastAssignableHost)    //192.168.0.1/31
         println(pointToPoint.broadcastAddress)      //null
