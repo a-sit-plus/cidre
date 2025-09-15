@@ -23,8 +23,8 @@
 
 ---
 
-CIDRE focuses on parsing and representing IP addresses, IP networks, and performing CIDR math. On the JVM and Android it maps from/to `InetAddress`/`Inet4Address`/`Inet6Address`. On native targets, it maps from/to `in_addr`/`in6_addr`.  
-It is not a full IP networking implementation, but you can use it to implement IP routing.  
+CIDRE focuses on parsing and representing IP addresses, IP networks, and performing CIDR math. On the JVM and Android it maps from/to `InetAddress`/`Inet4Address`/`Inet6Address`. On native targets, it maps from/to `in_addr`/`in6_addr`.
+It is not a full IP networking implementation, but you can use it to implement IP routing.
 It has exactly zero external dependencies.
 
 Currently, CIDRE provides the following functionality:
