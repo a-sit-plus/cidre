@@ -38,7 +38,7 @@ Currently, CIDRE provides the following functionality:
     - Arithmetic (+/−) returns null on overflow/underflow
     - Bitwise ops, shifts, and inversion operate within modeled width and always succeed
     - Truncation:
-      - Intatiation through default constructor truncates the passed value `CidrNumber.V4.MAX_VALUE` / `CidrNumber.V6.MAX_VALUE`
+      - Instantiation through default constructor truncates the passed value `CidrNumber.V4.MAX_VALUE` / `CidrNumber.V6.MAX_VALUE`
       - `toByteArray(truncate: Boolean = true)` produces
          - `truncate = true`: 4/16-byte forms directly usable for Netmasks and IpAddresses
          - `truncate = false`: preserves the 33rd/129th bit (corresponds to `MAX_VALUE`), which is the size of a /0 network.
@@ -88,9 +88,9 @@ an IP address or a single address segment.
 
 #### IP Address Arithmetic
 
-All operations work only withing a family (IPv4 / IPv6).
+All operations work only within a family (IPv4 / IPv6).
 In general, IP addresses are `Comparable` and are ordered by comparing their octets interpreted as a BE-encoded unsigned integer.
-Any IP addresses and netmask can be converted to a `CidrNumber`, but arithmetical and bitwise operations are also available directly on
+Any IP address and netmask can be converted to a `CidrNumber`, but arithmetical and bitwise operations are also available directly on
 IP addresses:
 
 ```kotlin
@@ -159,14 +159,14 @@ val net = IpNetwork(addrAndPrefix, strict = false) //be lenient and auto-mask
 println("iface: $iface") //::dead/42
 println("net:   $net")   //::/42
 
-//normalises in-place and associates (not copies) the address with the nwtwork
+//normalizes in-place and associates (not copies) the address with the network
 val associated = IpNetwork.forAddress(iface.address, iface.prefix)
 
 println("net:   $associated") //::/42
-println("iface: $associated") //::/42 <-- not the change here!
+println("iface: $associated") //::/42 <-- note the change here!
 println(associated.address === iface.address) //true
 
-//no normalisation, but copying, so we can be strict!
+//no normalization, but copying, so we can be strict!
 val deepCopied = IpNetwork(iface.address, iface.prefix, strict = true)
 println(deepCopied.address == iface.address)  //true
 println(deepCopied.address === iface.address) //false
@@ -228,8 +228,8 @@ The following example illustrates regular and edge cases:
 ```kotlin
 //point-to-point -> no broadcast
 val pointToPoint = IpNetwork.V4("192.168.0.0/31")
-println(pointToPoint.address)               //192.0.0.0
-println(pointToPoint.lastAddress)           //192.0.0.1
+println(pointToPoint.address)               //192.168.0.0
+println(pointToPoint.lastAddress)           //192.168.0.1
 println(pointToPoint.firstAssignableHost)   //192.168.0.0/31
 println(pointToPoint.lastAssignableHost)    //192.168.0.1/31
 println(pointToPoint.broadcastAddress)      //null
@@ -284,7 +284,7 @@ The full list of low-level ops can be found [here](https://a-sit-plus.github.io/
 - Supernetting helpers (absolute and relative)
 - Some more comprehensive tests, covering subnetting and supernetting
 - As required/sensible, once API is stable, and tests are comprehensive: performance optimization
-- Even More comprehensive tests and benchmarks, ensuring optimizations are not misguided and indeed improve performance
+- Even more comprehensive tests and benchmarks, ensuring optimizations are not misguided and indeed improve performance
 
 Note that the API is still subject to subtle changes and the inner workings may be completely overhauled at some point, if deemed sensible.
 
