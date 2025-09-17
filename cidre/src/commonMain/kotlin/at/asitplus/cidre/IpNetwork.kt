@@ -1,9 +1,12 @@
 package at.asitplus.cidre
 
+import at.asitplus.cidre.IpInterface.V4
+import at.asitplus.cidre.IpInterface.V6
 import at.asitplus.cidre.byteops.CidrNumber
 import at.asitplus.cidre.byteops.and
 import at.asitplus.cidre.byteops.or
 import at.asitplus.cidre.byteops.toNetmask
+import at.asitplus.cidre.byteops.toPrefix
 
 
 sealed class IpNetwork<N : Number, S : CidrNumber<S>>
@@ -208,6 +211,14 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
     fun contains(network: IpNetwork<N, S>): Boolean {
         if (prefix > network.prefix) return false
         return address.octets contentEquals (network.address.octets and netmask)
+    }
+
+    /**
+     * Encodes this network into X.509 iPAddressName ByteArray (RFC 5280).
+     */
+    fun toX509Octets(): ByteArray = when (this) {
+        is V4 -> if (prefix == 32u) address.octets else address.octets + netmask
+        is V6 -> if (prefix == 128u) address.octets else address.octets + netmask
     }
 
     override fun equals(other: Any?): Boolean {
@@ -528,6 +539,34 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
                 ) as IpNetwork<N, S>
             }
 
+        /**
+         * Decodes an IpNetwork from X.509 iPAddressName ByteArray (RFC 5280).
+         * 4 bytes (IPv4 address)    -> network /32
+         * 16 bytes (IPv6 address)   -> network /128
+         * 8 bytes (IPv4 base+mask)  -> network with mask
+         * 32 bytes (IPv6 base+mask) -> network with mask
+         */
+        @Throws(IllegalArgumentException::class)
+        fun fromX509Octets(bytes: ByteArray): IpNetwork<*, *> {
+            return when (bytes.size) {
+                4 -> IpNetwork.V4(IpAddress.V4(bytes), 32u, strict = false)
+                16 -> IpNetwork.V6(IpAddress.V6(bytes), 128u, strict = false)
+
+                8 -> {
+                    val addr = bytes.copyOfRange(0, 4)
+                    val mask = bytes.copyOfRange(4, 8)
+                    val prefix = mask.toPrefix()
+                    IpNetwork.V4(IpAddress.V4(addr), prefix, strict = false)
+                }
+                32 -> {
+                    val addr = bytes.copyOfRange(0, 16)
+                    val mask = bytes.copyOfRange(16, 32)
+                    val prefix = mask.toPrefix()
+                    IpNetwork.V6(IpAddress.V6(addr), prefix, strict = false)
+                }
+                else -> throw IllegalArgumentException("Invalid iPAddress length: ${bytes.size}")
+            }
+        }
     }
 
 
