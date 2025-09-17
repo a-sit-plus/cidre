@@ -216,10 +216,7 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
     /**
      * Encodes this network into X.509 iPAddressName ByteArray (RFC 5280).
      */
-    fun toX509Octets(): ByteArray = when (this) {
-        is V4 -> if (prefix == 32u) address.octets else address.octets + netmask
-        is V6 -> if (prefix == 128u) address.octets else address.octets + netmask
-    }
+    fun toX509Octets(): ByteArray = address.octets + netmask
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -547,22 +544,22 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
          * 32 bytes (IPv6 base+mask) -> network with mask
          */
         @Throws(IllegalArgumentException::class)
-        fun fromX509Octets(bytes: ByteArray): IpNetwork<*, *> {
+        fun fromX509Octets(bytes: ByteArray, strict: Boolean): IpNetwork<*, *> {
             return when (bytes.size) {
-                4 -> IpNetwork.V4(IpAddress.V4(bytes), 32u, strict = false)
-                16 -> IpNetwork.V6(IpAddress.V6(bytes), 128u, strict = false)
+                4 -> V4(IpAddress.V4(bytes), 32u, strict = strict)
+                16 -> V6(IpAddress.V6(bytes), 128u, strict = strict)
 
                 8 -> {
                     val addr = bytes.copyOfRange(0, 4)
                     val mask = bytes.copyOfRange(4, 8)
                     val prefix = mask.toPrefix()
-                    IpNetwork.V4(IpAddress.V4(addr), prefix, strict = false)
+                    V4(IpAddress.V4(addr), prefix, strict = strict)
                 }
                 32 -> {
                     val addr = bytes.copyOfRange(0, 16)
                     val mask = bytes.copyOfRange(16, 32)
                     val prefix = mask.toPrefix()
-                    IpNetwork.V6(IpAddress.V6(addr), prefix, strict = false)
+                    V6(IpAddress.V6(addr), prefix, strict = strict)
                 }
                 else -> throw IllegalArgumentException("Invalid iPAddress length: ${bytes.size}")
             }
