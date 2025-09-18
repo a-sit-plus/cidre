@@ -1,7 +1,5 @@
 package at.asitplus.cidre
 
-import at.asitplus.cidre.IpInterface.V4
-import at.asitplus.cidre.IpInterface.V6
 import at.asitplus.cidre.byteops.CidrNumber
 import at.asitplus.cidre.byteops.and
 import at.asitplus.cidre.byteops.or
@@ -538,28 +536,23 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
         /**
          * Decodes an IpNetwork from X.509 iPAddressName ByteArray (RFC 5280).
-         * 4 bytes (IPv4 address)    -> network /32
-         * 16 bytes (IPv6 address)   -> network /128
-         * 8 bytes (IPv4 base+mask)  -> network with mask
-         * 32 bytes (IPv6 base+mask) -> network with mask
+         * 8 bytes (IPv4 base+mask)
+         * 32 bytes (IPv6 base+mask)
          */
         @Throws(IllegalArgumentException::class)
-        fun fromX509Octets(bytes: ByteArray, strict: Boolean): IpNetwork<*, *> {
+        fun fromX509Octets(bytes: ByteArray, strict: Boolean = false): IpNetwork<*, *> {
             return when (bytes.size) {
-                4 -> V4(IpAddress.V4(bytes), 32u, strict = strict)
-                16 -> V6(IpAddress.V6(bytes), 128u, strict = strict)
-
                 8 -> {
-                    val addr = bytes.copyOfRange(0, 4)
+                    val address = bytes.copyOfRange(0, 4)
                     val mask = bytes.copyOfRange(4, 8)
                     val prefix = mask.toPrefix()
-                    V4(IpAddress.V4(addr), prefix, strict = strict)
+                    V4(IpAddress.V4(address), prefix, strict = strict)
                 }
                 32 -> {
-                    val addr = bytes.copyOfRange(0, 16)
+                    val address = bytes.copyOfRange(0, 16)
                     val mask = bytes.copyOfRange(16, 32)
                     val prefix = mask.toPrefix()
-                    V6(IpAddress.V6(addr), prefix, strict = strict)
+                    V6(IpAddress.V6(address), prefix, strict = strict)
                 }
                 else -> throw IllegalArgumentException("Invalid iPAddress length: ${bytes.size}")
             }

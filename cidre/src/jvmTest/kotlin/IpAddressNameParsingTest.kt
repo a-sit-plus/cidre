@@ -82,24 +82,19 @@ class IpAddressNameParsingTest {
     private val ipv6dStr = "2001:db8:85a2::/47"
     private val ipv6eStr = "2001:db8:85a3::/49"
 
-    // ---------------- IPv6 Tests ----------------
     @Test fun parseIPv6a() = parseCheck(ipv6a, IpNetwork.V6::class, ipv6aStr, ipv6aMasked)
     @Test fun parseIPv6b() = parseCheck(ipv6b, IpNetwork.V6::class, ipv6bStr)
     @Test fun parseIPv6c() = parseCheck(ipv6c, IpNetwork.V6::class, ipv6cStr)
     @Test fun parseIPv6d() = parseCheck(ipv6d, IpNetwork.V6::class, ipv6dStr, ipv6dMasked)
     @Test fun parseIPv6e() = parseCheck(ipv6e, IpNetwork.V6::class, ipv6eStr, ipv6eMasked)
 
-
-    // ---------------- IPv4 Tests ----------------
     @Test fun parseIPv4mask24() = parseCheck(ipv4WithMask1, IpNetwork.V4::class, ipv4WithMask1Str)
     @Test fun parseIPv4mask17() = parseCheck(ipv4WithMask2, IpNetwork.V4::class, ipv4WithMask2Str)
     @Test fun parseIPv4mask18() = parseCheck(ipv4WithMask3, IpNetwork.V4::class, ipv4WithMask3Str)
 
-    // ---------------- Helper ----------------
     private fun parseCheck(bytes: ByteArray, expectedType: KClass<out IpNetwork<*, *>>, expectedString: String, expectedBytes: ByteArray? = null) {
         val network = IpNetwork.fromX509Octets(bytes, false)
         assertTrue(expectedType.isInstance(network), "Expected type: $expectedType, but got ${network::class}")
-        //TODO fix bytes assertion
         assertContentEquals(expectedBytes ?: bytes, network.toX509Octets())
         assertEquals(expectedString, network.toString())
     }
