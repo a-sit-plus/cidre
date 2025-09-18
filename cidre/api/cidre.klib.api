@@ -397,6 +397,7 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
     final fun isSupernetOf(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.isSupernetOf|isSupernetOf(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
     final fun overlaps(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.overlaps|overlaps(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
     final fun plus(at.asitplus.cidre/IpNetwork<#A, #B>): at.asitplus.cidre/IpNetwork<#A, #B>? // at.asitplus.cidre/IpNetwork.plus|plus(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
+    final fun toX509Octets(): kotlin/ByteArray // at.asitplus.cidre/IpNetwork.toX509Octets|toX509Octets(){}[0]
     open fun compareTo(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Int // at.asitplus.cidre/IpNetwork.compareTo|compareTo(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
     open fun equals(kotlin/Any?): kotlin/Boolean // at.asitplus.cidre/IpNetwork.equals|equals(kotlin.Any?){}[0]
     open fun hashCode(): kotlin/Int // at.asitplus.cidre/IpNetwork.hashCode|hashCode(){}[0]
@@ -517,6 +518,7 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
     final object Companion { // at.asitplus.cidre/IpNetwork.Companion|null[0]
         final fun <#A2: kotlin/Number, #B2: at.asitplus.cidre.byteops/CidrNumber<#B2>> forAddress(at.asitplus.cidre/IpAddress<#A2, #B2>, kotlin/UInt): at.asitplus.cidre/IpNetwork<#A2, #B2> // at.asitplus.cidre/IpNetwork.Companion.forAddress|forAddress(at.asitplus.cidre.IpAddress<0:0,0:1>;kotlin.UInt){0§<kotlin.Number>;1§<at.asitplus.cidre.byteops.CidrNumber<0:1>>}[0]
         final fun <#A2: kotlin/Number, #B2: at.asitplus.cidre.byteops/CidrNumber<#B2>> invoke(at.asitplus.cidre/IpAddress<#A2, #B2>, kotlin/UInt, kotlin/Boolean = ...): at.asitplus.cidre/IpNetwork<#A2, #B2> // at.asitplus.cidre/IpNetwork.Companion.invoke|invoke(at.asitplus.cidre.IpAddress<0:0,0:1>;kotlin.UInt;kotlin.Boolean){0§<kotlin.Number>;1§<at.asitplus.cidre.byteops.CidrNumber<0:1>>}[0]
+        final fun fromX509Octets(kotlin/ByteArray, kotlin/Boolean = ...): at.asitplus.cidre/IpNetwork<*, *> // at.asitplus.cidre/IpNetwork.Companion.fromX509Octets|fromX509Octets(kotlin.ByteArray;kotlin.Boolean){}[0]
         final fun invoke(kotlin/String, kotlin/Boolean = ...): at.asitplus.cidre/IpNetwork<*, *> // at.asitplus.cidre/IpNetwork.Companion.invoke|invoke(kotlin.String;kotlin.Boolean){}[0]
     }
 }

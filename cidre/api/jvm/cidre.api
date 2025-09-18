@@ -269,10 +269,13 @@ public abstract class at/asitplus/cidre/IpNetwork : at/asitplus/cidre/IpAddressA
 	public final fun overlaps (Lat/asitplus/cidre/IpNetwork;)Z
 	public final fun plus (Lat/asitplus/cidre/IpNetwork;)Lat/asitplus/cidre/IpNetwork;
 	public fun toString ()Ljava/lang/String;
+	public final fun toX509Octets ()[B
 }
 
 public final class at/asitplus/cidre/IpNetwork$Companion {
 	public final fun forAddress-Qn1smSk (Lat/asitplus/cidre/IpAddress;I)Lat/asitplus/cidre/IpNetwork;
+	public final fun fromX509Octets ([BZ)Lat/asitplus/cidre/IpNetwork;
+	public static synthetic fun fromX509Octets$default (Lat/asitplus/cidre/IpNetwork$Companion;[BZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork;
 	public final fun invoke (Ljava/lang/String;Z)Lat/asitplus/cidre/IpNetwork;
 	public static synthetic fun invoke$default (Lat/asitplus/cidre/IpNetwork$Companion;Ljava/lang/String;ZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork;
 	public final fun invoke-OsBMiQA (Lat/asitplus/cidre/IpAddress;IZ)Lat/asitplus/cidre/IpNetwork;

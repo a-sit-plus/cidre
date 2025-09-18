@@ -3,6 +3,9 @@
 ## NEXT
 
 ## 0.2.0
+* Add methods for parsing `ByteArray` representing `IpNetwork` in X509 `IpAddressName`
+  * `fromX509Octets`
+  * `toX509Octets`
 * Revised generic type arguments
 * Introduce `CidrNumber` optimized for CIDR operations
   * `CidrNumber.V4` for IPv4
