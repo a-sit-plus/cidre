@@ -1,3 +1,4 @@
+import at.asitplus.cidre.IpInterface
 import at.asitplus.cidre.IpNetwork
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -20,13 +21,6 @@ class IpAddressNameParsingTest {
     private val ipv6a = byteArrayOf(
         0x20, 0x01, 0x0d, 0xb8.toByte(), 0x85.toByte(), 0xa3.toByte(), 0x00, 0x00,
         0x00, 0x00, 0x8a.toByte(), 0x2e, 0x0a, 0x09, 0x08, 0x00,
-        0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xff.toByte(),
-        0xff.toByte(), 0xff.toByte(), 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-    )
-    private val ipv6aMasked = byteArrayOf(
-        0x20, 0x01, 0x0d, 0xb8.toByte(), 0x85.toByte(), 0xa3.toByte(), 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xff.toByte(),
         0xff.toByte(), 0xff.toByte(), 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -54,21 +48,8 @@ class IpAddressNameParsingTest {
         0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xfe.toByte(),
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     )
-    private val ipv6dMasked = byteArrayOf(
-        0x20, 0x01, 0x0d, 0xb8.toByte(), 0x85.toByte(), 0xa2.toByte(), 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xfe.toByte(),
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-    )
 
     private val ipv6e = byteArrayOf(
-        0x20, 0x01, 0x0d, 0xb8.toByte(), 0x85.toByte(), 0xa3.toByte(), 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xff.toByte(),
-        0xff.toByte(), 0xff.toByte(), 0x80.toByte(), 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-    )
-    private val ipv6eMasked = byteArrayOf(
         0x20, 0x01, 0x0d, 0xb8.toByte(), 0x85.toByte(), 0xa3.toByte(), 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0xff.toByte(),
@@ -76,26 +57,26 @@ class IpAddressNameParsingTest {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     )
 
-    private val ipv6aStr = "2001:db8:85a3::/48"
+    private val ipv6aStr = "2001:db8:85a3::8a2e:a09:800/48"
     private val ipv6bStr = "2001:db8:85a3::8a2e:a09:800/128"
     private val ipv6cStr = "2001:db8:85a3::/48"
-    private val ipv6dStr = "2001:db8:85a2::/47"
+    private val ipv6dStr = "2001:db8:85a3::/47"
     private val ipv6eStr = "2001:db8:85a3::/49"
 
-    @Test fun parseIPv6a() = parseCheck(ipv6a, IpNetwork.V6::class, ipv6aStr, ipv6aMasked)
-    @Test fun parseIPv6b() = parseCheck(ipv6b, IpNetwork.V6::class, ipv6bStr)
-    @Test fun parseIPv6c() = parseCheck(ipv6c, IpNetwork.V6::class, ipv6cStr)
-    @Test fun parseIPv6d() = parseCheck(ipv6d, IpNetwork.V6::class, ipv6dStr, ipv6dMasked)
-    @Test fun parseIPv6e() = parseCheck(ipv6e, IpNetwork.V6::class, ipv6eStr, ipv6eMasked)
+    @Test fun parseIPv6a() = parseCheck(ipv6a, IpInterface.V6::class, ipv6aStr)
+    @Test fun parseIPv6b() = parseCheck(ipv6b, IpInterface.V6::class, ipv6bStr)
+    @Test fun parseIPv6c() = parseCheck(ipv6c, IpInterface.V6::class, ipv6cStr)
+    @Test fun parseIPv6d() = parseCheck(ipv6d, IpInterface.V6::class, ipv6dStr)
+    @Test fun parseIPv6e() = parseCheck(ipv6e, IpInterface.V6::class, ipv6eStr)
 
-    @Test fun parseIPv4mask24() = parseCheck(ipv4WithMask1, IpNetwork.V4::class, ipv4WithMask1Str)
-    @Test fun parseIPv4mask17() = parseCheck(ipv4WithMask2, IpNetwork.V4::class, ipv4WithMask2Str)
-    @Test fun parseIPv4mask18() = parseCheck(ipv4WithMask3, IpNetwork.V4::class, ipv4WithMask3Str)
+    @Test fun parseIPv4mask24() = parseCheck(ipv4WithMask1, IpInterface.V4::class, ipv4WithMask1Str)
+    @Test fun parseIPv4mask17() = parseCheck(ipv4WithMask2, IpInterface.V4::class, ipv4WithMask2Str)
+    @Test fun parseIPv4mask18() = parseCheck(ipv4WithMask3, IpInterface.V4::class, ipv4WithMask3Str)
 
-    private fun parseCheck(bytes: ByteArray, expectedType: KClass<out IpNetwork<*, *>>, expectedString: String, expectedBytes: ByteArray? = null) {
-        val network = IpNetwork.fromX509Octets(bytes, false)
-        assertTrue(expectedType.isInstance(network), "Expected type: $expectedType, but got ${network::class}")
-        assertContentEquals(expectedBytes ?: bytes, network.toX509Octets())
-        assertEquals(expectedString, network.toString())
+    private fun parseCheck(bytes: ByteArray, expectedType: KClass<out IpInterface<*, *>>, expectedString: String) {
+        val addressAndPrefix = IpInterface.fromX509Octets(bytes)
+        assertTrue(expectedType.isInstance(addressAndPrefix))
+        assertContentEquals(bytes, addressAndPrefix.toX509Octets())
+        assertEquals(expectedString, addressAndPrefix.toString())
     }
 }

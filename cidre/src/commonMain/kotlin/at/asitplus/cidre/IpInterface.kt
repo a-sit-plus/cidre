@@ -1,5 +1,6 @@
 package at.asitplus.cidre
 
+import at.asitplus.cidre.IpAddressAndPrefix.Companion.parseX509Octets
 import at.asitplus.cidre.byteops.CidrNumber
 
 
@@ -12,6 +13,8 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
     IpAddressAndPrefix<N, S> by network {
 
     override fun toString(): String = "$address/$prefix"
+
+    override fun toX509Octets(): ByteArray = super.toX509Octets()
 
     companion object {
         @Suppress("UNCHECKED_CAST")
@@ -38,6 +41,20 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
         operator fun invoke(stringRepresentation: String): IpInterface<*, *> {
             val (addr, prefix) = parseIpAndPrefix(stringRepresentation)
             return IpInterface(addr, prefix)
+        }
+
+        /**
+         * Decodes an IpInterface from X.509 iPAddressName ByteArray (RFC 5280).
+         * IPv4: [4 bytes base address][4 bytes subnet mask]  (8 bytes)
+         * IPv6: [16 bytes base address][16 bytes subnet mask] (32 bytes)
+         */
+        @Throws(IllegalArgumentException::class)
+        fun fromX509Octets(bytes: ByteArray): IpInterface<*, *> {
+            val (address, prefix) = parseX509Octets(bytes)
+            return when (address) {
+                is IpAddress.V4 -> V4(address, prefix)
+                is IpAddress.V6 -> V6(address, prefix)
+            }
         }
     }
 
