@@ -3,7 +3,7 @@
 ## NEXT
 
 ## 0.2.0
-* Add methods for parsing `ByteArray` representing `IpNetwork` in X509 `IpAddressName`
+* Add methods in `IpAddressAndPrefix` interface for parsing `ByteArray` representing address and subnet mask in X509 `IpAddressName`
   * `fromX509Octets`
   * `toX509Octets`
 * Revised generic type arguments
