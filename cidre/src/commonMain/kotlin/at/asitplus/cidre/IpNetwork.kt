@@ -1,5 +1,6 @@
 package at.asitplus.cidre
 
+import at.asitplus.cidre.IpAddressAndPrefix.Companion.parseX509Octets
 import at.asitplus.cidre.byteops.CidrNumber
 import at.asitplus.cidre.byteops.and
 import at.asitplus.cidre.byteops.or
@@ -527,6 +528,19 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
                     deepCopy = false
                 ) as IpNetwork<N, S>
             }
+
+        /**
+         * Decodes an IpNetwork from X.509 iPAddressName ByteArray (RFC 5280).
+         * IPv4: [4 bytes base address][4 bytes subnet mask]  (8 bytes)
+         * IPv6: [16 bytes base address][16 bytes subnet mask] (32 bytes)
+         */
+        fun fromX509Octets(bytes: ByteArray): IpNetwork<*, *> {
+            val (addr, prefix) = parseX509Octets(bytes)
+            return when (addr) {
+                is IpAddress.V4 -> V4(addr, prefix)
+                is IpAddress.V6 -> V6(addr, prefix)
+            }
+        }
 
     }
 

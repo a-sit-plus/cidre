@@ -2,6 +2,7 @@ package at.asitplus.cidre
 
 import at.asitplus.cidre.byteops.CidrNumber
 import at.asitplus.cidre.byteops.invInPlace
+import at.asitplus.cidre.byteops.toPrefix
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -43,6 +44,39 @@ sealed interface IpAddressAndPrefix<N : Number, S : CidrNumber<S>> {
 
     /**`true` if this is (part of)  the [IpNetwork.SpecialRanges.multicast] network */
     val isMulticast: Boolean
+
+    /**
+     * Encodes this network into X.509 iPAddressName ByteArray (RFC 5280).
+     * IPv4: [4 bytes base address][4 bytes subnet mask]  (8 bytes)
+     * IPv6: [16 bytes base address][16 bytes subnet mask] (32 bytes)
+     */
+    fun toX509Octets(): ByteArray = address.octets + netmask
+
+    companion object {
+
+        /**
+         * Low-level helper used by [IpNetwork.fromX509Octets] and [IpInterface.fromX509Octets]
+         * to extract base address and CIDR prefix
+         * IPv4: [4 bytes base address][4 bytes subnet mask]  (8 bytes)
+         * IPv6: [16 bytes base address][16 bytes subnet mask] (32 bytes)
+         */
+        internal fun parseX509Octets(bytes: ByteArray): Pair<IpAddress<*, *>, Prefix> =
+            when (bytes.size) {
+                2 * IpFamily.V4.numberOfOctets -> {
+                    val address = bytes.copyOfRange(0, 4)
+                    val mask = bytes.copyOfRange(4, 8)
+                    IpAddress.V4(address) to mask.toPrefix()
+                }
+
+                2 * IpFamily.V6.numberOfOctets -> {
+                    val address = bytes.copyOfRange(0, 16)
+                    val mask = bytes.copyOfRange(16, 32)
+                    IpAddress.V6(address) to mask.toPrefix()
+                }
+
+                else -> throw IllegalArgumentException("Invalid iPAddress length: ${bytes.size}")
+            }
+    }
 
     /**
      * Sealed base interface of [IpAddress.V4] and [IpInterface.V4] with IPv4-specific add-ons.
