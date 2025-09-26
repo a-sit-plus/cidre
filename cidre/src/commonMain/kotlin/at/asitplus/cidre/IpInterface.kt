@@ -45,8 +45,8 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
 
         /**
          * Decodes an IpInterface from X.509 iPAddressName ByteArray (RFC 5280).
-         * IPv4: [4 bytes base address][4 bytes subnet mask]  (8 bytes)
-         * IPv6: [16 bytes base address][16 bytes subnet mask] (32 bytes)
+         * IPv4 byte layout: `AAAANNNN`, where `A` is an address octet and `N` is a netmask octet (8 bytes total)
+         * IPv6 byte layout:  `AAAAAAAAAAAAAAAANNNNNNNNNNNNNNNN`, where `A` is an address octet and `N` is a netmask octet(32 bytes total)
          */
         @Throws(IllegalArgumentException::class)
         fun fromX509Octets(bytes: ByteArray): IpInterface<*, *> {

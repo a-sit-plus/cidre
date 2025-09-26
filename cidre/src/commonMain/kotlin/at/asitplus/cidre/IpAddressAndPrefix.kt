@@ -47,8 +47,8 @@ sealed interface IpAddressAndPrefix<N : Number, S : CidrNumber<S>> {
 
     /**
      * Encodes this network into X.509 iPAddressName ByteArray (RFC 5280).
-     * IPv4: [4 bytes base address][4 bytes subnet mask]  (8 bytes)
-     * IPv6: [16 bytes base address][16 bytes subnet mask] (32 bytes)
+     * IPv4 byte layout: `AAAANNNN`, where `A` is an address octet and `N` is a netmask octet (8 bytes total)
+     * IPv6 byte layout:  `AAAAAAAAAAAAAAAANNNNNNNNNNNNNNNN`, where `A` is an address octet and `N` is a netmask octet(32 bytes total)
      */
     fun toX509Octets(): ByteArray = address.octets + netmask
 
@@ -57,8 +57,8 @@ sealed interface IpAddressAndPrefix<N : Number, S : CidrNumber<S>> {
         /**
          * Low-level helper used by [IpNetwork.fromX509Octets] and [IpInterface.fromX509Octets]
          * to extract base address and CIDR prefix
-         * IPv4: [4 bytes base address][4 bytes subnet mask]  (8 bytes)
-         * IPv6: [16 bytes base address][16 bytes subnet mask] (32 bytes)
+         * IPv4 byte layout: `AAAANNNN`, where `A` is an address octet and `N` is a netmask octet (8 bytes total)
+         * IPv6 byte layout:  `AAAAAAAAAAAAAAAANNNNNNNNNNNNNNNN`, where `A` is an address octet and `N` is a netmask octet(32 bytes total)
          */
         internal fun parseX509Octets(bytes: ByteArray): Pair<IpAddress<*, *>, Prefix> =
             when (bytes.size) {

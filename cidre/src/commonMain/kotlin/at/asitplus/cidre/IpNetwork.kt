@@ -531,8 +531,8 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
         /**
          * Decodes an IpNetwork from X.509 iPAddressName ByteArray (RFC 5280).
-         * IPv4: [4 bytes base address][4 bytes subnet mask]  (8 bytes)
-         * IPv6: [16 bytes base address][16 bytes subnet mask] (32 bytes)
+         * IPv4 byte layout: `AAAANNNN`, where `A` is an address octet and `N` is a netmask octet (8 bytes total)
+         * IPv6 byte layout:  `AAAAAAAAAAAAAAAANNNNNNNNNNNNNNNN`, where `A` is an address octet and `N` is a netmask octet(32 bytes total)
          */
         fun fromX509Octets(bytes: ByteArray): IpNetwork<*, *> {
             val (addr, prefix) = parseX509Octets(bytes)
