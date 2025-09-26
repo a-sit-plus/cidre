@@ -100,6 +100,7 @@ public final class at/asitplus/cidre/IpAddress$V6$Companion : at/asitplus/cidre/
 }
 
 public abstract interface class at/asitplus/cidre/IpAddressAndPrefix {
+	public static final field Companion Lat/asitplus/cidre/IpAddressAndPrefix$Companion;
 	public abstract fun getAddress ()Lat/asitplus/cidre/IpAddress;
 	public fun getFamily ()Lat/asitplus/cidre/IpFamily;
 	public fun getHostMask ()[B
@@ -109,12 +110,17 @@ public abstract interface class at/asitplus/cidre/IpAddressAndPrefix {
 	public abstract fun isLinkLocal ()Z
 	public abstract fun isLoopback ()Z
 	public abstract fun isMulticast ()Z
+	public fun toX509Octets ()[B
+}
+
+public final class at/asitplus/cidre/IpAddressAndPrefix$Companion {
 }
 
 public final class at/asitplus/cidre/IpAddressAndPrefix$DefaultImpls {
 	public static fun getFamily (Lat/asitplus/cidre/IpAddressAndPrefix;)Lat/asitplus/cidre/IpFamily;
 	public static fun getHostMask (Lat/asitplus/cidre/IpAddressAndPrefix;)[B
 	public static fun getNumberOfHostBits-pVg5ArA (Lat/asitplus/cidre/IpAddressAndPrefix;)I
+	public static fun toX509Octets (Lat/asitplus/cidre/IpAddressAndPrefix;)[B
 }
 
 public abstract interface class at/asitplus/cidre/IpAddressAndPrefix$V4 : at/asitplus/cidre/IpAddressAndPrefix {
@@ -131,6 +137,7 @@ public final class at/asitplus/cidre/IpAddressAndPrefix$V4$DefaultImpls {
 	public static fun getNumberOfHostBits-pVg5ArA (Lat/asitplus/cidre/IpAddressAndPrefix$V4;)I
 	public static fun netmaskToString (Lat/asitplus/cidre/IpAddressAndPrefix$V4;)Ljava/lang/String;
 	public static fun toString (Lat/asitplus/cidre/IpAddressAndPrefix$V4;Z)Ljava/lang/String;
+	public static fun toX509Octets (Lat/asitplus/cidre/IpAddressAndPrefix$V4;)[B
 }
 
 public abstract interface class at/asitplus/cidre/IpAddressAndPrefix$V6 : at/asitplus/cidre/IpAddressAndPrefix {
@@ -151,6 +158,7 @@ public final class at/asitplus/cidre/IpAddressAndPrefix$V6$DefaultImpls {
 	public static fun getHostMask (Lat/asitplus/cidre/IpAddressAndPrefix$V6;)[B
 	public static fun getNumberOfHostBits-pVg5ArA (Lat/asitplus/cidre/IpAddressAndPrefix$V6;)I
 	public static fun toString (Lat/asitplus/cidre/IpAddressAndPrefix$V6;Z)Ljava/lang/String;
+	public static fun toX509Octets (Lat/asitplus/cidre/IpAddressAndPrefix$V6;)[B
 }
 
 public final class at/asitplus/cidre/IpAddressAndPrefixKt {
@@ -204,9 +212,11 @@ public abstract class at/asitplus/cidre/IpInterface : at/asitplus/cidre/IpAddres
 	public fun isLoopback ()Z
 	public fun isMulticast ()Z
 	public fun toString ()Ljava/lang/String;
+	public fun toX509Octets ()[B
 }
 
 public final class at/asitplus/cidre/IpInterface$Companion {
+	public final fun fromX509Octets ([B)Lat/asitplus/cidre/IpInterface;
 	public final fun invoke (Ljava/lang/String;)Lat/asitplus/cidre/IpInterface;
 	public final fun invoke-Qn1smSk (Lat/asitplus/cidre/IpAddress;I)Lat/asitplus/cidre/IpInterface;
 }
@@ -269,10 +279,12 @@ public abstract class at/asitplus/cidre/IpNetwork : at/asitplus/cidre/IpAddressA
 	public final fun overlaps (Lat/asitplus/cidre/IpNetwork;)Z
 	public final fun plus (Lat/asitplus/cidre/IpNetwork;)Lat/asitplus/cidre/IpNetwork;
 	public fun toString ()Ljava/lang/String;
+	public fun toX509Octets ()[B
 }
 
 public final class at/asitplus/cidre/IpNetwork$Companion {
 	public final fun forAddress-Qn1smSk (Lat/asitplus/cidre/IpAddress;I)Lat/asitplus/cidre/IpNetwork;
+	public final fun fromX509Octets ([B)Lat/asitplus/cidre/IpNetwork;
 	public final fun invoke (Ljava/lang/String;Z)Lat/asitplus/cidre/IpNetwork;
 	public static synthetic fun invoke$default (Lat/asitplus/cidre/IpNetwork$Companion;Ljava/lang/String;ZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork;
 	public final fun invoke-OsBMiQA (Lat/asitplus/cidre/IpAddress;IZ)Lat/asitplus/cidre/IpNetwork;
