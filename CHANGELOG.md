@@ -1,5 +1,7 @@
 # Changelog
 
+## NEXT
+
 ## 0.3.0
 * Add methods in `IpAddressAndPrefix` interface for parsing `ByteArray` representing address and subnet mask in X509 `IpAddressName`
   * `fromX509Octets`
