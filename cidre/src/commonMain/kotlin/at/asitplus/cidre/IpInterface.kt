@@ -23,6 +23,7 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
 
         if (prefix != other.prefix) return false
         if (network != other.network) return false
+        if (address != other.address) return false
 
         return true
     }
@@ -30,6 +31,7 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
     override fun hashCode(): Int {
         var result = prefix.hashCode()
         result = 31 * result + network.hashCode()
+        result = 31 * result + address.hashCode()
         return result
     }
 
