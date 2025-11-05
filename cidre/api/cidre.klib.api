@@ -331,6 +331,8 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
     open val prefix // at.asitplus.cidre/IpInterface.prefix|{}prefix[0]
         open fun <get-prefix>(): kotlin/UInt // at.asitplus.cidre/IpInterface.prefix.<get-prefix>|<get-prefix>(){}[0]
 
+    open fun equals(kotlin/Any?): kotlin/Boolean // at.asitplus.cidre/IpInterface.equals|equals(kotlin.Any?){}[0]
+    open fun hashCode(): kotlin/Int // at.asitplus.cidre/IpInterface.hashCode|hashCode(){}[0]
     open fun toString(): kotlin/String // at.asitplus.cidre/IpInterface.toString|toString(){}[0]
     open fun toX509Octets(): kotlin/ByteArray // at.asitplus.cidre/IpInterface.toX509Octets|toX509Octets(){}[0]
 
