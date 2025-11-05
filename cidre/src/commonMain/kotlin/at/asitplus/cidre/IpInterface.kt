@@ -13,8 +13,25 @@ constructor(override val prefix: Prefix, val network: IpNetwork<N, S>) :
     IpAddressAndPrefix<N, S> by network {
 
     override fun toString(): String = "$address/$prefix"
-
     override fun toX509Octets(): ByteArray = super.toX509Octets()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as IpInterface<*, *>
+
+        if (prefix != other.prefix) return false
+        if (network != other.network) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = prefix.hashCode()
+        result = 31 * result + network.hashCode()
+        return result
+    }
 
     companion object {
         @Suppress("UNCHECKED_CAST")
