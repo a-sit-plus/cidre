@@ -1,6 +1,6 @@
 # Changelog
 
-## NEXT
+## 0.3.1
 * Add `hashCode()` and `equals` in `IpInterface` 
 
 ## 0.3.0
