@@ -210,6 +210,7 @@ public abstract class at/asitplus/cidre/IpFamily$RegexSpec {
 public abstract class at/asitplus/cidre/IpInterface : at/asitplus/cidre/IpAddressAndPrefix {
 	public static final field Companion Lat/asitplus/cidre/IpInterface$Companion;
 	public synthetic fun <init> (ILat/asitplus/cidre/IpNetwork;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getAddress ()Lat/asitplus/cidre/IpAddress;
 	public fun getFamily ()Lat/asitplus/cidre/IpFamily;
 	public fun getHostMask ()[B
@@ -217,6 +218,7 @@ public abstract class at/asitplus/cidre/IpInterface : at/asitplus/cidre/IpAddres
 	public final fun getNetwork ()Lat/asitplus/cidre/IpNetwork;
 	public fun getNumberOfHostBits-pVg5ArA ()I
 	public fun getPrefix-pVg5ArA ()I
+	public fun hashCode ()I
 	public fun isLinkLocal ()Z
 	public fun isLoopback ()Z
 	public fun isMulticast ()Z
