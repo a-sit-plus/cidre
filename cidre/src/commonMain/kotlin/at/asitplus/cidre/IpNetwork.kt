@@ -90,6 +90,86 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
     fun overlaps(other: IpNetwork<N, S>): Boolean = other.contains(this) or contains(other)
 
     /**
+     * Union reduced by containment/adjacency collapse.
+     * Returns one or two CIDRs.
+     */
+    fun unionCollapse(other: IpNetwork<N, S>): List<IpNetwork<N, S>> = when {
+        contains(other) -> listOf(this)
+        other.contains(this) -> listOf(other)
+        canMergeWith(other) -> listOf((this + other)!!)
+        else -> listOf(this, other).sorted()
+    }
+
+    /**
+     * Minimal CIDR covering of the full address interval from the lower network start to the higher network end.
+     * This may include addresses not present in either input network.
+     */
+    fun unionCovering(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        if (contains(other)) return listOf(this)
+        if (other.contains(this)) return listOf(other)
+        val lower = if (this <= other) this else other
+        val upper = if (this >= other) this else other
+        return summarizeAddressInterval(lower.address.toCidrNumber(), upper.lastAddress.toCidrNumber())
+    }
+
+    /**
+     * Intersection of two networks (0 or 1 CIDR for proper CIDR-aligned inputs).
+     */
+    fun intersection(other: IpNetwork<N, S>): List<IpNetwork<N, S>> = when {
+        !overlaps(other) -> emptyList()
+        contains(other) -> listOf(other)
+        other.contains(this) -> listOf(this)
+        else -> emptyList()
+    }
+
+    /**
+     * CIDR difference (this minus [other]).
+     */
+    fun difference(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        if (!overlaps(other)) return listOf(this)
+        if (other.contains(this)) return emptyList()
+        if (contains(other).not()) return listOf(this)
+
+        // this contains other: recursively split this until overlapping portions are isolated.
+        val children = subnetRelative(1u).toList()
+        val out = mutableListOf<IpNetwork<N, S>>()
+        children.forEach { child ->
+            if (child.overlaps(other)) out += child.difference(other)
+            else out += child
+        }
+        return out
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun summarizeAddressInterval(start: S, end: S): List<IpNetwork<N, S>> {
+        val result = mutableListOf<IpNetwork<N, S>>()
+        val maxPrefix = family.numberOfBits
+        var current = start
+
+        while (current <= end) {
+            val currentAddress = IpAddress(current) as IpAddress<N, S>
+            var bestPrefix = maxPrefix.toUInt()
+            var p = maxPrefix - 1
+            while (p >= 0) {
+                val candidatePrefix = p.toUInt()
+                val candidate = IpNetwork(currentAddress.copy(), candidatePrefix, strict = false)
+                val aligned = candidate.address == currentAddress
+                if (!aligned) break
+                if (candidate.lastAddress.toCidrNumber() > end) break
+                bestPrefix = candidatePrefix
+                p--
+            }
+
+            val chosen = IpNetwork(currentAddress.copy(), bestPrefix, strict = false)
+            result += chosen
+            val next = chosen.lastAddress.toCidrNumber() + 1u
+            if (next == null) break
+            current = next
+        }
+        return result
+    }
+
+    /**
      * Enumerates subnets of this network at [newPrefix].
      *
      * @throws IllegalArgumentException if [newPrefix] is not strictly longer than [prefix]
@@ -262,14 +342,14 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
 
     /** Tests if [address] is inside this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    fun contains(address: IpAddress<N, S>): Boolean = (address.octets and netmask) contentEquals this.address.octets
+    operator fun contains(address: IpAddress<N, S>): Boolean = (address.octets and netmask) contentEquals this.address.octets
 
     /** Tests if [ipInterface] belongs this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    fun contains(ipInterface: IpInterface<N, S>): Boolean =
+    operator fun contains(ipInterface: IpInterface<N, S>): Boolean =
         ipInterface.network == this && contains(ipInterface.address)
 
     /**Tests if [network] is fully contained inside this network.*/
-    fun contains(network: IpNetwork<N, S>): Boolean {
+    operator fun contains(network: IpNetwork<N, S>): Boolean {
         if (prefix > network.prefix) return false
         return address.octets contentEquals (network.address.octets and netmask)
     }

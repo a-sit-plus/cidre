@@ -251,6 +251,34 @@ class TestAgainstPython {
     }
 
     @Test
+    fun setOperationsFixture() {
+        set_operations.union.forEach { case ->
+            assertEquals(2, case.inputs.size, "union fixture currently expects pairs")
+            val a = IpNetwork(case.inputs[0]) as IpNetwork<Number, Any>
+            val b = IpNetwork(case.inputs[1]) as IpNetwork<Number, Any>
+
+            val collapse = a.unionCollapse(b).map { it.toString() }
+            val covering = a.unionCovering(b).map { it.toString() }
+            assertContentEquals(case.collapse, collapse, "collapse for ${case.inputs}")
+            assertContentEquals(case.covering, covering, "covering for ${case.inputs}")
+        }
+
+        set_operations.intersection.forEach { case ->
+            val a = IpNetwork(case.a) as IpNetwork<Number, Any>
+            val b = IpNetwork(case.b) as IpNetwork<Number, Any>
+            val actual = a.intersection(b).map { it.toString() }
+            assertContentEquals(case.expect, actual, "intersection for ${case.a} vs ${case.b}")
+        }
+
+        set_operations.difference.forEach { case ->
+            val a = IpNetwork(case.a) as IpNetwork<Number, Any>
+            val b = IpNetwork(case.b) as IpNetwork<Number, Any>
+            val actual = a.difference(b).map { it.toString() }
+            assertContentEquals(case.expect, actual, "difference for ${case.a} - ${case.b}")
+        }
+    }
+
+    @Test
     fun netProps() = net_props.test_networks.forEach {
         val nwAddr = IpAddress(it.address)
         val lastAddr = IpAddress(it.last_address)

@@ -300,6 +300,45 @@ println(parent) // 192.168.0.0/24
 Invalid prefix requests throw `IllegalArgumentException` (e.g. subnet with a shorter prefix, or supernet with a longer prefix).
 Behavior is regression-tested against fixture data generated from Python's `ipaddress` test corpus (`subnetting.json`, `supernetting.json`).
 
+#### Set Operations
+
+`IpNetwork` supports common set-style operations between two CIDRs of the same family:
+
+- `unionCollapse(other)`:
+  - merges by containment/adjacency collapse
+  - returns one or two CIDRs
+- `unionCovering(other)`:
+  - returns a minimal CIDR covering of the full interval between both inputs
+  - can include addresses that were not in either original network
+- `intersection(other)`:
+  - returns overlap (empty or one CIDR for CIDR-aligned inputs)
+- `difference(other)`:
+  - returns `this - other` as a CIDR list
+
+Membership operators:
+
+- `address in network`
+- `iface in network`
+- `childNet in parentNet`
+
+Example:
+```kotlin
+val a = IpNetwork.V4("10.0.0.0/24")
+val b = IpNetwork.V4("10.0.0.128/25")
+val c = IpNetwork.V4("10.0.1.0/24")
+
+println(a.intersection(b))     // [10.0.0.128/25]
+println(a.difference(b))       // [10.0.0.0/25]
+println(a.unionCollapse(c))    // [10.0.0.0/24, 10.0.1.0/24]
+println(a.unionCovering(c))    // [10.0.0.0/23]
+println(IpAddress.V4("10.0.0.42") in a) // true
+```
+
+Why this is not a `Set` implementation:
+
+- Networks can represent very large spaces (up to `2^128` addresses), so eager iteration does not match Kotlin collection expectations.
+- CIDR operations are interval/range algebra, not element-by-element set storage.
+
 ### Low-Level Utilities
 The `at.asitplus.cidre.byteops` package provides low-level helper functions:
 

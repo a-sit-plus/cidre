@@ -10,8 +10,15 @@
 * Add additional fixture-backed JVM coverage:
   * `overlaps_containment.json`
   * `python_oracle.json` generated from Python stdlib `ipaddress`
+  * `set_operations.json` (union collapse/covering, intersection, difference)
 * Add Python-oracle fixture generator:
   * `python-testgen/gen_python_oracle.py`
+* Add network set-operations on `IpNetwork`:
+  * `unionCollapse`
+  * `unionCovering`
+  * `intersection`
+  * `difference`
+* Keep set-operation API surface explicit and unambiguous; no alias variants (`union`, `spanningUnion`, `intersect`, `minus`)
 * Add `IpAddress.V4.LeadingPrefix` for explicit bit-prefix modeling with:
   * `UByte` constructor (`leadingPrefixLength`, `leadingPrefixValue`)
   * signed-number constructor (`Int`, `Int`)
