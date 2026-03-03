@@ -282,3 +282,25 @@ data class OverlongOp(
     val argument: String? = null, // null for INV; decimal shift for SHL/SHR; hex-be for AND/OR/XOR
     val output: String        // expected hex-be
 )
+
+/* ---------- python_oracle.json ---------- */
+@Serializable
+data class PythonOracleFixture(
+    val meta: NetmaskMeta? = null,
+    @SerialName("network_flags") val networkFlags: List<PythonNetworkFlagsCase> = emptyList(),
+    @SerialName("ipv6_expanded") val ipv6Expanded: List<PythonIpv6ExpandedCase> = emptyList()
+)
+
+@Serializable
+data class PythonNetworkFlagsCase(
+    val cidr: String,
+    @SerialName("is_loopback") val isLoopback: Boolean,
+    @SerialName("is_link_local") val isLinkLocal: Boolean,
+    @SerialName("is_multicast") val isMulticast: Boolean
+)
+
+@Serializable
+data class PythonIpv6ExpandedCase(
+    val input: String,
+    val exploded: String
+)

@@ -19,11 +19,11 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
     override val netmask: Netmask = prefix.toNetmask(address.family)
 
-    override val isLinkLocal: Boolean get() = this == specialRanges.linkLocal
+    override val isLinkLocal: Boolean get() = specialRanges.linkLocal.contains(this)
 
-    override val isLoopback: Boolean get() = this == specialRanges.loopback
+    override val isLoopback: Boolean get() = specialRanges.loopback.contains(this)
 
-    override val isMulticast: Boolean get() = this == specialRanges.multicast
+    override val isMulticast: Boolean get() = specialRanges.multicast.contains(this)
 
     override fun toString(): String = "$address/$prefix"
 
@@ -265,7 +265,8 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
     fun contains(address: IpAddress<N, S>): Boolean = (address.octets and netmask) contentEquals this.address.octets
 
     /** Tests if [ipInterface] belongs this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    fun contains(ipInterface: IpInterface<N, S>): Boolean = ipInterface.network == this
+    fun contains(ipInterface: IpInterface<N, S>): Boolean =
+        ipInterface.network == this && contains(ipInterface.address)
 
     /**Tests if [network] is fully contained inside this network.*/
     fun contains(network: IpNetwork<N, S>): Boolean {
@@ -326,7 +327,10 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
             ) else null) as IpInterface.V4?
 
         override fun addressSpaceUntil(excludingLastN: UInt): Sequence<IpAddress.V4> = sequence {
-            if (prefix == family.numberOfBits.toUInt()) yield(address.copy() as IpAddress.V4)
+            if (prefix == family.numberOfBits.toUInt()) {
+                yield(address.copy() as IpAddress.V4)
+                return@sequence
+            }
             var current = CidrNumber.V4(address.octets)
             val last = CidrNumber.V4(lastOctetInBlock) - excludingLastN
             assert(last != null, "0xBADCAB")
@@ -362,7 +366,7 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
             override val family: IpFamily get() = IpFamily.V4
         }
 
-        override val isPrivate: Boolean get() = IpNetwork.V4.SpecialRanges.private.contains(this)
+        override val isPrivate: Boolean get() = IpNetwork.V4.SpecialRanges.private.any { it.contains(this) }
 
         override val isPublic: Boolean get() = !(isPrivate || isLinkLocal || isMulticast || isLoopback)
 
@@ -406,7 +410,10 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
         override val address: IpAddress.V6 = address.toNetWorkAddress(deepCopy, netmask, strict) as IpAddress.V6
 
         override fun addressSpaceUntil(excludingLastN: UInt): Sequence<IpAddress.V6> = sequence {
-            if (prefix == family.numberOfBits.toUInt()) yield(address.copy() as IpAddress.V6)
+            if (prefix == family.numberOfBits.toUInt()) {
+                yield(address.copy() as IpAddress.V6)
+                return@sequence
+            }
             var current = CidrNumber.V6(address.octets)
             val toExclude = excludingLastN.toULong()
             val last = CidrNumber.V6(lastOctetInBlock) - toExclude
@@ -447,22 +454,23 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
         }
 
 
-        override val isGlobalUnicast: Boolean get() = this == IpNetwork.V6.SpecialRanges.globalUnicast
+        override val isGlobalUnicast: Boolean get() = IpNetwork.V6.SpecialRanges.globalUnicast.contains(this)
 
-        override val isUniqueLocal: Boolean get() = this == IpNetwork.V6.SpecialRanges.uniqueLocal
+        override val isUniqueLocal: Boolean get() = IpNetwork.V6.SpecialRanges.uniqueLocal.contains(this)
 
-        override val isUniqueLocalLocallyAssigned: Boolean get() = this == IpNetwork.V6.SpecialRanges.uniqueLocalLocallyAssigned
+        override val isUniqueLocalLocallyAssigned: Boolean
+            get() = IpNetwork.V6.SpecialRanges.uniqueLocalLocallyAssigned.contains(this)
 
-        override val isIpV4Mapped: Boolean get() = this == IpNetwork.V6.SpecialRanges.ipV4Mapped
+        override val isIpV4Mapped: Boolean get() = IpNetwork.V6.SpecialRanges.ipV4Mapped.contains(this)
 
         @Deprecated("Originally meant to embed IPv4, now obsolete")
-        override val isIpV4Compatible: Boolean get() = this == IpNetwork.V6.SpecialRanges.ipV4Compatible
+        override val isIpV4Compatible: Boolean get() = IpNetwork.V6.SpecialRanges.ipV4Compatible.contains(this)
 
-        override val isDocumentation: Boolean get() = this == IpNetwork.V6.SpecialRanges.documentation
+        override val isDocumentation: Boolean get() = IpNetwork.V6.SpecialRanges.documentation.contains(this)
 
-        override val isDiscardOnly: Boolean get() = this == IpNetwork.V6.SpecialRanges.discardOnly
+        override val isDiscardOnly: Boolean get() = IpNetwork.V6.SpecialRanges.discardOnly.contains(this)
 
-        override val isReserved: Boolean get() = this == IpNetwork.V6.SpecialRanges.reserved
+        override val isReserved: Boolean get() = IpNetwork.V6.SpecialRanges.reserved.any { it.contains(this) }
 
         object SpecialRanges : IpNetwork.SpecialRanges<Short, CidrNumber.V6> {
 
@@ -504,7 +512,10 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
             val discardOnly = V6("100::/64")
 
             /**Reserved for future use*/
-            val reserved: List<IpNetwork.V6> = IntRange(0x4000, 0x7fff).map { V6(it.toString(16) + "::/3") }
+            val reserved: List<IpNetwork.V6> = listOf(
+                V6("4000::/3"),
+                V6("6000::/3"),
+            )
         }
     }
 
@@ -608,4 +619,3 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
 
 }
-

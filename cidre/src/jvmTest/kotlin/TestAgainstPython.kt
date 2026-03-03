@@ -24,6 +24,7 @@ class TestAgainstPython {
     val net_props = json.decodeFromString<NetworkPropsFixture>(resourceText("pythontest/net_props.json"))
     val overlogs = json.decodeFromString<OverlongFixture>(resourceText("pythontest/overlongs.json"))
     val merge_cases = json.decodeFromString<List<MergeCase>>(resourceText("pythontest/merge_cases.json"))
+    val python_oracle = json.decodeFromString<PythonOracleFixture>(resourceText("pythontest/python_oracle.json"))
 
     @Test
     fun overlogs() = overlogs.tests.forEach { case ->
@@ -236,6 +237,20 @@ class TestAgainstPython {
     }
 
     @Test
+    fun overlapsContainmentFixture() = overlaps_containment.pairs.forEach { case ->
+        val a = IpNetwork(case.a) as IpNetwork<Number, Any>
+        val b = IpNetwork(case.b) as IpNetwork<Number, Any>
+
+        assertEquals(case.overlaps, a.overlaps(b), "a=${case.a}, b=${case.b}")
+        assertEquals(case.overlaps, b.overlaps(a), "a=${case.a}, b=${case.b}")
+
+        case.aSubnetOfB?.let { assertEquals(it, a.isSubnetOf(b), "a_subnet_of_b for ${case.a} vs ${case.b}") }
+        case.bSubnetOfA?.let { assertEquals(it, b.isSubnetOf(a), "b_subnet_of_a for ${case.a} vs ${case.b}") }
+        case.aSupernetOfB?.let { assertEquals(it, a.isSupernetOf(b), "a_supernet_of_b for ${case.a} vs ${case.b}") }
+        case.bSupernetOfA?.let { assertEquals(it, b.isSupernetOf(a), "b_supernet_of_a for ${case.a} vs ${case.b}") }
+    }
+
+    @Test
     fun netProps() = net_props.test_networks.forEach {
         val nwAddr = IpAddress(it.address)
         val lastAddr = IpAddress(it.last_address)
@@ -284,6 +299,30 @@ class TestAgainstPython {
         if (canMerge) assertEquals(IpNetwork(case.expect!!) as IpNetwork<Number, Any>, a + b)
         else assertNull(a + b)
 
+    }
+
+    @Test
+    fun pythonOracleNetworkFlags() = python_oracle.networkFlags.forEach { case ->
+        val net = IpNetwork(case.cidr)
+        when (net) {
+            is IpNetwork.V4 -> {
+                assertEquals(case.isLoopback, net.isLoopback, "isLoopback for ${case.cidr}")
+                assertEquals(case.isLinkLocal, net.isLinkLocal, "isLinkLocal for ${case.cidr}")
+                assertEquals(case.isMulticast, net.isMulticast, "isMulticast for ${case.cidr}")
+            }
+
+            is IpNetwork.V6 -> {
+                assertEquals(case.isLoopback, net.isLoopback, "isLoopback for ${case.cidr}")
+                assertEquals(case.isLinkLocal, net.isLinkLocal, "isLinkLocal for ${case.cidr}")
+                assertEquals(case.isMulticast, net.isMulticast, "isMulticast for ${case.cidr}")
+            }
+        }
+    }
+
+    @Test
+    fun pythonOracleIpv6Expanded() = python_oracle.ipv6Expanded.forEach { case ->
+        val actual = IpAddress.V6(case.input).toString(expanded = true)
+        assertEquals(case.exploded, actual, "expanded for ${case.input}")
     }
 
     @Test
