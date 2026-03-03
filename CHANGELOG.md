@@ -19,11 +19,18 @@
   * `intersection`
   * `difference`
 * Keep set-operation API surface explicit and unambiguous; no alias variants (`union`, `spanningUnion`, `intersect`, `minus`)
+* Add range/relation APIs on `IpNetwork`:
+  * `toRange()`
+  * `fromRange(start, end)`
+  * `relationTo(other)` with `Relation` enum (`EQUAL`, `CONTAINS`, `WITHIN`, `ADJACENT`, `DISJOINT`)
+* Define canonical set-operation output contract (sorted, non-overlapping, maximally collapsed) and enforce it in operation results
+* Add randomized property-style JVM tests for set-operation invariants and range summarization roundtrips (IPv4 and IPv6)
 * Add `IpAddress.V4.LeadingPrefix` for explicit bit-prefix modeling with:
   * `UByte` constructor (`leadingPrefixLength`, `leadingPrefixValue`)
   * signed-number constructor (`Int`, `Int`)
   * bit-string constructor (`String`, e.g. `"110"`)
   * canonical bit-string rendering via `toString()`
+* Clean up JVM fixture tests by removing noisy prints, tightening type handling to avoid broad unchecked-cast patterns, and renaming overlong test identifiers consistently
 * Fix network flag semantics to use containment instead of exact-network equality:
   * `isLoopback`
   * `isLinkLocal`

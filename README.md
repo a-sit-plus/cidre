@@ -315,6 +315,12 @@ Behavior is regression-tested against fixture data generated from Python's `ipad
 - `difference(other)`:
   - returns `this - other` as a CIDR list
 
+Canonical output contract (for `unionCollapse`, `unionCovering`, `intersection`, `difference`, and `fromRange`):
+
+- sorted ascending by network address/prefix
+- non-overlapping
+- maximally collapsed (no pair in the result can be merged further)
+
 Membership operators:
 
 - `address in network`
@@ -332,6 +338,27 @@ println(a.difference(b))       // [10.0.0.0/25]
 println(a.unionCollapse(c))    // [10.0.0.0/24, 10.0.1.0/24]
 println(a.unionCovering(c))    // [10.0.0.0/23]
 println(IpAddress.V4("10.0.0.42") in a) // true
+```
+
+#### Range Conversion and Relations
+
+- `toRange()`:
+  - returns the inclusive `(startAddress, endAddress)` pair covered by a network.
+- `IpNetwork.fromRange(start, end)`:
+  - returns a canonical CIDR summary that exactly covers the inclusive range.
+- `relationTo(other)`:
+  - classifies relations as one of: `EQUAL`, `CONTAINS`, `WITHIN`, `ADJACENT`, `DISJOINT`.
+
+Example:
+```kotlin
+val net = IpNetwork.V4("10.0.0.0/24")
+val (start, end) = net.toRange()
+println("$start .. $end") // 10.0.0.0 .. 10.0.0.255
+
+val summary = IpNetwork.fromRange(IpAddress.V4("10.0.0.5"), IpAddress.V4("10.0.0.130"))
+println(summary) // canonical CIDR cover of that exact inclusive interval
+
+println(net.relationTo(IpNetwork.V4("10.0.1.0/24"))) // ADJACENT
 ```
 
 Why this is not a `Set` implementation:
