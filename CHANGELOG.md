@@ -24,6 +24,7 @@
   * `fromRange(start, end)`
   * `relationTo(other)` with `Relation` enum (`EQUAL`, `CONTAINS`, `WITHIN`, `ADJACENT`, `DISJOINT`)
 * Define canonical set-operation output contract (sorted, non-overlapping, maximally collapsed) and enforce it in operation results
+* Add explicit runtime family guards for network operations/containment: mixed IPv4/IPv6 inputs now fail fast with `IllegalArgumentException` (no implicit cross-family coercion)
 * Add randomized property-style JVM tests for set-operation invariants and range summarization roundtrips (IPv4 and IPv6)
 * Add `IpAddress.V4.LeadingPrefix` for explicit bit-prefix modeling with:
   * `UByte` constructor (`leadingPrefixLength`, `leadingPrefixValue`)

@@ -82,7 +82,7 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
      * * *a* masked with *pB* == *b*
      */
     fun isSubnetOf(other: IpNetwork<N, S>): Boolean =
-        ((prefix >= other.prefix) && address.copy().apply { mask(other.prefix) } == other.address)
+        ((requireSameFamily(other).let { prefix >= other.prefix }) && address.copy().apply { mask(other.prefix) } == other.address)
 
     /**
      * For two networks
@@ -94,23 +94,29 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
      * * b masked with *pA* == *a*
      */
     fun isSupernetOf(other: IpNetwork<N, S>): Boolean =
-        ((prefix <= other.prefix) && other.address.copy().apply { mask(prefix) } == address)
+        ((requireSameFamily(other).let { prefix <= other.prefix }) && other.address.copy().apply { mask(prefix) } == address)
 
 
     /**
      * Two networks overlap if either contains the other
      */
-    fun overlaps(other: IpNetwork<N, S>): Boolean = other.contains(this) or contains(other)
+    fun overlaps(other: IpNetwork<N, S>): Boolean {
+        requireSameFamily(other)
+        return other.contains(this) or contains(other)
+    }
 
     /**
      * Union reduced by containment/adjacency collapse.
      * Returns one or two CIDRs.
      */
-    fun unionCollapse(other: IpNetwork<N, S>): List<IpNetwork<N, S>> = when {
+    fun unionCollapse(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        requireSameFamily(other)
+        return when {
         contains(other) -> listOf(this)
         other.contains(this) -> listOf(other)
         canMergeWith(other) -> listOf((this + other)!!)
         else -> listOf(this, other).sorted()
+    }
     }
 
     /**
@@ -118,6 +124,7 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
      * This may include addresses not present in either input network.
      */
     fun unionCovering(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        requireSameFamily(other)
         if (contains(other)) return listOf(this)
         if (other.contains(this)) return listOf(other)
         val lower = if (this <= other) this else other
@@ -128,17 +135,21 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
     /**
      * Intersection of two networks (0 or 1 CIDR for proper CIDR-aligned inputs).
      */
-    fun intersection(other: IpNetwork<N, S>): List<IpNetwork<N, S>> = canonicalizeNetworks(when {
+    fun intersection(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        requireSameFamily(other)
+        return canonicalizeNetworks(when {
         !overlaps(other) -> emptyList()
         contains(other) -> listOf(other)
         other.contains(this) -> listOf(this)
         else -> emptyList()
     })
+    }
 
     /**
      * CIDR difference (this minus [other]).
      */
     fun difference(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        requireSameFamily(other)
         if (!overlaps(other)) return listOf(this)
         if (other.contains(this)) return emptyList()
         if (contains(other).not()) return listOf(this)
@@ -156,12 +167,15 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
     /**
      * Classification of this network's relation to [other].
      */
-    fun relationTo(other: IpNetwork<N, S>): Relation = when {
+    fun relationTo(other: IpNetwork<N, S>): Relation {
+        requireSameFamily(other)
+        return when {
         this == other -> Relation.EQUAL
         contains(other) -> Relation.CONTAINS
         other.contains(this) -> Relation.WITHIN
         isAdjacentTo(other) -> Relation.ADJACENT
         else -> Relation.DISJOINT
+    }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -366,16 +380,24 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
 
     /** Tests if [address] is inside this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    operator fun contains(address: IpAddress<N, S>): Boolean = (address.octets and netmask) contentEquals this.address.octets
+    operator fun contains(address: IpAddress<N, S>): Boolean {
+        require(family == address.family) { "IP family mismatch: $family vs ${address.family}" }
+        return (address.octets and netmask) contentEquals this.address.octets
+    }
 
     /** Tests if [ipInterface] belongs this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
     operator fun contains(ipInterface: IpInterface<N, S>): Boolean =
-        ipInterface.network == this && contains(ipInterface.address)
+        ipInterface.network.family == family && ipInterface.address.family == family && ipInterface.network == this && contains(ipInterface.address)
 
     /**Tests if [network] is fully contained inside this network.*/
     operator fun contains(network: IpNetwork<N, S>): Boolean {
+        requireSameFamily(network)
         if (prefix > network.prefix) return false
         return address.octets contentEquals (network.address.octets and netmask)
+    }
+
+    private fun requireSameFamily(other: IpNetwork<*, *>) {
+        require(family == other.family) { "IP family mismatch: $family vs ${other.family}" }
     }
 
     override fun equals(other: Any?): Boolean {

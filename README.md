@@ -314,6 +314,7 @@ Behavior is regression-tested against fixture data generated from Python's `ipad
   - returns overlap (empty or one CIDR for CIDR-aligned inputs)
 - `difference(other)`:
   - returns `this - other` as a CIDR list
+- mixed-family operations are rejected with `IllegalArgumentException` (no implicit IPv4/IPv6 coercion)
 
 Canonical output contract (for `unionCollapse`, `unionCovering`, `intersection`, `difference`, and `fromRange`):
 

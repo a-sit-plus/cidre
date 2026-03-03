@@ -4,6 +4,7 @@ import at.asitplus.cidre.byteops.CidrNumber
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -55,6 +56,27 @@ class IpNetworkComfortTest {
         assertCanonical(a.unionCovering(c))
         assertCanonical(a.intersection(b))
         assertCanonical(a.difference(b))
+    }
+
+    @Test
+    fun mixedFamilyOperationsFailFast() {
+        val v4 = IpNetwork.V4("10.0.0.0/24")
+        val v6 = IpNetwork.V6("2001:db8::/64")
+        val v6Address = IpAddress.V6("2001:db8::1")
+
+        @Suppress("UNCHECKED_CAST")
+        val v6AsV4Net = v6 as IpNetwork<Byte, CidrNumber.V4>
+        @Suppress("UNCHECKED_CAST")
+        val v6AsV4Addr = v6Address as IpAddress<Byte, CidrNumber.V4>
+
+        assertFailsWith<IllegalArgumentException> { (v4 as IpNetwork<Byte, CidrNumber.V4>).overlaps(v6AsV4Net) }
+        assertFailsWith<IllegalArgumentException> { (v4 as IpNetwork<Byte, CidrNumber.V4>).unionCollapse(v6AsV4Net) }
+        assertFailsWith<IllegalArgumentException> { (v4 as IpNetwork<Byte, CidrNumber.V4>).unionCovering(v6AsV4Net) }
+        assertFailsWith<IllegalArgumentException> { (v4 as IpNetwork<Byte, CidrNumber.V4>).intersection(v6AsV4Net) }
+        assertFailsWith<IllegalArgumentException> { (v4 as IpNetwork<Byte, CidrNumber.V4>).difference(v6AsV4Net) }
+        assertFailsWith<IllegalArgumentException> { (v4 as IpNetwork<Byte, CidrNumber.V4>).relationTo(v6AsV4Net) }
+        assertFailsWith<IllegalArgumentException> { (v4 as IpNetwork<Byte, CidrNumber.V4>).contains(v6AsV4Net) }
+        assertFailsWith<IllegalArgumentException> { (v4 as IpNetwork<Byte, CidrNumber.V4>).contains(v6AsV4Addr) }
     }
 
     @Test
