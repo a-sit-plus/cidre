@@ -1,6 +1,17 @@
 # Changelog
 
 ## NEXT
+* Add subnetting and supernetting helpers on `IpNetwork`
+  * `subnet(newPrefix: UInt)`
+  * `subnetRelative(prefixDiff: UInt)`
+  * `supernet(newPrefix: UInt)`
+  * `supernetRelative(prefixDiff: UInt)`
+* Add fixture-backed JVM tests for subnetting and supernetting (`subnetting.json`, `supernetting.json`)
+* Add `IpAddress.V4.LeadingPrefix` for explicit bit-prefix modeling with:
+  * `UByte` constructor (`leadingPrefixLength`, `leadingPrefixValue`)
+  * signed-number constructor (`Int`, `Int`)
+  * bit-string constructor (`String`, e.g. `"110"`)
+  * canonical bit-string rendering via `toString()`
 
 ## 0.3.1
 * Add `hashCode()` and `equals` in `IpInterface` 
