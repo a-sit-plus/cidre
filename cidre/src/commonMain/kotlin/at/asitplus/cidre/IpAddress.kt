@@ -182,6 +182,52 @@ sealed class IpAddress<N : Number, S : CidrNumber<S>>(val octets: ByteArray, dis
             E
         }
 
+        /**
+         * Bit-prefix descriptor consisting of prefix length and value.
+         * Example: class-B leading bits `10` => length = 2, value = 2.
+         */
+        data class LeadingPrefix(val leadingPrefixLength: UByte, val leadingPrefixValue: UByte) {
+
+            init {
+                val len = leadingPrefixLength.toInt()
+                val value = leadingPrefixValue.toInt()
+                require(len in 1..8) { "leadingPrefixLength must be in 1..8, got $len" }
+                require(value < (1 shl len)) {
+                    "leadingPrefixValue ($value) does not fit into $len bits"
+                }
+            }
+
+            /**
+             * Alternate constructor accepting signed integers.
+             */
+            constructor(leadingPrefixLength: Int, leadingPrefixValue: Int) : this(
+                leadingPrefixLength.also {
+                    require(it in 1..8) { "leadingPrefixLength must be in 1..8, got $it" }
+                }.toUByte(),
+                leadingPrefixValue.also {
+                    require(it >= 0) { "leadingPrefixValue must be non-negative, got $it" }
+                }.toUByte()
+            )
+
+            /**
+             * Alternate constructor accepting bit-pattern representation (e.g. "10").
+             */
+            constructor(pattern: String) : this(
+                pattern.length.also {
+                    require(it in 1..8) { "Pattern length must be in 1..8, got $it" }
+                }.toUByte(),
+                pattern.also { require(it.isNotEmpty()) { "Pattern must not be empty" } }
+                    .also { require(it.all { ch -> ch == '0' || ch == '1' }) { "Pattern must only contain '0' and '1': '$it'" } }
+                    .toInt(radix = 2)
+                    .toUByte()
+            )
+
+            val pattern: String
+                get() = leadingPrefixValue.toInt().toString(2).padStart(leadingPrefixLength.toInt(), '0')
+
+            override fun toString(): String = pattern
+        }
+
         companion object : IpFamily {
             override val numberOfOctets: Int = 4
             override val segmentSeparator: Char = '.'
