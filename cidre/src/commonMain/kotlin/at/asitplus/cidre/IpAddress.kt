@@ -72,16 +72,19 @@ sealed class IpAddress<N : Number, S : CidrNumber<S>>(val octets: ByteArray, dis
     val isSpecified: Boolean get() = !octets.all { it == 0.toByte() }
 
     @Suppress("UNCHECKED_CAST")
-    operator fun plus(number: S): IpAddress<N, S>? =(toCidrNumber() + number)?.let{ IpAddress(it)  as IpAddress<N, S> }
+    operator fun plus(number: S): IpAddress<N, S>? = (toCidrNumber() + number)?.let { IpAddress(it) as IpAddress<N, S> }
 
     @Suppress("UNCHECKED_CAST")
-    operator fun minus(number: S): IpAddress<N, S>? = (toCidrNumber() - number)?.let{ IpAddress(it)  as IpAddress<N, S> }
+    operator fun minus(number: S): IpAddress<N, S>? =
+        (toCidrNumber() - number)?.let { IpAddress(it) as IpAddress<N, S> }
 
     @Suppress("UNCHECKED_CAST")
-    operator fun plus(number: UInt): IpAddress<N, S>? =(toCidrNumber() + number)?.let{ IpAddress(it)  as IpAddress<N, S> }
+    operator fun plus(number: UInt): IpAddress<N, S>? =
+        (toCidrNumber() + number)?.let { IpAddress(it) as IpAddress<N, S> }
 
     @Suppress("UNCHECKED_CAST")
-    operator fun minus(number: UInt): IpAddress<N, S>? = (toCidrNumber() - number)?.let{ IpAddress(it)  as IpAddress<N, S> }
+    operator fun minus(number: UInt): IpAddress<N, S>? =
+        (toCidrNumber() - number)?.let { IpAddress(it) as IpAddress<N, S> }
 
     @Suppress("UNCHECKED_CAST")
     operator fun plus(other: IpAddress<N, S>): S? = (CidrNumber(octets) as S) + (CidrNumber(other.octets) as S)
@@ -201,12 +204,9 @@ sealed class IpAddress<N : Number, S : CidrNumber<S>>(val octets: ByteArray, dis
              * Alternate constructor accepting signed integers.
              */
             constructor(leadingPrefixLength: Int, leadingPrefixValue: Int) : this(
-                leadingPrefixLength.also {
-                    require(it in 1..8) { "leadingPrefixLength must be in 1..8, got $it" }
-                }.toUByte(),
-                leadingPrefixValue.also {
-                    require(it >= 0) { "leadingPrefixValue must be non-negative, got $it" }
-                }.toUByte()
+                leadingPrefixLength.toUByte(),
+                leadingPrefixValue.also { require(it >= 0) { "leadingPrefixValue must be non-negative, got $it" } }
+                    .toUByte()
             )
 
             /**
