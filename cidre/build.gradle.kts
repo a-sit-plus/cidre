@@ -4,13 +4,13 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.net.URI
 
 plugins {
-    id("com.android.library")
+    id("com.android.kotlin.multiplatform.library")
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("maven-publish")
     id("signing")
     id("org.jetbrains.dokka")
-    id("org.jetbrains.kotlinx.kover") version "0.9.1"
+    id("org.jetbrains.kotlinx.kover") version "0.9.8"
     //   id("io.gitlab.arturbosch.detekt") version "1.23.7"
 }
 
@@ -41,7 +41,7 @@ dokka {
         }
     }
     pluginsConfiguration.html {
-        footerMessage = "&copy; 2025 A-SIT Plus GmbH"
+        footerMessage = "&copy; 2025-2026 A-SIT Plus GmbH"
     }
 }
 
@@ -70,6 +70,15 @@ tasks.withType<AbstractPublishToMaven>() {
 kotlin {
 
     applyDefaultHierarchyTemplate()
+
+    android {
+        namespace = "at.asitplus.cidre"
+        compileSdk = 21
+        minSdk = 21
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+        }
+    }
 
     jvmToolchain(17)
     val xcf = org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig(project, "CIDRE")
@@ -100,12 +109,6 @@ kotlin {
     androidNativeX86()
     androidNativeArm32()
     androidNativeArm64()
-    androidTarget {
-        compilerOptions {
-            publishLibraryVariants("release")
-            jvmTarget = JvmTarget.JVM_1_8
-        }
-    }
 
     jvm {
         compilerOptions {
@@ -150,18 +153,6 @@ kotlin {
 
 }
 
-
-android {
-    namespace = "at.asitplus.cidre"
-    compileSdk = 36
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    defaultConfig {
-        minSdk = 21
-    }
-}
 
 /*
 tasks.withType<Detekt>().configureEach {
@@ -243,4 +234,3 @@ signing {
     useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     sign(publishing.publications)
 }
-

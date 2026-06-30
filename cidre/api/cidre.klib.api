@@ -194,6 +194,30 @@ final class at.asitplus.cidre/ImplementationError : kotlin/RuntimeException { //
     constructor <init>(kotlin/String, kotlin/Throwable? = ...) // at.asitplus.cidre/ImplementationError.<init>|<init>(kotlin.String;kotlin.Throwable?){}[0]
 }
 
+final class at.asitplus.cidre/SameFamilyNetworkScope { // at.asitplus.cidre/SameFamilyNetworkScope|null[0]
+    constructor <init>(at.asitplus.cidre/IpNetwork<*, *>, at.asitplus.cidre/IpNetwork<*, *>) // at.asitplus.cidre/SameFamilyNetworkScope.<init>|<init>(at.asitplus.cidre.IpNetwork<*,*>;at.asitplus.cidre.IpNetwork<*,*>){}[0]
+
+    final val family // at.asitplus.cidre/SameFamilyNetworkScope.family|{}family[0]
+        final fun <get-family>(): at.asitplus.cidre/IpFamily // at.asitplus.cidre/SameFamilyNetworkScope.family.<get-family>|<get-family>(){}[0]
+    final val left // at.asitplus.cidre/SameFamilyNetworkScope.left|{}left[0]
+        final fun <get-left>(): at.asitplus.cidre/IpNetwork<*, *> // at.asitplus.cidre/SameFamilyNetworkScope.left.<get-left>|<get-left>(){}[0]
+    final val right // at.asitplus.cidre/SameFamilyNetworkScope.right|{}right[0]
+        final fun <get-right>(): at.asitplus.cidre/IpNetwork<*, *> // at.asitplus.cidre/SameFamilyNetworkScope.right.<get-right>|<get-right>(){}[0]
+
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).canMergeWith(at.asitplus.cidre/IpNetwork<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkScope.canMergeWith|canMergeWith@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).compare(at.asitplus.cidre/IpNetwork<*, *>): kotlin/Int // at.asitplus.cidre/SameFamilyNetworkScope.compare|compare@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).compareTo(at.asitplus.cidre/IpNetwork<*, *>): kotlin/Int // at.asitplus.cidre/SameFamilyNetworkScope.compareTo|compareTo@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).contains(at.asitplus.cidre/IpAddress<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkScope.contains|contains@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).contains(at.asitplus.cidre/IpInterface<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkScope.contains|contains@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpInterface<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).contains(at.asitplus.cidre/IpNetwork<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkScope.contains|contains@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).isAdjacentTo(at.asitplus.cidre/IpNetwork<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkScope.isAdjacentTo|isAdjacentTo@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).isSubnetOf(at.asitplus.cidre/IpNetwork<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkScope.isSubnetOf|isSubnetOf@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).isSupernetOf(at.asitplus.cidre/IpNetwork<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkScope.isSupernetOf|isSupernetOf@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).overlaps(at.asitplus.cidre/IpNetwork<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkScope.overlaps|overlaps@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).plus(at.asitplus.cidre/IpNetwork<*, *>): at.asitplus.cidre/IpNetwork<*, *>? // at.asitplus.cidre/SameFamilyNetworkScope.plus|plus@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>){}[0]
+    final fun compare(): kotlin/Int // at.asitplus.cidre/SameFamilyNetworkScope.compare|compare(){}[0]
+}
+
 sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> at.asitplus.cidre/IpAddress : kotlin/Comparable<at.asitplus.cidre/IpAddress<#A, #B>> { // at.asitplus.cidre/IpAddress|null[0]
     abstract val family // at.asitplus.cidre/IpAddress.family|{}family[0]
         abstract fun <get-family>(): at.asitplus.cidre/IpFamily // at.asitplus.cidre/IpAddress.family.<get-family>|<get-family>(){}[0]
@@ -575,12 +599,85 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
     }
 }
 
+sealed class at.asitplus.cidre/SameFamilyAddressScope { // at.asitplus.cidre/SameFamilyAddressScope|null[0]
+    abstract val left // at.asitplus.cidre/SameFamilyAddressScope.left|{}left[0]
+        abstract fun <get-left>(): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/SameFamilyAddressScope.left.<get-left>|<get-left>(){}[0]
+    abstract val right // at.asitplus.cidre/SameFamilyAddressScope.right|{}right[0]
+        abstract fun <get-right>(): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/SameFamilyAddressScope.right.<get-right>|<get-right>(){}[0]
+    final val family // at.asitplus.cidre/SameFamilyAddressScope.family|{}family[0]
+        final fun <get-family>(): at.asitplus.cidre/IpFamily // at.asitplus.cidre/SameFamilyAddressScope.family.<get-family>|<get-family>(){}[0]
+
+    final fun (at.asitplus.cidre/IpAddress<*, *>).and(at.asitplus.cidre/IpAddress<*, *>): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/SameFamilyAddressScope.and|and@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpAddress<*, *>).compare(at.asitplus.cidre/IpAddress<*, *>): kotlin/Int // at.asitplus.cidre/SameFamilyAddressScope.compare|compare@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpAddress<*, *>).compareTo(at.asitplus.cidre/IpAddress<*, *>): kotlin/Int // at.asitplus.cidre/SameFamilyAddressScope.compareTo|compareTo@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpAddress<*, *>).minus(at.asitplus.cidre/IpAddress<*, *>): at.asitplus.cidre.byteops/CidrNumber<*>? // at.asitplus.cidre/SameFamilyAddressScope.minus|minus@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpAddress<*, *>).or(at.asitplus.cidre/IpAddress<*, *>): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/SameFamilyAddressScope.or|or@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpAddress<*, *>).plus(at.asitplus.cidre/IpAddress<*, *>): at.asitplus.cidre.byteops/CidrNumber<*>? // at.asitplus.cidre/SameFamilyAddressScope.plus|plus@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun (at.asitplus.cidre/IpAddress<*, *>).xor(at.asitplus.cidre/IpAddress<*, *>): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/SameFamilyAddressScope.xor|xor@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun compare(): kotlin/Int // at.asitplus.cidre/SameFamilyAddressScope.compare|compare(){}[0]
+    final fun isV4(): kotlin/Boolean // at.asitplus.cidre/SameFamilyAddressScope.isV4|isV4(){}[0]
+    final fun isV6(): kotlin/Boolean // at.asitplus.cidre/SameFamilyAddressScope.isV6|isV6(){}[0]
+    final inline fun <#A1: kotlin/Any?> whenFamily(kotlin/Function1<at.asitplus.cidre/SameFamilyAddressScope.V4, #A1>, kotlin/Function1<at.asitplus.cidre/SameFamilyAddressScope.V6, #A1>): #A1 // at.asitplus.cidre/SameFamilyAddressScope.whenFamily|whenFamily(kotlin.Function1<at.asitplus.cidre.SameFamilyAddressScope.V4,0:0>;kotlin.Function1<at.asitplus.cidre.SameFamilyAddressScope.V6,0:0>){0§<kotlin.Any?>}[0]
+
+    final class V4 : at.asitplus.cidre/SameFamilyAddressScope { // at.asitplus.cidre/SameFamilyAddressScope.V4|null[0]
+        constructor <init>(at.asitplus.cidre/IpAddress.V4, at.asitplus.cidre/IpAddress.V4) // at.asitplus.cidre/SameFamilyAddressScope.V4.<init>|<init>(at.asitplus.cidre.IpAddress.V4;at.asitplus.cidre.IpAddress.V4){}[0]
+
+        final val left // at.asitplus.cidre/SameFamilyAddressScope.V4.left|{}left[0]
+            final fun <get-left>(): at.asitplus.cidre/IpAddress.V4 // at.asitplus.cidre/SameFamilyAddressScope.V4.left.<get-left>|<get-left>(){}[0]
+        final val right // at.asitplus.cidre/SameFamilyAddressScope.V4.right|{}right[0]
+            final fun <get-right>(): at.asitplus.cidre/IpAddress.V4 // at.asitplus.cidre/SameFamilyAddressScope.V4.right.<get-right>|<get-right>(){}[0]
+    }
+
+    final class V6 : at.asitplus.cidre/SameFamilyAddressScope { // at.asitplus.cidre/SameFamilyAddressScope.V6|null[0]
+        constructor <init>(at.asitplus.cidre/IpAddress.V6, at.asitplus.cidre/IpAddress.V6) // at.asitplus.cidre/SameFamilyAddressScope.V6.<init>|<init>(at.asitplus.cidre.IpAddress.V6;at.asitplus.cidre.IpAddress.V6){}[0]
+
+        final val left // at.asitplus.cidre/SameFamilyAddressScope.V6.left|{}left[0]
+            final fun <get-left>(): at.asitplus.cidre/IpAddress.V6 // at.asitplus.cidre/SameFamilyAddressScope.V6.left.<get-left>|<get-left>(){}[0]
+        final val right // at.asitplus.cidre/SameFamilyAddressScope.V6.right|{}right[0]
+            final fun <get-right>(): at.asitplus.cidre/IpAddress.V6 // at.asitplus.cidre/SameFamilyAddressScope.V6.right.<get-right>|<get-right>(){}[0]
+    }
+}
+
+sealed class at.asitplus.cidre/SameFamilyNetworkAddressScope { // at.asitplus.cidre/SameFamilyNetworkAddressScope|null[0]
+    abstract val address // at.asitplus.cidre/SameFamilyNetworkAddressScope.address|{}address[0]
+        abstract fun <get-address>(): at.asitplus.cidre/IpAddress<*, *> // at.asitplus.cidre/SameFamilyNetworkAddressScope.address.<get-address>|<get-address>(){}[0]
+    abstract val network // at.asitplus.cidre/SameFamilyNetworkAddressScope.network|{}network[0]
+        abstract fun <get-network>(): at.asitplus.cidre/IpNetwork<*, *> // at.asitplus.cidre/SameFamilyNetworkAddressScope.network.<get-network>|<get-network>(){}[0]
+    final val family // at.asitplus.cidre/SameFamilyNetworkAddressScope.family|{}family[0]
+        final fun <get-family>(): at.asitplus.cidre/IpFamily // at.asitplus.cidre/SameFamilyNetworkAddressScope.family.<get-family>|<get-family>(){}[0]
+
+    final fun (at.asitplus.cidre/IpNetwork<*, *>).contains(at.asitplus.cidre/IpAddress<*, *>): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkAddressScope.contains|contains@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
+    final fun contains(): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkAddressScope.contains|contains(){}[0]
+    final fun isInNetwork(): kotlin/Boolean // at.asitplus.cidre/SameFamilyNetworkAddressScope.isInNetwork|isInNetwork(){}[0]
+    final inline fun <#A1: kotlin/Any?> whenFamily(kotlin/Function1<at.asitplus.cidre/SameFamilyNetworkAddressScope.V4, #A1>, kotlin/Function1<at.asitplus.cidre/SameFamilyNetworkAddressScope.V6, #A1>): #A1 // at.asitplus.cidre/SameFamilyNetworkAddressScope.whenFamily|whenFamily(kotlin.Function1<at.asitplus.cidre.SameFamilyNetworkAddressScope.V4,0:0>;kotlin.Function1<at.asitplus.cidre.SameFamilyNetworkAddressScope.V6,0:0>){0§<kotlin.Any?>}[0]
+
+    final class V4 : at.asitplus.cidre/SameFamilyNetworkAddressScope { // at.asitplus.cidre/SameFamilyNetworkAddressScope.V4|null[0]
+        constructor <init>(at.asitplus.cidre/IpNetwork.V4, at.asitplus.cidre/IpAddress.V4) // at.asitplus.cidre/SameFamilyNetworkAddressScope.V4.<init>|<init>(at.asitplus.cidre.IpNetwork.V4;at.asitplus.cidre.IpAddress.V4){}[0]
+
+        final val address // at.asitplus.cidre/SameFamilyNetworkAddressScope.V4.address|{}address[0]
+            final fun <get-address>(): at.asitplus.cidre/IpAddress.V4 // at.asitplus.cidre/SameFamilyNetworkAddressScope.V4.address.<get-address>|<get-address>(){}[0]
+        final val network // at.asitplus.cidre/SameFamilyNetworkAddressScope.V4.network|{}network[0]
+            final fun <get-network>(): at.asitplus.cidre/IpNetwork.V4 // at.asitplus.cidre/SameFamilyNetworkAddressScope.V4.network.<get-network>|<get-network>(){}[0]
+    }
+
+    final class V6 : at.asitplus.cidre/SameFamilyNetworkAddressScope { // at.asitplus.cidre/SameFamilyNetworkAddressScope.V6|null[0]
+        constructor <init>(at.asitplus.cidre/IpNetwork.V6, at.asitplus.cidre/IpAddress.V6) // at.asitplus.cidre/SameFamilyNetworkAddressScope.V6.<init>|<init>(at.asitplus.cidre.IpNetwork.V6;at.asitplus.cidre.IpAddress.V6){}[0]
+
+        final val address // at.asitplus.cidre/SameFamilyNetworkAddressScope.V6.address|{}address[0]
+            final fun <get-address>(): at.asitplus.cidre/IpAddress.V6 // at.asitplus.cidre/SameFamilyNetworkAddressScope.V6.address.<get-address>|<get-address>(){}[0]
+        final val network // at.asitplus.cidre/SameFamilyNetworkAddressScope.V6.network|{}network[0]
+            final fun <get-network>(): at.asitplus.cidre/IpNetwork.V6 // at.asitplus.cidre/SameFamilyNetworkAddressScope.V6.network.<get-network>|<get-network>(){}[0]
+    }
+}
+
 final fun (at.asitplus.cidre/IpAddress.V4).at.asitplus.cidre/isSameFamily(at.asitplus.cidre/IpAddress<*, *>): kotlin/Boolean // at.asitplus.cidre/isSameFamily|isSameFamily@at.asitplus.cidre.IpAddress.V4(at.asitplus.cidre.IpAddress<*,*>){}[0]
 final fun (at.asitplus.cidre/IpAddress.V6).at.asitplus.cidre/isSameFamily(at.asitplus.cidre/IpAddress<*, *>): kotlin/Boolean // at.asitplus.cidre/isSameFamily|isSameFamily@at.asitplus.cidre.IpAddress.V6(at.asitplus.cidre.IpAddress<*,*>){}[0]
+final fun (at.asitplus.cidre/IpAddress<*, *>).at.asitplus.cidre/isSameFamily(at.asitplus.cidre/IpAddress<*, *>): kotlin/Boolean // at.asitplus.cidre/isSameFamily|isSameFamily@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>){}[0]
 final fun (at.asitplus.cidre/IpAddress<*, *>).at.asitplus.cidre/isV4(): kotlin/Boolean // at.asitplus.cidre/isV4|isV4@at.asitplus.cidre.IpAddress<*,*>(){}[0]
 final fun (at.asitplus.cidre/IpAddress<*, *>).at.asitplus.cidre/isV6(): kotlin/Boolean // at.asitplus.cidre/isV6|isV6@at.asitplus.cidre.IpAddress<*,*>(){}[0]
 final fun (at.asitplus.cidre/IpAddressAndPrefix.V4).at.asitplus.cidre/isSameFamily(at.asitplus.cidre/IpAddressAndPrefix<*, *>): kotlin/Boolean // at.asitplus.cidre/isSameFamily|isSameFamily@at.asitplus.cidre.IpAddressAndPrefix.V4(at.asitplus.cidre.IpAddressAndPrefix<*,*>){}[0]
 final fun (at.asitplus.cidre/IpAddressAndPrefix.V6).at.asitplus.cidre/isSameFamily(at.asitplus.cidre/IpAddressAndPrefix<*, *>): kotlin/Boolean // at.asitplus.cidre/isSameFamily|isSameFamily@at.asitplus.cidre.IpAddressAndPrefix.V6(at.asitplus.cidre.IpAddressAndPrefix<*,*>){}[0]
+final fun (at.asitplus.cidre/IpAddressAndPrefix<*, *>).at.asitplus.cidre/isSameFamily(at.asitplus.cidre/IpAddressAndPrefix<*, *>): kotlin/Boolean // at.asitplus.cidre/isSameFamily|isSameFamily@at.asitplus.cidre.IpAddressAndPrefix<*,*>(at.asitplus.cidre.IpAddressAndPrefix<*,*>){}[0]
 final fun (at.asitplus.cidre/IpAddressAndPrefix<*, *>).at.asitplus.cidre/isV4(): kotlin/Boolean // at.asitplus.cidre/isV4|isV4@at.asitplus.cidre.IpAddressAndPrefix<*,*>(){}[0]
 final fun (at.asitplus.cidre/IpAddressAndPrefix<*, *>).at.asitplus.cidre/isV6(): kotlin/Boolean // at.asitplus.cidre/isV6|isV6@at.asitplus.cidre.IpAddressAndPrefix<*,*>(){}[0]
 final fun (kotlin/ByteArray).at.asitplus.cidre.byteops/and(kotlin/ByteArray): kotlin/ByteArray // at.asitplus.cidre.byteops/and|and@kotlin.ByteArray(kotlin.ByteArray){}[0]
@@ -598,6 +695,10 @@ final fun (kotlin/UInt).at.asitplus.cidre.byteops/toIPv4Bytes(): kotlin/ByteArra
 final fun (kotlin/UInt).at.asitplus.cidre.byteops/toNetmask(at.asitplus.cidre/IpFamily): kotlin/ByteArray // at.asitplus.cidre.byteops/toNetmask|toNetmask@kotlin.UInt(at.asitplus.cidre.IpFamily){}[0]
 final fun (kotlin/UInt).at.asitplus.cidre.byteops/toNetmask(kotlin/Int): kotlin/ByteArray // at.asitplus.cidre.byteops/toNetmask|toNetmask@kotlin.UInt(kotlin.Int){}[0]
 final fun (kotlin/ULong).at.asitplus.cidre.byteops/toIPv4Bytes(): kotlin/ByteArray // at.asitplus.cidre.byteops/toIPv4Bytes|toIPv4Bytes@kotlin.ULong(){}[0]
+final inline fun <#A: kotlin/Any?> (at.asitplus.cidre/IpAddress<*, *>).at.asitplus.cidre/withSameFamily(at.asitplus.cidre/IpAddress<*, *>, kotlin/Function1<at.asitplus.cidre/SameFamilyAddressScope, #A>): #A? // at.asitplus.cidre/withSameFamily|withSameFamily@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpAddress<*,*>;kotlin.Function1<at.asitplus.cidre.SameFamilyAddressScope,0:0>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (at.asitplus.cidre/IpAddress<*, *>).at.asitplus.cidre/withSameFamily(at.asitplus.cidre/IpNetwork<*, *>, kotlin/Function1<at.asitplus.cidre/SameFamilyNetworkAddressScope, #A>): #A? // at.asitplus.cidre/withSameFamily|withSameFamily@at.asitplus.cidre.IpAddress<*,*>(at.asitplus.cidre.IpNetwork<*,*>;kotlin.Function1<at.asitplus.cidre.SameFamilyNetworkAddressScope,0:0>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (at.asitplus.cidre/IpNetwork<*, *>).at.asitplus.cidre/withSameFamily(at.asitplus.cidre/IpAddress<*, *>, kotlin/Function1<at.asitplus.cidre/SameFamilyNetworkAddressScope, #A>): #A? // at.asitplus.cidre/withSameFamily|withSameFamily@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpAddress<*,*>;kotlin.Function1<at.asitplus.cidre.SameFamilyNetworkAddressScope,0:0>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?> (at.asitplus.cidre/IpNetwork<*, *>).at.asitplus.cidre/withSameFamily(at.asitplus.cidre/IpNetwork<*, *>, kotlin/Function1<at.asitplus.cidre/SameFamilyNetworkScope, #A>): #A? // at.asitplus.cidre/withSameFamily|withSameFamily@at.asitplus.cidre.IpNetwork<*,*>(at.asitplus.cidre.IpNetwork<*,*>;kotlin.Function1<at.asitplus.cidre.SameFamilyNetworkScope,0:0>){0§<kotlin.Any?>}[0]
 
 // Targets: [native]
 final fun (at.asitplus.cidre/IpAddress.Companion).at.asitplus.cidre/invoke(kotlinx.cinterop/CPointer<platform.posix/in_addr>): at.asitplus.cidre/IpAddress.V4 // at.asitplus.cidre/invoke|invoke@at.asitplus.cidre.IpAddress.Companion(kotlinx.cinterop.CPointer<platform.posix.in_addr>){}[0]
