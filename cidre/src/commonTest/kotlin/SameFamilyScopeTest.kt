@@ -127,4 +127,52 @@ class SameFamilyScopeTest {
 
         assertNull(blockResult)
     }
+
+    @Test
+    fun networkAddressScopeWorksBothWays() {
+        val network: IpNetwork<*, *> = IpNetwork("192.168.0.0/24")
+        val address: IpAddress<*, *> = IpAddress("192.168.0.42")
+
+        val fromNetwork = network.withSameFamily(address) {
+            assertTrue(contains())
+            address in network
+        }
+        val fromAddress = address.withSameFamily(network) {
+            assertTrue(isInNetwork())
+            address in network
+        }
+
+        assertTrue(assertNotNull(fromNetwork))
+        assertTrue(assertNotNull(fromAddress))
+    }
+
+    @Test
+    fun networkAddressScopeNarrowsBothSides() {
+        val network: IpNetwork<*, *> = IpNetwork("2001:db8::/32")
+        val address: IpAddress<*, *> = IpAddress("2001:db8::42")
+
+        val contains = network.withSameFamily(address) {
+            whenFamily(
+                v4 = {
+                    false
+                },
+                v6 = {
+                    val knownNetwork: IpNetwork.V6 = network
+                    val knownAddress: IpAddress.V6 = address
+                    knownAddress in knownNetwork
+                }
+            )
+        }
+
+        assertTrue(assertNotNull(contains))
+    }
+
+    @Test
+    fun networkAddressScopeSkipsMixedFamiliesBothWays() {
+        val network: IpNetwork<*, *> = IpNetwork("192.168.0.0/24")
+        val address: IpAddress<*, *> = IpAddress("2001:db8::42")
+
+        assertNull(network.withSameFamily(address) { contains() })
+        assertNull(address.withSameFamily(network) { isInNetwork() })
+    }
 }

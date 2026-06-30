@@ -22,6 +22,24 @@ inline fun <R> IpNetwork<*, *>.withSameFamily(
     block: SameFamilyNetworkScope.() -> R
 ): R? = if (isSameFamily(other)) SameFamilyNetworkScope(this, other).block() else null
 
+inline fun <R> IpNetwork<*, *>.withSameFamily(
+    address: IpAddress<*, *>,
+    block: SameFamilyNetworkAddressScope.() -> R
+): R? = when {
+    this is IpNetwork.V4 && address is IpAddress.V4 -> SameFamilyNetworkAddressScope.V4(this, address).block()
+    this is IpNetwork.V6 && address is IpAddress.V6 -> SameFamilyNetworkAddressScope.V6(this, address).block()
+    else -> null
+}
+
+inline fun <R> IpAddress<*, *>.withSameFamily(
+    network: IpNetwork<*, *>,
+    block: SameFamilyNetworkAddressScope.() -> R
+): R? = when {
+    this is IpAddress.V4 && network is IpNetwork.V4 -> SameFamilyNetworkAddressScope.V4(network, this).block()
+    this is IpAddress.V6 && network is IpNetwork.V6 -> SameFamilyNetworkAddressScope.V6(network, this).block()
+    else -> null
+}
+
 sealed class SameFamilyAddressScope {
     abstract val left: IpAddress<*, *>
     abstract val right: IpAddress<*, *>
@@ -226,4 +244,48 @@ class SameFamilyNetworkScope(
 
     private fun wrongFamily(other: IpAddress<*, *>): Nothing =
         throw IllegalArgumentException("IP network/address families differ: $family != ${other.family}")
+}
+
+sealed class SameFamilyNetworkAddressScope {
+    abstract val network: IpNetwork<*, *>
+    abstract val address: IpAddress<*, *>
+    val family: IpFamily get() = network.family
+
+    class V4(
+        override val network: IpNetwork.V4,
+        override val address: IpAddress.V4
+    ) : SameFamilyNetworkAddressScope()
+
+    class V6(
+        override val network: IpNetwork.V6,
+        override val address: IpAddress.V6
+    ) : SameFamilyNetworkAddressScope()
+
+    inline fun <R> whenFamily(
+        v4: V4.() -> R,
+        v6: V6.() -> R
+    ): R = when (this) {
+        is V4 -> v4()
+        is V6 -> v6()
+    }
+
+    operator fun IpNetwork<*, *>.contains(address: IpAddress<*, *>): Boolean = whenSameFamily(
+        address,
+        v4 = { network, addr -> network.contains(addr) },
+        v6 = { network, addr -> network.contains(addr) }
+    )
+
+    fun contains(): Boolean = address in network
+
+    fun isInNetwork(): Boolean = contains()
+
+    private inline fun <R> IpNetwork<*, *>.whenSameFamily(
+        address: IpAddress<*, *>,
+        v4: (IpNetwork.V4, IpAddress.V4) -> R,
+        v6: (IpNetwork.V6, IpAddress.V6) -> R
+    ): R = when {
+        this is IpNetwork.V4 && address is IpAddress.V4 -> v4(this, address)
+        this is IpNetwork.V6 && address is IpAddress.V6 -> v6(this, address)
+        else -> throw IllegalArgumentException("IP network/address families differ: ${this.family} != ${address.family}")
+    }
 }

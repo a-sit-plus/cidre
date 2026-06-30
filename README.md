@@ -154,6 +154,21 @@ val merged = first.withSameFamily(second) {
 }
 ```
 
+For membership checks, the network/address overloads work in both directions:
+
+```kotlin
+val network: IpNetwork<*, *> = IpNetwork("192.168.0.0/24")
+val address: IpAddress<*, *> = IpAddress("192.168.0.42")
+
+val contains = network.withSameFamily(address) {
+    address in network
+}
+
+val alsoContains = address.withSameFamily(network) {
+    isInNetwork()
+}
+```
+
 
 #### Platform Interop
 
