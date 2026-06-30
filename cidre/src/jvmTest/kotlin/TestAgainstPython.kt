@@ -442,6 +442,7 @@ class TestAgainstPython {
             }
 
             is IpNetwork.V6 -> {
+                assertEquals(case.isGlobalUnicast, net.isGlobalUnicast, "isGlobalUnicast for ${case.cidr}")
                 assertEquals(case.isLoopback, net.isLoopback, "isLoopback for ${case.cidr}")
                 assertEquals(case.isLinkLocal, net.isLinkLocal, "isLinkLocal for ${case.cidr}")
                 assertEquals(case.isMulticast, net.isMulticast, "isMulticast for ${case.cidr}")

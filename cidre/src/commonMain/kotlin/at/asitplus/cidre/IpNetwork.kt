@@ -580,7 +580,7 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
         }
 
 
-        override val isGlobalUnicast: Boolean get() = IpNetwork.V6.SpecialRanges.globalUnicast.contains(this)
+        override val isGlobalUnicast: Boolean get() = IpNetwork.V6.SpecialRanges.globalUnicast.contains(this) && !isDocumentation
 
         override val isUniqueLocal: Boolean get() = IpNetwork.V6.SpecialRanges.uniqueLocal.contains(this)
 

@@ -294,6 +294,7 @@ data class PythonOracleFixture(
 @Serializable
 data class PythonNetworkFlagsCase(
     val cidr: String,
+    @SerialName("is_global_unicast") val isGlobalUnicast: Boolean,
     @SerialName("is_loopback") val isLoopback: Boolean,
     @SerialName("is_link_local") val isLinkLocal: Boolean,
     @SerialName("is_multicast") val isMulticast: Boolean

@@ -22,6 +22,9 @@ def build_payload() -> dict:
         "::1/128",
         "fe80::1/128",
         "ff01::/16",
+        "2000::/3",
+        "2001:db8::/32",
+        "2001:db8:1::/48",
     ]
 
     network_flags = []
@@ -29,6 +32,7 @@ def build_payload() -> dict:
         net = ipaddress.ip_network(cidr, strict=False)
         row = {
             "cidr": str(net),
+            "is_global_unicast": bool(net.version == 6 and net.is_global and not net.is_multicast),
             "is_loopback": bool(net.is_loopback),
             "is_link_local": bool(net.is_link_local),
             "is_multicast": bool(net.is_multicast),
