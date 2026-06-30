@@ -272,6 +272,7 @@ public abstract class at/asitplus/cidre/IpNetwork : at/asitplus/cidre/IpAddressA
 	public final fun contains (Lat/asitplus/cidre/IpAddress;)Z
 	public final fun contains (Lat/asitplus/cidre/IpInterface;)Z
 	public final fun contains (Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun difference (Lat/asitplus/cidre/IpNetwork;)Ljava/util/List;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAddressSpace ()Lkotlin/sequences/Sequence;
 	public final fun getAssignableHostRange ()Lkotlin/sequences/Sequence;
@@ -288,6 +289,7 @@ public abstract class at/asitplus/cidre/IpNetwork : at/asitplus/cidre/IpAddressA
 	public final fun getSpecialRanges ()Lat/asitplus/cidre/IpNetwork$SpecialRanges;
 	public fun hashCode ()I
 	public final fun interfaceFor (Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpInterface;
+	public final fun intersection (Lat/asitplus/cidre/IpNetwork;)Ljava/util/List;
 	public final fun isAdjacentTo (Lat/asitplus/cidre/IpNetwork;)Z
 	public fun isLinkLocal ()Z
 	public fun isLoopback ()Z
@@ -296,21 +298,37 @@ public abstract class at/asitplus/cidre/IpNetwork : at/asitplus/cidre/IpAddressA
 	public final fun isSupernetOf (Lat/asitplus/cidre/IpNetwork;)Z
 	public final fun overlaps (Lat/asitplus/cidre/IpNetwork;)Z
 	public final fun plus (Lat/asitplus/cidre/IpNetwork;)Lat/asitplus/cidre/IpNetwork;
+	public final fun relationTo (Lat/asitplus/cidre/IpNetwork;)Lat/asitplus/cidre/IpNetwork$Relation;
 	public final fun subnet-WZ4Q5Ns (I)Lkotlin/sequences/Sequence;
 	public final fun subnetRelative-WZ4Q5Ns (I)Lkotlin/sequences/Sequence;
 	public final fun supernet-WZ4Q5Ns (I)Lat/asitplus/cidre/IpNetwork;
 	public final fun supernetRelative-WZ4Q5Ns (I)Lat/asitplus/cidre/IpNetwork;
+	public final fun toRange ()Lkotlin/Pair;
 	public fun toString ()Ljava/lang/String;
 	public fun toX509Octets ()[B
+	public final fun unionCollapse (Lat/asitplus/cidre/IpNetwork;)Ljava/util/List;
+	public final fun unionCovering (Lat/asitplus/cidre/IpNetwork;)Ljava/util/List;
 }
 
 public final class at/asitplus/cidre/IpNetwork$Companion {
 	public final fun forAddress-Qn1smSk (Lat/asitplus/cidre/IpAddress;I)Lat/asitplus/cidre/IpNetwork;
+	public final fun fromRange (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)Ljava/util/List;
 	public final fun fromX509Octets ([B)Lat/asitplus/cidre/IpNetwork;
 	public final fun invoke (Ljava/lang/String;Z)Lat/asitplus/cidre/IpNetwork;
 	public static synthetic fun invoke$default (Lat/asitplus/cidre/IpNetwork$Companion;Ljava/lang/String;ZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork;
 	public final fun invoke-OsBMiQA (Lat/asitplus/cidre/IpAddress;IZ)Lat/asitplus/cidre/IpNetwork;
 	public static synthetic fun invoke-OsBMiQA$default (Lat/asitplus/cidre/IpNetwork$Companion;Lat/asitplus/cidre/IpAddress;IZILjava/lang/Object;)Lat/asitplus/cidre/IpNetwork;
+}
+
+public final class at/asitplus/cidre/IpNetwork$Relation : java/lang/Enum {
+	public static final field ADJACENT Lat/asitplus/cidre/IpNetwork$Relation;
+	public static final field CONTAINS Lat/asitplus/cidre/IpNetwork$Relation;
+	public static final field DISJOINT Lat/asitplus/cidre/IpNetwork$Relation;
+	public static final field EQUAL Lat/asitplus/cidre/IpNetwork$Relation;
+	public static final field WITHIN Lat/asitplus/cidre/IpNetwork$Relation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lat/asitplus/cidre/IpNetwork$Relation;
+	public static fun values ()[Lat/asitplus/cidre/IpNetwork$Relation;
 }
 
 public abstract interface class at/asitplus/cidre/IpNetwork$SpecialRanges {

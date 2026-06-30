@@ -22,12 +22,12 @@ class TestAgainstPython {
     val ip_sort = json.decodeFromString<IpComparisonFixture>(resourceText("pythontest/ip_sort.json"))
     val netmask = json.decodeFromString<NetmaskFixture>(resourceText("pythontest/netmask.json"))
     val net_props = json.decodeFromString<NetworkPropsFixture>(resourceText("pythontest/net_props.json"))
-    val overlogs = json.decodeFromString<OverlongFixture>(resourceText("pythontest/overlongs.json"))
+    val overlongs = json.decodeFromString<OverlongFixture>(resourceText("pythontest/overlongs.json"))
     val merge_cases = json.decodeFromString<List<MergeCase>>(resourceText("pythontest/merge_cases.json"))
+    val python_oracle = json.decodeFromString<PythonOracleFixture>(resourceText("pythontest/python_oracle.json"))
 
     @Test
-    fun overlogs() = overlogs.tests.forEach { case ->
-        println(case.input + " ${case.operation} " + case.argument + " = " + case.output)
+    fun overlongs() = overlongs.tests.forEach { case ->
         when (case.operation) {
             "AND" -> assertEquals(
                 CidrNumber.V6(case.output.hexToByteArray()),
@@ -164,14 +164,10 @@ class TestAgainstPython {
 
     @Test
     fun ipSortingTest() = ip_sort.cases.forEach { case ->
-        val (a, b) = when (case.version) {
-            "V4" -> IpAddress.V4(case.a) to IpAddress.V4(case.b)
-            "V6" -> IpAddress.V6(case.a) to IpAddress.V6(case.b)
+        val cmp = when (case.version) {
+            "V4" -> IpAddress.V4(case.a).compareTo(IpAddress.V4(case.b))
+            "V6" -> IpAddress.V6(case.a).compareTo(IpAddress.V6(case.b))
             else -> throw AssertionError()
-        }
-        val cmp = when (a) {
-            is IpAddress.V4 -> a.compareTo(b as IpAddress.V4)
-            is IpAddress.V6 -> a.compareTo(b as IpAddress.V6)
         }
         assertEquals(case.cmp, cmp)
     }
@@ -179,10 +175,14 @@ class TestAgainstPython {
 
     @Test
     fun addrMembership() = addr_membership.cases.forEach { case ->
-        val inner = IpAddress(case.addr) as IpAddress<Number, Any>
-        val outer = IpNetwork(case.network) as IpNetwork<Number, Any>
-
-        assertEquals(case.expect, outer.contains(inner))
+        val inner = IpAddress(case.addr)
+        val outer = IpNetwork(case.network)
+        val actual = when {
+            inner is IpAddress.V4 && outer is IpNetwork.V4 -> outer.contains(inner)
+            inner is IpAddress.V6 && outer is IpNetwork.V6 -> outer.contains(inner)
+            else -> fail("IP family mismatch in fixture: ${case.addr} vs ${case.network}")
+        }
+        assertEquals(case.expect, actual)
     }
 
 
@@ -206,32 +206,162 @@ class TestAgainstPython {
 
     @Test
     fun testRelations() = net_props.adjacency_cases.forEach { case ->
-        val a = IpNetwork(case.a_cidr) as IpNetwork<Number, Any>
-        val b = IpNetwork(case.b_cidr) as IpNetwork<Number, Any>
-        assertEquals(case.are_adjacent, a.isAdjacentTo(b))
-        assertEquals(case.are_adjacent, b.isAdjacentTo(a))
+        val a = IpNetwork(case.a_cidr)
+        val b = IpNetwork(case.b_cidr)
+        withSameFamilyNetworks(
+            a,
+            b,
+            blockV4 = { a4, b4 ->
+                assertEquals(case.are_adjacent, a4.isAdjacentTo(b4))
+                assertEquals(case.are_adjacent, b4.isAdjacentTo(a4))
+                assertEquals(case.overlaps, a4.overlaps(b4))
+                assertEquals(case.overlaps, b4.overlaps(a4))
+                when (case.relation) {
+                    "A_contains_B" -> {
+                        assertTrue(a4.contains(b4))
+                        assertFalse(b4.contains(a4))
+                        assertNotEquals(b4, a4)
+                    }
 
-        assertEquals(case.overlaps, a.overlaps(b))
-        assertEquals(case.overlaps, b.overlaps(a))
+                    "B_contains_A" -> {
+                        assertTrue(b4.contains(a4))
+                        assertFalse(a4.contains(b4))
+                        assertNotEquals(b4, a4)
+                    }
 
-        if (case.relation == "A_contains_B") {
-            assertTrue(a.contains(b))
-            assertFalse(b.contains(a))
-            assertNotEquals(b, a)
-        } else if (case.relation == "B_contains_A") {
-            assertTrue(b.contains(a))
-            assertFalse(a.contains(b))
-            assertNotEquals(b, a)
-        } else if (case.relation == "equal") {
-            assertEquals(b, a)
-            assertTrue(a.contains(b))
-            assertTrue(b.contains(a))
-        } else if (case.relation == "disjoint") {
-            assertNotEquals(b, a)
-            assertFalse(a.contains(b))
-            assertFalse(b.contains(a))
-            assertFalse(b.overlaps(a))
-            assertFalse(b.isAdjacentTo(a))
+                    "equal" -> {
+                        assertEquals(b4, a4)
+                        assertTrue(a4.contains(b4))
+                        assertTrue(b4.contains(a4))
+                    }
+
+                    "disjoint" -> {
+                        assertNotEquals(b4, a4)
+                        assertFalse(a4.contains(b4))
+                        assertFalse(b4.contains(a4))
+                        assertFalse(b4.overlaps(a4))
+                        assertFalse(b4.isAdjacentTo(a4))
+                    }
+                }
+            },
+            blockV6 = { a6, b6 ->
+                assertEquals(case.are_adjacent, a6.isAdjacentTo(b6))
+                assertEquals(case.are_adjacent, b6.isAdjacentTo(a6))
+                assertEquals(case.overlaps, a6.overlaps(b6))
+                assertEquals(case.overlaps, b6.overlaps(a6))
+                when (case.relation) {
+                    "A_contains_B" -> {
+                        assertTrue(a6.contains(b6))
+                        assertFalse(b6.contains(a6))
+                        assertNotEquals(b6, a6)
+                    }
+
+                    "B_contains_A" -> {
+                        assertTrue(b6.contains(a6))
+                        assertFalse(a6.contains(b6))
+                        assertNotEquals(b6, a6)
+                    }
+
+                    "equal" -> {
+                        assertEquals(b6, a6)
+                        assertTrue(a6.contains(b6))
+                        assertTrue(b6.contains(a6))
+                    }
+
+                    "disjoint" -> {
+                        assertNotEquals(b6, a6)
+                        assertFalse(a6.contains(b6))
+                        assertFalse(b6.contains(a6))
+                        assertFalse(b6.overlaps(a6))
+                        assertFalse(b6.isAdjacentTo(a6))
+                    }
+                }
+            }
+        )
+    }
+
+    @Test
+    fun overlapsContainmentFixture() = overlaps_containment.pairs.forEach { case ->
+        val a = IpNetwork(case.a)
+        val b = IpNetwork(case.b)
+        withSameFamilyNetworks(
+            a,
+            b,
+            blockV4 = { a4, b4 ->
+                assertEquals(case.overlaps, a4.overlaps(b4), "a=${case.a}, b=${case.b}")
+                assertEquals(case.overlaps, b4.overlaps(a4), "a=${case.a}, b=${case.b}")
+                case.aSubnetOfB?.let { assertEquals(it, a4.isSubnetOf(b4), "a_subnet_of_b for ${case.a} vs ${case.b}") }
+                case.bSubnetOfA?.let { assertEquals(it, b4.isSubnetOf(a4), "b_subnet_of_a for ${case.a} vs ${case.b}") }
+                case.aSupernetOfB?.let { assertEquals(it, a4.isSupernetOf(b4), "a_supernet_of_b for ${case.a} vs ${case.b}") }
+                case.bSupernetOfA?.let { assertEquals(it, b4.isSupernetOf(a4), "b_supernet_of_a for ${case.a} vs ${case.b}") }
+            },
+            blockV6 = { a6, b6 ->
+                assertEquals(case.overlaps, a6.overlaps(b6), "a=${case.a}, b=${case.b}")
+                assertEquals(case.overlaps, b6.overlaps(a6), "a=${case.a}, b=${case.b}")
+                case.aSubnetOfB?.let { assertEquals(it, a6.isSubnetOf(b6), "a_subnet_of_b for ${case.a} vs ${case.b}") }
+                case.bSubnetOfA?.let { assertEquals(it, b6.isSubnetOf(a6), "b_subnet_of_a for ${case.a} vs ${case.b}") }
+                case.aSupernetOfB?.let { assertEquals(it, a6.isSupernetOf(b6), "a_supernet_of_b for ${case.a} vs ${case.b}") }
+                case.bSupernetOfA?.let { assertEquals(it, b6.isSupernetOf(a6), "b_supernet_of_a for ${case.a} vs ${case.b}") }
+            }
+        )
+    }
+
+    @Test
+    fun setOperationsFixture() {
+        set_operations.union.forEach { case ->
+            assertEquals(2, case.inputs.size, "union fixture currently expects pairs")
+            val a = IpNetwork(case.inputs[0])
+            val b = IpNetwork(case.inputs[1])
+            withSameFamilyNetworks(
+                a,
+                b,
+                blockV4 = { a4, b4 ->
+                    val collapse = a4.unionCollapse(b4).map { it.toString() }
+                    val covering = a4.unionCovering(b4).map { it.toString() }
+                    assertContentEquals(case.collapse, collapse, "collapse for ${case.inputs}")
+                    assertContentEquals(case.covering, covering, "covering for ${case.inputs}")
+                },
+                blockV6 = { a6, b6 ->
+                    val collapse = a6.unionCollapse(b6).map { it.toString() }
+                    val covering = a6.unionCovering(b6).map { it.toString() }
+                    assertContentEquals(case.collapse, collapse, "collapse for ${case.inputs}")
+                    assertContentEquals(case.covering, covering, "covering for ${case.inputs}")
+                }
+            )
+        }
+
+        set_operations.intersection.forEach { case ->
+            val a = IpNetwork(case.a)
+            val b = IpNetwork(case.b)
+            withSameFamilyNetworks(
+                a,
+                b,
+                blockV4 = { a4, b4 ->
+                    val actual = a4.intersection(b4).map { it.toString() }
+                    assertContentEquals(case.expect, actual, "intersection for ${case.a} vs ${case.b}")
+                },
+                blockV6 = { a6, b6 ->
+                    val actual = a6.intersection(b6).map { it.toString() }
+                    assertContentEquals(case.expect, actual, "intersection for ${case.a} vs ${case.b}")
+                }
+            )
+        }
+
+        set_operations.difference.forEach { case ->
+            val a = IpNetwork(case.a)
+            val b = IpNetwork(case.b)
+            withSameFamilyNetworks(
+                a,
+                b,
+                blockV4 = { a4, b4 ->
+                    val actual = a4.difference(b4).map { it.toString() }
+                    assertContentEquals(case.expect, actual, "difference for ${case.a} - ${case.b}")
+                },
+                blockV6 = { a6, b6 ->
+                    val actual = a6.difference(b6).map { it.toString() }
+                    assertContentEquals(case.expect, actual, "difference for ${case.a} - ${case.b}")
+                }
+            )
         }
     }
 
@@ -251,11 +381,10 @@ class TestAgainstPython {
             if (it.broadcast == null) assertNull(net.broadcastAddress)
             else assertEquals(IpAddress.V4(it.broadcast), net.broadcastAddress!!.address)
         }
-        var size_bytes = it.size_be_hex.hexToByteArray()
+        val size_bytes = it.size_be_hex.hexToByteArray()
         val size = CidrNumber.V6.fromUnpadded(size_bytes)
         if (net is IpNetwork.V4) {
             if (net.size < CidrNumber.V4(100000000u)) {
-                println(net.size)
                 val sp = net.addressSpace
                 assertEquals(net.address, sp.first())
                 assertEquals(net.lastAddress, sp.last())
@@ -264,8 +393,7 @@ class TestAgainstPython {
 
         when (net) {
             is IpNetwork.V4 -> {
-                var expected = CidrNumber.V4.fromUnpadded(size_bytes)
-                println(size_bytes.toHexString())
+                val expected = CidrNumber.V4.fromUnpadded(size_bytes)
                 assertEquals(expected, net.size)
             }
 
@@ -276,20 +404,62 @@ class TestAgainstPython {
 
     @Test
     fun merge_cases() = merge_cases.forEach { case ->
-        val a = IpNetwork(case.aCidr) as IpNetwork<Number, Any>
-        val b = IpNetwork(case.bCidr) as IpNetwork<Number, Any>
+        val a = IpNetwork(case.aCidr)
+        val b = IpNetwork(case.bCidr)
+        withSameFamilyNetworks(
+            a,
+            b,
+            blockV4 = { a4, b4 ->
+                val canMerge = case.canMerge
+                assertEquals(canMerge, a4.canMergeWith(b4))
+                if (canMerge) {
+                    val expected = IpNetwork(case.expect!!)
+                    assertIs<IpNetwork.V4>(expected)
+                    assertEquals(expected, a4 + b4)
+                } else assertNull(a4 + b4)
+            },
+            blockV6 = { a6, b6 ->
+                val canMerge = case.canMerge
+                assertEquals(canMerge, a6.canMergeWith(b6))
+                if (canMerge) {
+                    val expected = IpNetwork(case.expect!!)
+                    assertIs<IpNetwork.V6>(expected)
+                    assertEquals(expected, a6 + b6)
+                } else assertNull(a6 + b6)
+            }
+        )
 
-        val canMerge = case.canMerge
-        assertEquals(canMerge, a.canMergeWith(b))
-        if (canMerge) assertEquals(IpNetwork(case.expect!!) as IpNetwork<Number, Any>, a + b)
-        else assertNull(a + b)
+    }
 
+    @Test
+    fun pythonOracleNetworkFlags() = python_oracle.networkFlags.forEach { case ->
+        val net = IpNetwork(case.cidr)
+        when (net) {
+            is IpNetwork.V4 -> {
+                assertEquals(case.isLoopback, net.isLoopback, "isLoopback for ${case.cidr}")
+                assertEquals(case.isLinkLocal, net.isLinkLocal, "isLinkLocal for ${case.cidr}")
+                assertEquals(case.isMulticast, net.isMulticast, "isMulticast for ${case.cidr}")
+            }
+
+            is IpNetwork.V6 -> {
+                assertEquals(case.isGlobalUnicast, net.isGlobalUnicast, "isGlobalUnicast for ${case.cidr}")
+                assertEquals(case.isLoopback, net.isLoopback, "isLoopback for ${case.cidr}")
+                assertEquals(case.isLinkLocal, net.isLinkLocal, "isLinkLocal for ${case.cidr}")
+                assertEquals(case.isMulticast, net.isMulticast, "isMulticast for ${case.cidr}")
+            }
+        }
+    }
+
+    @Test
+    fun pythonOracleIpv6Expanded() = python_oracle.ipv6Expanded.forEach { case ->
+        val actual = IpAddress.V6(case.input).toString(expanded = true)
+        assertEquals(case.exploded, actual, "expanded for ${case.input}")
     }
 
     @Test
     fun subnetting() {
         subnetting.cases.forEach { case ->
-            val parent = IpNetwork(case.parent) as IpNetwork<Number, Any>
+            val parent = IpNetwork(case.parent)
             val actual = when {
                 case.newPrefix != null -> parent.subnet(case.newPrefix.toUInt())
                 case.prefixlenDiff != null -> parent.subnetRelative(case.prefixlenDiff.toUInt())
@@ -300,7 +470,7 @@ class TestAgainstPython {
         }
 
         subnetting.errorCases.forEach { case ->
-            val parent = IpNetwork(case.parent) as IpNetwork<Number, Any>
+            val parent = IpNetwork(case.parent)
             assertFailsWith<IllegalArgumentException>("parent=${case.parent}, case=$case") {
                 when {
                     case.newPrefix != null -> parent.subnet(case.newPrefix.toUInt())
@@ -314,7 +484,7 @@ class TestAgainstPython {
     @Test
     fun supernetting() {
         supernetting.cases.forEach { case ->
-            val child = IpNetwork(case.child) as IpNetwork<Number, Any>
+            val child = IpNetwork(case.child)
             val actual = when {
                 case.newPrefix != null -> child.supernet(case.newPrefix.toUInt())
                 case.prefixlenDiff != null -> child.supernetRelative(case.prefixlenDiff.toUInt())
@@ -325,7 +495,7 @@ class TestAgainstPython {
         }
 
         supernetting.errorCases.forEach { case ->
-            val child = IpNetwork(case.child) as IpNetwork<Number, Any>
+            val child = IpNetwork(case.child)
             assertFailsWith<IllegalArgumentException>("child=${case.child}, case=$case") {
                 when {
                     case.newPrefix != null -> child.supernet(case.newPrefix.toUInt())
@@ -338,5 +508,18 @@ class TestAgainstPython {
 
     private fun resourceText(path: String): String =
         this::class.java.classLoader.getResourceAsStream(path).reader(Charsets.UTF_8).readText()
+
+    private inline fun <T> withSameFamilyNetworks(
+        a: IpNetwork<*, *>,
+        b: IpNetwork<*, *>,
+        blockV4: (IpNetwork.V4, IpNetwork.V4) -> T,
+        blockV6: (IpNetwork.V6, IpNetwork.V6) -> T
+    ): T {
+        return when {
+            a is IpNetwork.V4 && b is IpNetwork.V4 -> blockV4(a, b)
+            a is IpNetwork.V6 && b is IpNetwork.V6 -> blockV6(a, b)
+            else -> fail("Network family mismatch: $a vs $b")
+        }
+    }
 
 }

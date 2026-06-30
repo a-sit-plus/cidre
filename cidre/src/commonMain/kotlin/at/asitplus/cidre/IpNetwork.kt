@@ -19,11 +19,19 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
     override val netmask: Netmask = prefix.toNetmask(address.family)
 
-    override val isLinkLocal: Boolean get() = this == specialRanges.linkLocal
+    override val isLinkLocal: Boolean get() = specialRanges.linkLocal.contains(this)
 
-    override val isLoopback: Boolean get() = this == specialRanges.loopback
+    override val isLoopback: Boolean get() = specialRanges.loopback.contains(this)
 
-    override val isMulticast: Boolean get() = this == specialRanges.multicast
+    override val isMulticast: Boolean get() = specialRanges.multicast.contains(this)
+
+    enum class Relation {
+        EQUAL,
+        CONTAINS,
+        WITHIN,
+        ADJACENT,
+        DISJOINT
+    }
 
     override fun toString(): String = "$address/$prefix"
 
@@ -42,6 +50,11 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
      * Lazily computed once. Do not mess with its octets!
      */
     val lastAddress: IpAddress<N, S> by lazy { @Suppress("UNCHECKED_CAST") IpAddress(lastOctetInBlock) as IpAddress<N, S> }
+
+    /**
+     * Inclusive range boundaries (first and last address) covered by this network.
+     */
+    fun toRange(): Pair<IpAddress<N, S>, IpAddress<N, S>> = address.copy() to lastAddress.copy()
 
     /**
      * Creates an [IpInterface] associated with this exact IpNetwork instance, avoiding the creation of new [IpNetwork] instances
@@ -69,7 +82,7 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
      * * *a* masked with *pB* == *b*
      */
     fun isSubnetOf(other: IpNetwork<N, S>): Boolean =
-        ((prefix >= other.prefix) && address.copy().apply { mask(other.prefix) } == other.address)
+        ((requireSameFamily(other).let { prefix >= other.prefix }) && address.copy().apply { mask(other.prefix) } == other.address)
 
     /**
      * For two networks
@@ -81,13 +94,118 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
      * * b masked with *pA* == *a*
      */
     fun isSupernetOf(other: IpNetwork<N, S>): Boolean =
-        ((prefix <= other.prefix) && other.address.copy().apply { mask(prefix) } == address)
+        ((requireSameFamily(other).let { prefix <= other.prefix }) && other.address.copy().apply { mask(prefix) } == address)
 
 
     /**
      * Two networks overlap if either contains the other
      */
-    fun overlaps(other: IpNetwork<N, S>): Boolean = other.contains(this) or contains(other)
+    fun overlaps(other: IpNetwork<N, S>): Boolean {
+        requireSameFamily(other)
+        return other.contains(this) or contains(other)
+    }
+
+    /**
+     * Union reduced by containment/adjacency collapse.
+     * Returns one or two CIDRs.
+     */
+    fun unionCollapse(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        requireSameFamily(other)
+        return when {
+        contains(other) -> listOf(this)
+        other.contains(this) -> listOf(other)
+        canMergeWith(other) -> listOf((this + other)!!)
+        else -> listOf(this, other).sorted()
+    }
+    }
+
+    /**
+     * Minimal CIDR covering of the full address interval from the lower network start to the higher network end.
+     * This may include addresses not present in either input network.
+     */
+    fun unionCovering(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        requireSameFamily(other)
+        if (contains(other)) return listOf(this)
+        if (other.contains(this)) return listOf(other)
+        val lower = if (this <= other) this else other
+        val upper = if (this >= other) this else other
+        return canonicalizeNetworks(summarizeAddressInterval(lower.address.toCidrNumber(), upper.lastAddress.toCidrNumber()))
+    }
+
+    /**
+     * Intersection of two networks (0 or 1 CIDR for proper CIDR-aligned inputs).
+     */
+    fun intersection(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        requireSameFamily(other)
+        return canonicalizeNetworks(when {
+        !overlaps(other) -> emptyList()
+        contains(other) -> listOf(other)
+        other.contains(this) -> listOf(this)
+        else -> emptyList()
+    })
+    }
+
+    /**
+     * CIDR difference (this minus [other]).
+     */
+    fun difference(other: IpNetwork<N, S>): List<IpNetwork<N, S>> {
+        requireSameFamily(other)
+        if (!overlaps(other)) return listOf(this)
+        if (other.contains(this)) return emptyList()
+        if (contains(other).not()) return listOf(this)
+
+        // this contains other: recursively split this until overlapping portions are isolated.
+        val children = subnetRelative(1u).toList()
+        val out = mutableListOf<IpNetwork<N, S>>()
+        children.forEach { child ->
+            if (child.overlaps(other)) out += child.difference(other)
+            else out += child
+        }
+        return canonicalizeNetworks(out)
+    }
+
+    /**
+     * Classification of this network's relation to [other].
+     */
+    fun relationTo(other: IpNetwork<N, S>): Relation {
+        requireSameFamily(other)
+        return when {
+        this == other -> Relation.EQUAL
+        contains(other) -> Relation.CONTAINS
+        other.contains(this) -> Relation.WITHIN
+        isAdjacentTo(other) -> Relation.ADJACENT
+        else -> Relation.DISJOINT
+    }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun summarizeAddressInterval(start: S, end: S): List<IpNetwork<N, S>> {
+        val result = mutableListOf<IpNetwork<N, S>>()
+        val maxPrefix = family.numberOfBits
+        var current = start
+
+        while (current <= end) {
+            val currentAddress = IpAddress(current) as IpAddress<N, S>
+            var bestPrefix = maxPrefix.toUInt()
+            var p = maxPrefix - 1
+            while (p >= 0) {
+                val candidatePrefix = p.toUInt()
+                val candidate = IpNetwork(currentAddress.copy(), candidatePrefix, strict = false)
+                val aligned = candidate.address == currentAddress
+                if (!aligned) break
+                if (candidate.lastAddress.toCidrNumber() > end) break
+                bestPrefix = candidatePrefix
+                p--
+            }
+
+            val chosen = IpNetwork(currentAddress.copy(), bestPrefix, strict = false)
+            result += chosen
+            val next = chosen.lastAddress.toCidrNumber() + 1u
+            if (next == null) break
+            current = next
+        }
+        return result
+    }
 
     /**
      * Enumerates subnets of this network at [newPrefix].
@@ -262,15 +380,24 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
 
     /** Tests if [address] is inside this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    fun contains(address: IpAddress<N, S>): Boolean = (address.octets and netmask) contentEquals this.address.octets
+    operator fun contains(address: IpAddress<N, S>): Boolean {
+        require(family == address.family) { "IP family mismatch: $family vs ${address.family}" }
+        return (address.octets and netmask) contentEquals this.address.octets
+    }
 
     /** Tests if [ipInterface] belongs this network. This network's address is, by definition, inside the network, as is the broadcast address.*/
-    fun contains(ipInterface: IpInterface<N, S>): Boolean = ipInterface.network == this
+    operator fun contains(ipInterface: IpInterface<N, S>): Boolean =
+        ipInterface.network.family == family && ipInterface.address.family == family && ipInterface.network == this && contains(ipInterface.address)
 
     /**Tests if [network] is fully contained inside this network.*/
-    fun contains(network: IpNetwork<N, S>): Boolean {
+    operator fun contains(network: IpNetwork<N, S>): Boolean {
+        requireSameFamily(network)
         if (prefix > network.prefix) return false
         return address.octets contentEquals (network.address.octets and netmask)
+    }
+
+    private fun requireSameFamily(other: IpNetwork<*, *>) {
+        require(family == other.family) { "IP family mismatch: $family vs ${other.family}" }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -326,7 +453,10 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
             ) else null) as IpInterface.V4?
 
         override fun addressSpaceUntil(excludingLastN: UInt): Sequence<IpAddress.V4> = sequence {
-            if (prefix == family.numberOfBits.toUInt()) yield(address.copy() as IpAddress.V4)
+            if (prefix == family.numberOfBits.toUInt()) {
+                yield(address.copy() as IpAddress.V4)
+                return@sequence
+            }
             var current = CidrNumber.V4(address.octets)
             val last = CidrNumber.V4(lastOctetInBlock) - excludingLastN
             assert(last != null, "0xBADCAB")
@@ -362,7 +492,7 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
             override val family: IpFamily get() = IpFamily.V4
         }
 
-        override val isPrivate: Boolean get() = IpNetwork.V4.SpecialRanges.private.contains(this)
+        override val isPrivate: Boolean get() = IpNetwork.V4.SpecialRanges.private.any { it.contains(this) }
 
         override val isPublic: Boolean get() = !(isPrivate || isLinkLocal || isMulticast || isLoopback)
 
@@ -406,7 +536,10 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
         override val address: IpAddress.V6 = address.toNetWorkAddress(deepCopy, netmask, strict) as IpAddress.V6
 
         override fun addressSpaceUntil(excludingLastN: UInt): Sequence<IpAddress.V6> = sequence {
-            if (prefix == family.numberOfBits.toUInt()) yield(address.copy() as IpAddress.V6)
+            if (prefix == family.numberOfBits.toUInt()) {
+                yield(address.copy() as IpAddress.V6)
+                return@sequence
+            }
             var current = CidrNumber.V6(address.octets)
             val toExclude = excludingLastN.toULong()
             val last = CidrNumber.V6(lastOctetInBlock) - toExclude
@@ -447,22 +580,23 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
         }
 
 
-        override val isGlobalUnicast: Boolean get() = this == IpNetwork.V6.SpecialRanges.globalUnicast
+        override val isGlobalUnicast: Boolean get() = IpNetwork.V6.SpecialRanges.globalUnicast.contains(this) && !isDocumentation
 
-        override val isUniqueLocal: Boolean get() = this == IpNetwork.V6.SpecialRanges.uniqueLocal
+        override val isUniqueLocal: Boolean get() = IpNetwork.V6.SpecialRanges.uniqueLocal.contains(this)
 
-        override val isUniqueLocalLocallyAssigned: Boolean get() = this == IpNetwork.V6.SpecialRanges.uniqueLocalLocallyAssigned
+        override val isUniqueLocalLocallyAssigned: Boolean
+            get() = IpNetwork.V6.SpecialRanges.uniqueLocalLocallyAssigned.contains(this)
 
-        override val isIpV4Mapped: Boolean get() = this == IpNetwork.V6.SpecialRanges.ipV4Mapped
+        override val isIpV4Mapped: Boolean get() = IpNetwork.V6.SpecialRanges.ipV4Mapped.contains(this)
 
         @Deprecated("Originally meant to embed IPv4, now obsolete")
-        override val isIpV4Compatible: Boolean get() = this == IpNetwork.V6.SpecialRanges.ipV4Compatible
+        override val isIpV4Compatible: Boolean get() = IpNetwork.V6.SpecialRanges.ipV4Compatible.contains(this)
 
-        override val isDocumentation: Boolean get() = this == IpNetwork.V6.SpecialRanges.documentation
+        override val isDocumentation: Boolean get() = IpNetwork.V6.SpecialRanges.documentation.contains(this)
 
-        override val isDiscardOnly: Boolean get() = this == IpNetwork.V6.SpecialRanges.discardOnly
+        override val isDiscardOnly: Boolean get() = IpNetwork.V6.SpecialRanges.discardOnly.contains(this)
 
-        override val isReserved: Boolean get() = this == IpNetwork.V6.SpecialRanges.reserved
+        override val isReserved: Boolean get() = IpNetwork.V6.SpecialRanges.reserved.any { it.contains(this) }
 
         object SpecialRanges : IpNetwork.SpecialRanges<Short, CidrNumber.V6> {
 
@@ -504,7 +638,10 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
             val discardOnly = V6("100::/64")
 
             /**Reserved for future use*/
-            val reserved: List<IpNetwork.V6> = IntRange(0x4000, 0x7fff).map { V6(it.toString(16) + "::/3") }
+            val reserved: List<IpNetwork.V6> = listOf(
+                V6("4000::/3"),
+                V6("6000::/3"),
+            )
         }
     }
 
@@ -520,6 +657,43 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
     }
 
     companion object {
+        /**
+         * Produces a canonical CIDR summary that exactly covers the inclusive address range [start]..[end].
+         */
+        fun <N : Number, S : CidrNumber<S>> fromRange(start: IpAddress<N, S>, end: IpAddress<N, S>): List<IpNetwork<N, S>> {
+            require(start.family == end.family) {
+                "Range endpoints must have same IP family: ${start.family} vs ${end.family}"
+            }
+            require(start <= end) { "Range start must be <= end: $start > $end" }
+            val seed = IpNetwork(start.copy(), start.family.numberOfBits.toUInt(), strict = false)
+            return canonicalizeNetworks(seed.summarizeAddressInterval(start.toCidrNumber(), end.toCidrNumber()))
+        }
+
+        private fun <N : Number, S : CidrNumber<S>> canonicalizeNetworks(networks: List<IpNetwork<N, S>>): List<IpNetwork<N, S>> {
+            if (networks.size < 2) return networks
+            val sorted = networks.sorted()
+            val out = mutableListOf<IpNetwork<N, S>>()
+            sorted.forEach { candidate ->
+                out += candidate
+                while (out.size >= 2) {
+                    val right = out.removeAt(out.lastIndex)
+                    val left = out.removeAt(out.lastIndex)
+                    val merged: IpNetwork<N, S>? = when {
+                        left.contains(right) -> left
+                        right.contains(left) -> right
+                        left.canMergeWith(right) -> left + right
+                        else -> null
+                    }
+                    if (merged != null) out += merged
+                    else {
+                        out += left
+                        out += right
+                        break
+                    }
+                }
+            }
+            return out
+        }
 
         @Suppress("UNCHECKED_CAST")
         private fun <N : Number, S : CidrNumber<S>> IpAddress<N, S>.toNetWorkAddress(
@@ -608,4 +782,3 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
 
 }
-

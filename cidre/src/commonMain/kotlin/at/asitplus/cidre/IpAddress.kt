@@ -205,7 +205,7 @@ sealed class IpAddress<N : Number, S : CidrNumber<S>>(val octets: ByteArray, dis
              */
             constructor(leadingPrefixLength: Int, leadingPrefixValue: Int) : this(
                 leadingPrefixLength.toUByte(),
-                leadingPrefixValue.also { require(it >= 0) { "leadingPrefixValue must be non-negative, got $it" } }
+                leadingPrefixValue.also { require(it in 0..255) { "leadingPrefixValue must be in 0..255, got $it" } }
                     .toUByte()
             )
 
@@ -349,10 +349,10 @@ sealed class IpAddress<N : Number, S : CidrNumber<S>>(val octets: ByteArray, dis
                 return if (isIpv4Mapped) {
                     (segments.take(segments.size - 2)
                         .joinToString(separator = segmentSeparator.toString()) {
-                            it.toUShort().toString(16).lowercase()
+                            it.toUShort().toString(16).lowercase().padStart(4, '0')
                         }) + segmentSeparator + embeddedIpV4Address!!.toString()
                 } else segments.joinToString(separator = segmentSeparator.toString()) {
-                    it.toUShort().toString(16).lowercase()
+                    it.toUShort().toString(16).lowercase().padStart(4, '0')
                 }
 
             } else {

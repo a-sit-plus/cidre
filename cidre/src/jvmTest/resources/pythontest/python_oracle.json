@@ -1,0 +1,100 @@
+{
+  "ipv6_expanded": [
+    {
+      "exploded": "2001:0db8:0000:0000:0000:0000:0000:0001",
+      "input": "2001:db8::1"
+    },
+    {
+      "exploded": "0000:0000:0000:0000:0000:0000:0000:0001",
+      "input": "::1"
+    },
+    {
+      "exploded": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "input": "2001:db8:85a3::8a2e:370:7334"
+    }
+  ],
+  "meta": {
+    "generated": "2026-06-30T07:12:47.974139+00:00",
+    "source": "python stdlib ipaddress",
+    "tool": "gen_python_oracle.py"
+  },
+  "network_flags": [
+    {
+      "cidr": "10.0.0.0/9",
+      "is_global_unicast": false,
+      "is_link_local": false,
+      "is_loopback": false,
+      "is_multicast": false
+    },
+    {
+      "cidr": "8.8.8.0/24",
+      "is_global_unicast": false,
+      "is_link_local": false,
+      "is_loopback": false,
+      "is_multicast": false
+    },
+    {
+      "cidr": "127.1.2.0/24",
+      "is_global_unicast": false,
+      "is_link_local": false,
+      "is_loopback": true,
+      "is_multicast": false
+    },
+    {
+      "cidr": "169.254.42.0/24",
+      "is_global_unicast": false,
+      "is_link_local": true,
+      "is_loopback": false,
+      "is_multicast": false
+    },
+    {
+      "cidr": "224.1.2.0/24",
+      "is_global_unicast": false,
+      "is_link_local": false,
+      "is_loopback": false,
+      "is_multicast": true
+    },
+    {
+      "cidr": "::1/128",
+      "is_global_unicast": false,
+      "is_link_local": false,
+      "is_loopback": true,
+      "is_multicast": false
+    },
+    {
+      "cidr": "fe80::1/128",
+      "is_global_unicast": false,
+      "is_link_local": true,
+      "is_loopback": false,
+      "is_multicast": false
+    },
+    {
+      "cidr": "ff01::/16",
+      "is_global_unicast": false,
+      "is_link_local": false,
+      "is_loopback": false,
+      "is_multicast": true
+    },
+    {
+      "cidr": "2000::/3",
+      "is_global_unicast": true,
+      "is_link_local": false,
+      "is_loopback": false,
+      "is_multicast": false
+    },
+    {
+      "cidr": "2001:db8::/32",
+      "is_global_unicast": false,
+      "is_link_local": false,
+      "is_loopback": false,
+      "is_multicast": false
+    },
+    {
+      "cidr": "2001:db8:1::/48",
+      "is_global_unicast": false,
+      "is_link_local": false,
+      "is_loopback": false,
+      "is_multicast": false
+    }
+  ]
+}
