@@ -3,7 +3,7 @@ import org.gradle.kotlin.dsl.support.listFilesOrdered
 plugins {
     kotlin("multiplatform") version "2.4.0" apply false
     kotlin("plugin.serialization") version "2.2.10" apply false
-    id("com.android.library") version "8.9.3" apply false
+    id("com.android.kotlin.multiplatform.library") version "9.0.1" apply false
     id("org.jetbrains.dokka") version "2.2.0"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.1"
