@@ -33,6 +33,9 @@ Currently, CIDRE provides the following functionality:
 * checking whether addresses or networks are fully contained within a network
 * comparing networks and addresses within the same family (IPv4/IPv6)
 * calculating address and host ranges, adjacency, overlap and containment checks
+* subnetting and supernetting helpers:
+    - `subnet(newPrefix)` / `subnetRelative(prefixDiff)`
+    - `supernet(newPrefix)` / `supernetRelative(prefixDiff)`
 * CIDR math based on custom `CidrNumber` type, a fixed-width, BE-optimized unsigned integer:
     - V4 range: [0, 2^32]; V6 range: [0, 2^128]
     - Arithmetic (+/−) returns null on overflow/underflow
@@ -132,6 +135,13 @@ Except for JavaScript and Wasm targets (which lack a native non-string IP addres
 #### IPv4 Specifics
 Though it has long since been superseded by CIDR, `IpAddress.V4` still features a `class` property (albeit marked as deprecated) that indicates its pre-CIDR
 address class.
+For explicit classful bit-prefix modeling, `IpAddress.V4.LeadingPrefix` is available:
+```kotlin
+val a = IpAddress.V4.LeadingPrefix(1u, 0u) // "0"
+val b = IpAddress.V4.LeadingPrefix(2, 2)   // "10"
+val c = IpAddress.V4.LeadingPrefix("110")  // length=3, value=6
+println(c) //110
+```
 
 #### IPv6 Specifics
 IPv6 addresses can embed IPv4 addresses in two ways:
@@ -266,6 +276,30 @@ Containment checks are explicit (and fast!):
   - `isSupernetOf`
   - `isAdjacentTo`
 
+#### Subnetting and Supernetting
+
+`IpNetwork` supports both absolute and relative subnet/supernet operations:
+
+- Subnetting
+  - `subnet(newPrefix)` enumerates child networks at an explicit prefix.
+  - `subnetRelative(prefixDiff)` enumerates child networks by extending the current prefix by `prefixDiff`.
+- Supernetting
+  - `supernet(newPrefix)` returns the containing parent network at an explicit prefix.
+  - `supernetRelative(prefixDiff)` returns the containing parent network by shortening the current prefix by `prefixDiff`.
+
+Examples:
+```kotlin
+val net = IpNetwork.V4("192.168.0.0/24")
+val halves = net.subnet(25u).toList()
+println(halves) // [192.168.0.0/25, 192.168.0.128/25]
+
+val parent = IpNetwork.V4("192.168.0.128/25").supernet(24u)
+println(parent) // 192.168.0.0/24
+```
+
+Invalid prefix requests throw `IllegalArgumentException` (e.g. subnet with a shorter prefix, or supernet with a longer prefix).
+Behavior is regression-tested against fixture data generated from Python's `ipaddress` test corpus (`subnetting.json`, `supernetting.json`).
+
 ### Low-Level Utilities
 The `at.asitplus.cidre.byteops` package provides low-level helper functions:
 
@@ -280,9 +314,6 @@ The full list of low-level ops can be found [here](https://a-sit-plus.github.io/
 
 ## Roadmap
 - More comprehensive tests for low-level ops
-- Subnet enumeration (absolute and relative, e.g., `/24` or “+2 bits”)
-- Supernetting helpers (absolute and relative)
-- Some more comprehensive tests, covering subnetting and supernetting
 - As required/sensible, once API is stable, and tests are comprehensive: performance optimization
 - Even more comprehensive tests and benchmarks, ensuring optimizations are not misguided and indeed improve performance
 

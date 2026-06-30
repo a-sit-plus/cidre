@@ -89,15 +89,77 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
      */
     fun overlaps(other: IpNetwork<N, S>): Boolean = other.contains(this) or contains(other)
 
-    /*
-    TODO later
-    fun subnet(newPrefix: UInt): Sequence<IpNetwork<N, S>> = TODO("maybe implement separately for V4 and V6?")
-    fun subnetRelative(prefixDiff: UInt): Sequence<IpNetwork<N, S>> =
-        TODO("maybe implement separately for V4 and V6?")
+    /**
+     * Enumerates subnets of this network at [newPrefix].
+     *
+     * @throws IllegalArgumentException if [newPrefix] is not strictly longer than [prefix]
+     * or exceeds the address family's max prefix length.
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun subnet(newPrefix: UInt): Sequence<IpNetwork<N, S>> {
+        val maxPrefix = family.numberOfBits.toUInt()
+        require(newPrefix > prefix) {
+            "newPrefix ($newPrefix) must be greater than current prefix ($prefix)"
+        }
+        require(newPrefix <= maxPrefix) {
+            "newPrefix ($newPrefix) exceeds max prefix length ($maxPrefix) for $family"
+        }
 
-    fun supernet(newPrefix: UInt): IpNetwork<N, T>? = TODO("maybe implement separately for V4 and V6?")
-    fun supernetRelative(prefixDiff: UInt): IpNetwork<N, T>? = TODO("maybe implement separately for V4 and V6?")
-    */
+        val step = when (this) {
+            is IpNetwork.V4 -> (CidrNumber.V4.ONE shl (IpAddress.V4.numberOfBits - newPrefix.toInt())) as S
+            is IpNetwork.V6 -> (CidrNumber.V6.ONE shl (IpAddress.V6.numberOfBits - newPrefix.toInt())) as S
+        }
+
+        return sequence {
+            var current = address.toCidrNumber()
+            val end = lastAddress.toCidrNumber()
+            while (current <= end) {
+                val childAddress = IpAddress(current) as IpAddress<N, S>
+                yield(IpNetwork(childAddress, newPrefix))
+                current = (current + step) ?: break
+            }
+        }
+    }
+
+    /**
+     * Enumerates subnets of this network by extending [prefix] by [prefixDiff] bits.
+     *
+     * @throws IllegalArgumentException if [prefixDiff] is zero or results in an invalid prefix.
+     */
+    fun subnetRelative(prefixDiff: UInt): Sequence<IpNetwork<N, S>> {
+        require(prefixDiff > 0u) { "prefixDiff must be > 0" }
+        val maxPrefix = family.numberOfBits.toUInt()
+        val newPrefix = prefix + prefixDiff
+        require(newPrefix <= maxPrefix) {
+            "Resulting prefix ($newPrefix) exceeds max prefix length ($maxPrefix) for $family"
+        }
+        return subnet(newPrefix)
+    }
+
+    /**
+     * Computes the supernet containing this network at [newPrefix].
+     *
+     * @throws IllegalArgumentException if [newPrefix] is not strictly shorter than [prefix].
+     */
+    fun supernet(newPrefix: UInt): IpNetwork<N, S> {
+        require(newPrefix < prefix) {
+            "newPrefix ($newPrefix) must be less than current prefix ($prefix)"
+        }
+        return IpNetwork(address.copy(), newPrefix, strict = false)
+    }
+
+    /**
+     * Computes the supernet containing this network by shortening [prefix] by [prefixDiff] bits.
+     *
+     * @throws IllegalArgumentException if [prefixDiff] is zero or larger than [prefix].
+     */
+    fun supernetRelative(prefixDiff: UInt): IpNetwork<N, S> {
+        require(prefixDiff > 0u) { "prefixDiff must be > 0" }
+        require(prefixDiff <= prefix) {
+            "prefixDiff ($prefixDiff) is larger than current prefix ($prefix)"
+        }
+        return supernet(prefix - prefixDiff)
+    }
 
     /**
      * Tries to merge this network with an[other]. This will fail and return `null` unless the following conditions are met:
@@ -546,5 +608,4 @@ constructor(address: IpAddress<N, S>, override val prefix: Prefix, strict: Boole
 
 
 }
-
 

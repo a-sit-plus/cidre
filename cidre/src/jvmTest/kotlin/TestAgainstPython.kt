@@ -286,8 +286,57 @@ class TestAgainstPython {
 
     }
 
+    @Test
+    fun subnetting() {
+        subnetting.cases.forEach { case ->
+            val parent = IpNetwork(case.parent) as IpNetwork<Number, Any>
+            val actual = when {
+                case.newPrefix != null -> parent.subnet(case.newPrefix.toUInt())
+                case.prefixlenDiff != null -> parent.subnetRelative(case.prefixlenDiff.toUInt())
+                else -> fail("Neither new_prefix nor prefixlen_diff provided for subnet case: $case")
+            }.map { it.toString() }.toList()
+
+            assertContentEquals(case.expect, actual, "parent=${case.parent}, case=$case")
+        }
+
+        subnetting.errorCases.forEach { case ->
+            val parent = IpNetwork(case.parent) as IpNetwork<Number, Any>
+            assertFailsWith<IllegalArgumentException>("parent=${case.parent}, case=$case") {
+                when {
+                    case.newPrefix != null -> parent.subnet(case.newPrefix.toUInt())
+                    case.prefixlenDiff != null -> parent.subnetRelative(case.prefixlenDiff.toUInt())
+                    else -> fail("Neither new_prefix nor prefixlen_diff provided for subnet error case: $case")
+                }
+            }
+        }
+    }
+
+    @Test
+    fun supernetting() {
+        supernetting.cases.forEach { case ->
+            val child = IpNetwork(case.child) as IpNetwork<Number, Any>
+            val actual = when {
+                case.newPrefix != null -> child.supernet(case.newPrefix.toUInt())
+                case.prefixlenDiff != null -> child.supernetRelative(case.prefixlenDiff.toUInt())
+                else -> fail("Neither new_prefix nor prefixlen_diff provided for supernet case: $case")
+            }.toString()
+
+            assertEquals(case.expect, actual, "child=${case.child}, case=$case")
+        }
+
+        supernetting.errorCases.forEach { case ->
+            val child = IpNetwork(case.child) as IpNetwork<Number, Any>
+            assertFailsWith<IllegalArgumentException>("child=${case.child}, case=$case") {
+                when {
+                    case.newPrefix != null -> child.supernet(case.newPrefix.toUInt())
+                    case.prefixlenDiff != null -> child.supernetRelative(case.prefixlenDiff.toUInt())
+                    else -> fail("Neither new_prefix nor prefixlen_diff provided for supernet error case: $case")
+                }
+            }
+        }
+    }
+
     private fun resourceText(path: String): String =
         this::class.java.classLoader.getResourceAsStream(path).reader(Charsets.UTF_8).readText()
 
 }
-
