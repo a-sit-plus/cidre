@@ -82,6 +82,22 @@ public final class at/asitplus/cidre/IpAddress$V4$Companion : at/asitplus/cidre/
 	public final fun invoke-bW6hvuo (J)Lat/asitplus/cidre/IpAddress$V4;
 }
 
+public final class at/asitplus/cidre/IpAddress$V4$LeadingPrefix {
+	public synthetic fun <init> (BBLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (II)V
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1-w2LRezQ ()B
+	public final fun component2-w2LRezQ ()B
+	public final fun copy-YVftJsw (BB)Lat/asitplus/cidre/IpAddress$V4$LeadingPrefix;
+	public static synthetic fun copy-YVftJsw$default (Lat/asitplus/cidre/IpAddress$V4$LeadingPrefix;BBILjava/lang/Object;)Lat/asitplus/cidre/IpAddress$V4$LeadingPrefix;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLeadingPrefixLength-w2LRezQ ()B
+	public final fun getLeadingPrefixValue-w2LRezQ ()B
+	public final fun getPattern ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class at/asitplus/cidre/IpAddress$V6 : at/asitplus/cidre/IpAddress {
 	public static final field Companion Lat/asitplus/cidre/IpAddress$V6$Companion;
 	public fun <init> ([B)V
@@ -289,6 +305,10 @@ public abstract class at/asitplus/cidre/IpNetwork : at/asitplus/cidre/IpAddressA
 	public final fun isSupernetOf (Lat/asitplus/cidre/IpNetwork;)Z
 	public final fun overlaps (Lat/asitplus/cidre/IpNetwork;)Z
 	public final fun plus (Lat/asitplus/cidre/IpNetwork;)Lat/asitplus/cidre/IpNetwork;
+	public final fun subnet-WZ4Q5Ns (I)Lkotlin/sequences/Sequence;
+	public final fun subnetRelative-WZ4Q5Ns (I)Lkotlin/sequences/Sequence;
+	public final fun supernet-WZ4Q5Ns (I)Lat/asitplus/cidre/IpNetwork;
+	public final fun supernetRelative-WZ4Q5Ns (I)Lat/asitplus/cidre/IpNetwork;
 	public fun toString ()Ljava/lang/String;
 	public fun toX509Octets ()[B
 }

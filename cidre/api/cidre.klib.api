@@ -254,6 +254,26 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
             final fun values(): kotlin/Array<at.asitplus.cidre/IpAddress.V4.Class> // at.asitplus.cidre/IpAddress.V4.Class.values|values#static(){}[0]
         }
 
+        final class LeadingPrefix { // at.asitplus.cidre/IpAddress.V4.LeadingPrefix|null[0]
+            constructor <init>(kotlin/Int, kotlin/Int) // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.<init>|<init>(kotlin.Int;kotlin.Int){}[0]
+            constructor <init>(kotlin/String) // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.<init>|<init>(kotlin.String){}[0]
+            constructor <init>(kotlin/UByte, kotlin/UByte) // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.<init>|<init>(kotlin.UByte;kotlin.UByte){}[0]
+
+            final val leadingPrefixLength // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.leadingPrefixLength|{}leadingPrefixLength[0]
+                final fun <get-leadingPrefixLength>(): kotlin/UByte // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.leadingPrefixLength.<get-leadingPrefixLength>|<get-leadingPrefixLength>(){}[0]
+            final val leadingPrefixValue // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.leadingPrefixValue|{}leadingPrefixValue[0]
+                final fun <get-leadingPrefixValue>(): kotlin/UByte // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.leadingPrefixValue.<get-leadingPrefixValue>|<get-leadingPrefixValue>(){}[0]
+            final val pattern // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.pattern|{}pattern[0]
+                final fun <get-pattern>(): kotlin/String // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.pattern.<get-pattern>|<get-pattern>(){}[0]
+
+            final fun component1(): kotlin/UByte // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.component1|component1(){}[0]
+            final fun component2(): kotlin/UByte // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.component2|component2(){}[0]
+            final fun copy(kotlin/UByte = ..., kotlin/UByte = ...): at.asitplus.cidre/IpAddress.V4.LeadingPrefix // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.copy|copy(kotlin.UByte;kotlin.UByte){}[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // at.asitplus.cidre/IpAddress.V4.LeadingPrefix.toString|toString(){}[0]
+        }
+
         final object Companion : at.asitplus.cidre/IpFamily { // at.asitplus.cidre/IpAddress.V4.Companion|null[0]
             final val numberOfOctets // at.asitplus.cidre/IpAddress.V4.Companion.numberOfOctets|{}numberOfOctets[0]
                 final fun <get-numberOfOctets>(): kotlin/Int // at.asitplus.cidre/IpAddress.V4.Companion.numberOfOctets.<get-numberOfOctets>|<get-numberOfOctets>(){}[0]
@@ -405,6 +425,10 @@ sealed class <#A: kotlin/Number, #B: at.asitplus.cidre.byteops/CidrNumber<#B>> a
     final fun isSupernetOf(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.isSupernetOf|isSupernetOf(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
     final fun overlaps(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Boolean // at.asitplus.cidre/IpNetwork.overlaps|overlaps(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
     final fun plus(at.asitplus.cidre/IpNetwork<#A, #B>): at.asitplus.cidre/IpNetwork<#A, #B>? // at.asitplus.cidre/IpNetwork.plus|plus(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
+    final fun subnet(kotlin/UInt): kotlin.sequences/Sequence<at.asitplus.cidre/IpNetwork<#A, #B>> // at.asitplus.cidre/IpNetwork.subnet|subnet(kotlin.UInt){}[0]
+    final fun subnetRelative(kotlin/UInt): kotlin.sequences/Sequence<at.asitplus.cidre/IpNetwork<#A, #B>> // at.asitplus.cidre/IpNetwork.subnetRelative|subnetRelative(kotlin.UInt){}[0]
+    final fun supernet(kotlin/UInt): at.asitplus.cidre/IpNetwork<#A, #B> // at.asitplus.cidre/IpNetwork.supernet|supernet(kotlin.UInt){}[0]
+    final fun supernetRelative(kotlin/UInt): at.asitplus.cidre/IpNetwork<#A, #B> // at.asitplus.cidre/IpNetwork.supernetRelative|supernetRelative(kotlin.UInt){}[0]
     open fun compareTo(at.asitplus.cidre/IpNetwork<#A, #B>): kotlin/Int // at.asitplus.cidre/IpNetwork.compareTo|compareTo(at.asitplus.cidre.IpNetwork<1:0,1:1>){}[0]
     open fun equals(kotlin/Any?): kotlin/Boolean // at.asitplus.cidre/IpNetwork.equals|equals(kotlin.Any?){}[0]
     open fun hashCode(): kotlin/Int // at.asitplus.cidre/IpNetwork.hashCode|hashCode(){}[0]
