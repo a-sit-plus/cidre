@@ -116,6 +116,44 @@ val maskedCopy = higher and (24u.toNetmask(IpFamily.V4))
 println("Masked in-place= $higher (modified bits: $maskedBits), manually masked = $maskedCopy")
 ```
 
+When working with addresses or networks whose concrete family is not known yet, use `withSameFamily`.
+It returns `null` for mixed IPv4/IPv6 input and enables the family-bound operations inside the scope:
+
+```kotlin
+val a: IpAddress<*, *> = IpAddress("192.168.0.99")
+val b: IpAddress<*, *> = IpAddress("192.168.0.1")
+
+val distance = a.withSameFamily(b) {
+    left - right // CidrNumber.V4(98u)
+}
+
+val masked = a.withSameFamily(b) {
+    left and right // 192.168.0.1
+}
+```
+
+If code needs family-specific typed access once one side is known, branch inside the scope:
+
+```kotlin
+val distance = a.withSameFamily(b) {
+    whenFamily(
+        v4 = { left - right }, // left and right are IpAddress.V4 here
+        v6 = { left - right }, // left and right are IpAddress.V6 here
+    )
+}
+```
+
+Networks have the same pattern for common same-family operations:
+
+```kotlin
+val first: IpNetwork<*, *> = IpNetwork("192.168.0.0/25")
+val second: IpNetwork<*, *> = IpNetwork("192.168.0.128/25")
+
+val merged = first.withSameFamily(second) {
+    if (left canMergeWith right) left + right else null
+}
+```
+
 
 #### Platform Interop
 

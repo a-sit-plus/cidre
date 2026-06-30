@@ -431,6 +431,65 @@ public final class at/asitplus/cidre/JvmInteropKt {
 	public static final fun toInetAddress (Lat/asitplus/cidre/IpAddress;)Ljava/net/InetAddress;
 }
 
+public abstract class at/asitplus/cidre/SameFamilyAddressScope {
+	public final fun and (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpAddress;
+	public final fun compare ()I
+	public final fun compare (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)I
+	public final fun compareTo (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)I
+	public final fun getFamily ()Lat/asitplus/cidre/IpFamily;
+	public abstract fun getLeft ()Lat/asitplus/cidre/IpAddress;
+	public abstract fun getRight ()Lat/asitplus/cidre/IpAddress;
+	public final fun isV4 ()Z
+	public final fun isV6 ()Z
+	public final fun minus (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/byteops/CidrNumber;
+	public final fun or (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpAddress;
+	public final fun plus (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/byteops/CidrNumber;
+	public final fun whenFamily (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public final fun xor (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)Lat/asitplus/cidre/IpAddress;
+}
+
+public final class at/asitplus/cidre/SameFamilyAddressScope$V4 : at/asitplus/cidre/SameFamilyAddressScope {
+	public fun <init> (Lat/asitplus/cidre/IpAddress$V4;Lat/asitplus/cidre/IpAddress$V4;)V
+	public fun getLeft ()Lat/asitplus/cidre/IpAddress$V4;
+	public synthetic fun getLeft ()Lat/asitplus/cidre/IpAddress;
+	public fun getRight ()Lat/asitplus/cidre/IpAddress$V4;
+	public synthetic fun getRight ()Lat/asitplus/cidre/IpAddress;
+}
+
+public final class at/asitplus/cidre/SameFamilyAddressScope$V6 : at/asitplus/cidre/SameFamilyAddressScope {
+	public fun <init> (Lat/asitplus/cidre/IpAddress$V6;Lat/asitplus/cidre/IpAddress$V6;)V
+	public fun getLeft ()Lat/asitplus/cidre/IpAddress$V6;
+	public synthetic fun getLeft ()Lat/asitplus/cidre/IpAddress;
+	public fun getRight ()Lat/asitplus/cidre/IpAddress$V6;
+	public synthetic fun getRight ()Lat/asitplus/cidre/IpAddress;
+}
+
+public final class at/asitplus/cidre/SameFamilyNetworkScope {
+	public fun <init> (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)V
+	public final fun canMergeWith (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun compare ()I
+	public final fun compare (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)I
+	public final fun compareTo (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)I
+	public final fun contains (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpAddress;)Z
+	public final fun contains (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpInterface;)Z
+	public final fun contains (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun getFamily ()Lat/asitplus/cidre/IpFamily;
+	public final fun getLeft ()Lat/asitplus/cidre/IpNetwork;
+	public final fun getRight ()Lat/asitplus/cidre/IpNetwork;
+	public final fun isAdjacentTo (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun isSubnetOf (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun isSupernetOf (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun overlaps (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)Z
+	public final fun plus (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;)Lat/asitplus/cidre/IpNetwork;
+}
+
+public final class at/asitplus/cidre/SameFamilyScopeKt {
+	public static final fun isSameFamily (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;)Z
+	public static final fun isSameFamily (Lat/asitplus/cidre/IpAddressAndPrefix;Lat/asitplus/cidre/IpAddressAndPrefix;)Z
+	public static final fun withSameFamily (Lat/asitplus/cidre/IpAddress;Lat/asitplus/cidre/IpAddress;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static final fun withSameFamily (Lat/asitplus/cidre/IpNetwork;Lat/asitplus/cidre/IpNetwork;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+
 public final class at/asitplus/cidre/byteops/ByteOpsKt {
 	public static final fun and ([B[B)[B
 	public static final fun andInplace ([B[B)I

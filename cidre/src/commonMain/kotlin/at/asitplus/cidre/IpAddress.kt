@@ -588,7 +588,7 @@ fun IpAddress<*, *>.isV4(): Boolean {
         returns(false) implies (this@isV4 is IpAddress.V6)
     }
 
-    return this is IpAddressAndPrefix.V4
+    return this is IpAddress.V4
 }
 
 
@@ -598,7 +598,7 @@ fun IpAddress<*, *>.isV6(): Boolean {
         returns(true) implies (this@isV6 is IpAddress.V6)
         returns(false) implies (this@isV6 is IpAddress.V4)
     }
-    return this is IpAddressAndPrefix.V6
+    return this is IpAddress.V6
 }
 
 @OptIn(ExperimentalContracts::class)

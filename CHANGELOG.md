@@ -43,6 +43,9 @@
 * Fix `addressSpace` for `/32` and `/128` to avoid duplicate single-address emission
 * Fix `IpAddress.V6.toString(expanded = true)` to emit fully padded 4-digit hextets
 * Tighten `IpAddress.V4.LeadingPrefix(Int, Int)` validation to reject values outside `0..255` before conversion
+* Add `withSameFamily` scopes for unknown-family `IpAddress` and `IpNetwork` values, exposing same-family arithmetic, bitwise, comparison, containment, overlap, adjacency, and merge operations.
+* Add generic `isSameFamily` predicates for `IpAddress` and `IpAddressAndPrefix`.
+* Fix generic `IpAddress.isV4()` / `IpAddress.isV6()` checks.
 
 ## 0.3.1
 * Add `hashCode()` and `equals` in `IpInterface` 
