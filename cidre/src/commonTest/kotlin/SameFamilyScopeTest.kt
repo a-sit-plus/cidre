@@ -157,8 +157,8 @@ class SameFamilyScopeTest {
                     false
                 },
                 v6 = {
-                    val knownNetwork: IpNetwork.V6 = network
-                    val knownAddress: IpAddress.V6 = address
+                    val knownNetwork: IpNetwork.V6 = this.network
+                    val knownAddress: IpAddress.V6 = this.address
                     knownAddress in knownNetwork
                 }
             )
