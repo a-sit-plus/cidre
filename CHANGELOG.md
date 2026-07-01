@@ -1,6 +1,8 @@
 # Changelog
 
 ## NEXT
+
+## 0.4.0
 * Add subnetting and supernetting helpers on `IpNetwork`
   * `subnet(newPrefix: UInt)`
   * `subnetRelative(prefixDiff: UInt)`
